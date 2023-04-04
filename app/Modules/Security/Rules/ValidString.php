@@ -9,6 +9,12 @@ class ValidString implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if (! is_string($value)) {
+            $fail('仅支持输入字符串');
+
+            return;
+        }
+
         if (empty($value)) {
             $fail('输入不能为空');
 

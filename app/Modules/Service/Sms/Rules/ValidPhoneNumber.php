@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Security\Rules;
+namespace App\Modules\Service\Sms\Rules;
 
-use App\Modules\Security\Actions\IsValidPhone;
+use App\Modules\Service\Sms\Actions\IsValidPhoneNumber;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ValidPhone implements ValidationRule
+class ValidPhoneNumber implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -16,7 +16,7 @@ class ValidPhone implements ValidationRule
             return;
         }
 
-        if (! IsValidPhone::run($value)) {
+        if (! IsValidPhoneNumber::run($value)) {
             $fail('手机号码不合法');
         }
     }

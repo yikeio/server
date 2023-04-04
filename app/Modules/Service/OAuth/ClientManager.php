@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Service\OAuthClient;
+namespace App\Modules\Service\OAuth;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;

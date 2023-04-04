@@ -199,9 +199,12 @@ return [
          * Custom Service Providers...
          */
         \App\Modules\Service\Snowflake\SnowflakeServiceProvider::class,
-        \App\Modules\Service\OAuthClient\OAuthClientServiceProvider::class,
+        \App\Modules\Service\OAuth\OAuthServiceProvider::class,
 
         \App\Modules\User\UserServiceProvider::class,
+        \App\Modules\Service\Sms\SmsServiceProvider::class,
+        \App\Modules\Service\OpenAI\OpenAIServiceProvider::class,
+        \App\Modules\Chat\ChatServiceProvider::class,
     ],
 
     /*

@@ -11,7 +11,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'phone' => $this->faker->phoneNumber,
+            'phone_number' => '+86:1860000'.mt_rand(1000, 9999),
             'referral_code' => Str::lower(Str::random(6)),
         ];
     }

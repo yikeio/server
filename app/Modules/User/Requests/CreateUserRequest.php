@@ -2,7 +2,9 @@
 
 namespace App\Modules\User\Requests;
 
-use App\Modules\Security\Rules\ValidPhone;
+use App\Modules\Service\Sms\Enums\VerificationCodeScene;
+use App\Modules\Service\Sms\Rules\ValidPhoneNumber;
+use App\Modules\Service\Sms\Rules\ValidVerificationCode;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRequest extends FormRequest
@@ -10,14 +12,21 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => [
+            'phone_number' => [
                 'required',
                 'string',
-                new ValidPhone(),
+                new ValidPhoneNumber(),
+            ],
+            'sms_verification_code' => [
+                'required',
+                'string',
+                'size:4',
+                new ValidVerificationCode(VerificationCodeScene::REGISTER),
             ],
             'referral_code' => [
                 'string',
                 'size:6',
+                'required',
             ],
         ];
     }
