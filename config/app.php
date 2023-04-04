@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'PRC',
 
     /*
     |--------------------------------------------------------------------------
@@ -195,6 +195,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Custom Service Providers...
+         */
+        \App\Modules\Service\Snowflake\SnowflakeServiceProvider::class,
+        \App\Modules\Service\OAuthClient\OAuthClientServiceProvider::class,
+
+        \App\Modules\User\UserServiceProvider::class,
     ],
 
     /*

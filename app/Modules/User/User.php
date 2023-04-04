@@ -2,43 +2,52 @@
 
 namespace App\Modules\User;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Modules\Service\Snowflake\HasSnowflakes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasSnowflakes;
+    use HasApiTokens;
+    use Notifiable;
+    use HasFactory;
+    use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    public $incrementing = false;
+
     protected $fillable = [
+        'root_referrer_id',
+        'referrer_id',
+        'level',
+        'referrer_path',
+        'referral_code',
+        'referrals_count',
         'name',
-        'email',
-        'password',
+        'phone',
+        'is_admin',
+        'first_active_at',
+        'last_active_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'phone',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'id' => 'string',
+        'root_referrer_id' => 'string',
+        'referrer_id' => 'string',
+        'is_admin' => 'boolean',
+        'first_active_at' => 'datetime',
+        'last_active_at' => 'datetime',
     ];
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 }

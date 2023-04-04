@@ -6,8 +6,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "giggsey/libphonenumber-for-php": "^8.13",
         "godruoyi/php-snowflake": "^2.2",
         "guzzlehttp/guzzle": "^7.2",
+        "jenssegers/agent": "^2.6",
         "laravel/framework": "^10.0",
         "laravel/passport": "^11.8",
         "laravel/sanctum": "^3.2",
@@ -15,8 +17,9 @@
         "vinkla/hashids": "^11.0"
     },
     "require-dev": {
+        "brianium/paratest": "^7.1",
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
+        "laravel/pint": "^1.7",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
@@ -48,7 +51,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "pint": "@php vendor/bin/pint",
+        "test": "@php artisan test --parallel"
     },
     "extra": {
         "laravel": {
