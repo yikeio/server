@@ -56,37 +56,39 @@ class CreateSmartMessage extends Endpoint
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        $contents = [];
+        return response()->stream(function () use ($stream, $conversation, $messages) {
+            $contents = [];
 
-        /** @var CreateStreamedResponse $response */
-        foreach ($stream as $response) {
-            /** @var CreateStreamedResponseChoice $choice */
-            $choice = Arr::first($response->choices);
+            /** @var CreateStreamedResponse $response */
+            foreach ($stream as $response) {
+                /** @var CreateStreamedResponseChoice $choice */
+                $choice = Arr::first($response->choices);
 
-            if (empty($choice->delta->content)) {
-                continue;
+                if (empty($choice->delta->content)) {
+                    continue;
+                }
+
+                $contents[] = $choice->delta->content;
+
+                // 流式返回数据
+                echo $choice->delta->content;
             }
 
-            $contents[] = $choice->delta->content;
+            $content = implode('', array_filter($contents));
 
-            // 流式返回数据
-            echo $choice->delta->content;
-        }
+            $tokensCount = $this->resolveTokensCount($messages, $content, config('openai.chat.model'));
 
-        $content = implode('', array_filter($contents));
+            $conversation->messages()->create([
+                'role' => MessageRole::ASSISTANT,
+                'content' => $content,
+                'raws' => array_merge($tokensCount, $response->toArray()),
+                'tokens_count' => Arr::get($tokensCount, 'total_tokens'),
+            ]);
 
-        $tokensCount = $this->resolveTokensCount($messages, $content, config('openai.chat.model'));
-
-        $conversation->messages()->create([
-            'role' => MessageRole::ASSISTANT,
-            'content' => $content,
-            'raws' => array_merge($tokensCount, $response->toArray()),
-            'tokens_count' => Arr::get($tokensCount, 'total_tokens'),
-        ]);
-
-        RefreshConversationActiveAt::run($conversation);
-        RefreshConversationMessagesCount::run($conversation);
-        RefreshConversationTokensCount::run($conversation);
+            RefreshConversationActiveAt::run($conversation);
+            RefreshConversationMessagesCount::run($conversation);
+            RefreshConversationTokensCount::run($conversation);
+        });
     }
 
     protected function resolveTokensCount(array $messages, string $completion, string $model): array
