@@ -16,7 +16,7 @@ class InvokeTokenizer extends Action
                 'content' => $content,
             ]);
 
-        if (!$response->successful() || !is_array($response->json('tokens'))) {
+        if (! $response->successful() || ! is_array($response->json('tokens'))) {
             throw new InvokeTokenizerException("[CHAT] 调用 OpenAI Tokenizer 服务失败：{$response->body()}");
         }
 
