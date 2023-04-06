@@ -9,7 +9,7 @@ class RefreshConversationTokensCount extends Action
 {
     public function handle(Conversation $conversation): Conversation
     {
-        $conversation->messages_count = $conversation->messages()->sum('tokens_count');
+        $conversation->tokens_count = $conversation->messages()->sum('tokens_count');
         $conversation->timestamps = false;
         $conversation->save();
 

@@ -3,8 +3,12 @@
 namespace App\Modules\User;
 
 use App\Modules\Chat\Conversation;
+use App\Modules\Quota\Enums\QuotaType;
+use App\Modules\Quota\Quota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
+use App\Modules\User\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,9 +52,31 @@ class User extends Authenticatable
         'last_active_at' => 'datetime',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function (User $user) {
+            event(new UserCreated($user));
+        });
+    }
+
     public function conversations(): HasMany
     {
         return $this->hasMany(Conversation::class, 'creator_id', 'id');
+    }
+
+    public function quotas(): HasMany
+    {
+        return $this->hasMany(Quota::class, 'user_id', 'id');
+    }
+
+    public function getQuota(QuotaType $type): Quota|Model
+    {
+        return $this->quotas()
+            ->where('type', $type)
+            ->where('is_available', true)
+            ->sole();
     }
 
     protected static function newFactory()

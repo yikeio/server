@@ -205,6 +205,11 @@ return [
         \App\Modules\Service\Sms\SmsServiceProvider::class,
         \App\Modules\Service\OpenAI\OpenAIServiceProvider::class,
         \App\Modules\Chat\ChatServiceProvider::class,
+
+        /**
+         * Custom Event Service Providers...
+         */
+        \App\Modules\Quota\QuotaEventServiceProvider::class,
     ],
 
     /*

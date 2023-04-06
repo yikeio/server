@@ -10,6 +10,8 @@ use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
 use App\Modules\Chat\Requests\CreateSmartMessageRequest;
 use App\Modules\Common\Endpoints\Endpoint;
+use App\Modules\Quota\Actions\ConsumeUserQuota;
+use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\Log\Actions\CreateErrorLog;
 use App\Modules\User\User;
@@ -56,7 +58,7 @@ class CreateSmartMessage extends Endpoint
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        return response()->stream(function () use ($stream, $conversation, $messages) {
+        return response()->stream(function () use ($user, $stream, $conversation, $messages) {
             $contents = [];
 
             /** @var CreateStreamedResponse $response */
@@ -76,22 +78,23 @@ class CreateSmartMessage extends Endpoint
 
             $content = implode('', array_filter($contents));
 
-            $tokensCount = $this->resolveTokensCount($messages, $content, config('openai.chat.model'));
+            $usage = $this->getUsage($messages, $content, config('openai.chat.model'));
 
             $conversation->messages()->create([
                 'role' => MessageRole::ASSISTANT,
                 'content' => $content,
-                'raws' => array_merge($tokensCount, $response->toArray()),
-                'tokens_count' => Arr::get($tokensCount, 'total_tokens'),
+                'raws' => array_merge($usage, $response->toArray()),
+                'tokens_count' => $usage['tokens_count'],
             ]);
 
+            ConsumeUserQuota::run($user, QuotaType::CHAT, $usage['tokens_count']);
             RefreshConversationActiveAt::run($conversation);
             RefreshConversationMessagesCount::run($conversation);
             RefreshConversationTokensCount::run($conversation);
         });
     }
 
-    protected function resolveTokensCount(array $messages, string $completion, string $model): array
+    protected function getUsage(array $messages, string $completion, string $model): array
     {
         $prompts = [];
 
@@ -105,9 +108,9 @@ class CreateSmartMessage extends Endpoint
         $completionTokens = count(InvokeTokenizer::run($completion, $model));
 
         return [
-            'prompt_tokens' => $promptTokens,
-            'completion_tokens' => $completionTokens,
-            'total_tokens' => $promptTokens + $completionTokens,
+            'prompt_tokens_count' => $promptTokens,
+            'completion_tokens_count' => $completionTokens,
+            'tokens_count' => $promptTokens + $completionTokens,
         ];
     }
 }
