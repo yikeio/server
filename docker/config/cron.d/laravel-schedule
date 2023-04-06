@@ -1,0 +1,1 @@
+* * * * * su -s /bin/bash -c "cd /data/www && php artisan schedule:run >> /data/logs/cron.log 2>&1" www-data

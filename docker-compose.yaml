@@ -1,0 +1,31 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: yike-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart: always
+
+  redis:
+    image: redis:5.0
+    container_name: yike-redis
+    volumes:
+      - ./data/redis:/data
+    restart: always
+
+  server:
+    image: ccr.ccs.tencentyun.com/yike/server:0.2.0
+    container_name: yike-server
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+      - redis
+      - tokenizer
+
+  tokenizer:
+    image: ccr.ccs.tencentyun.com/yike/tokenizer:0.1.0
+    container_name: yike-tokenizer

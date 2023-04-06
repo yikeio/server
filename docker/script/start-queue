@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+/usr/bin/php /data/www/artisan optimize
+
+chown -R www-data:www-data /data/www/storage/logs
+
+cron
+
+crontab /etc/cron.d/custom-schedule
+
+supervisord --nodaemon

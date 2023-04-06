@@ -11,7 +11,6 @@ class ListConversationMessagesTest extends TestCase
 {
     public function test_list_conversation_messages()
     {
-
         $user = User::factory()->create();
 
         $conversation = Conversation::factory()->create(['creator_id' => $user->id]);

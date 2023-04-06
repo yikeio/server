@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+/usr/bin/php /data/www/artisan optimize
+
+chown -R www-data:www-data /data/www/storage/logs
+
+cron
+
+cat /etc/cron.d/*-schedule | crontab -
+
+tail -f /data/logs/cron.log

@@ -10,7 +10,6 @@ class DeleteConversationTest extends TestCase
 {
     public function test_delete_conversation()
     {
-
         $user = User::factory()->create();
 
         $conversation = Conversation::factory()->create(['creator_id' => $user->id]);

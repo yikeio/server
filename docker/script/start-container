@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+AUTO_MIGRATION=${AUTO_MIGRATION:-no}
+
+if [ "$AUTO_MIGRATION" == yes ]; then
+  /usr/bin/php /data/www/artisan migrate --force
+fi
+
+/usr/bin/php /data/www/artisan optimize
+
+chown -R www-data:www-data /data/www/storage/logs
+
+cron
+php-fpm8.1
+
+crontab /etc/cron.d/custom-schedule
+
+nginx -g 'daemon off;'
