@@ -28,6 +28,8 @@ class Quota extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
+        'user_id' => 'string',
         'expired_at' => 'datetime',
         'type' => QuotaType::class,
         'usage' => 'array',

@@ -28,6 +28,7 @@ class Conversation extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
         'creator_id' => 'string',
         'first_active_at' => 'datetime',
         'last_active_at' => 'datetime',

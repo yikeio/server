@@ -26,6 +26,7 @@ class Message extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
         'conversation_id' => 'string',
         'role' => MessageRole::class,
         'raws' => 'array',
