@@ -23,6 +23,10 @@ class RefreshUserReferrer extends Action
         $user->timestamps = false;
         $user->save();
 
+        $referrer->referrals_count = $referrer->referrals()->count();
+        $referrer->timestamps = false;
+        $referrer->save();
+
         return $user;
     }
 }

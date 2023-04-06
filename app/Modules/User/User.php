@@ -61,6 +61,11 @@ class User extends Authenticatable
         });
     }
 
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(User::class, 'referrer_id', 'id');
+    }
+
     public function conversations(): HasMany
     {
         return $this->hasMany(Conversation::class, 'creator_id', 'id');
