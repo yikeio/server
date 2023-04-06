@@ -18,12 +18,17 @@ class ChatRouteRegistrar
             'middleware' => ['api', 'auth'],
             'prefix' => 'api',
         ], function () {
-            Route::post('/conversations/{conversation}/smart-messages', CreateSmartMessage::class)->middleware('throttle:20,1');
-            Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:20,1');
-            Route::post('/conversations', CreateConversation::class)->middleware('throttle:10,1');
             Route::get('/conversations/{conversation}/messages', ListConversationMessages::class);
             Route::delete('/conversations/{conversation}', DeleteConversation::class);
             Route::put('/conversations/{conversation}', UpdateConversation::class);
+
+            Route::group([
+                'middleware' => ['quota.check:chat'],
+            ], function () {
+                Route::post('/conversations/{conversation}/smart-messages', CreateSmartMessage::class)->middleware('throttle:20,1');
+                Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:20,1');
+                Route::post('/conversations', CreateConversation::class)->middleware('throttle:10,1');
+            });
         });
     }
 }

@@ -76,7 +76,7 @@ class User extends Authenticatable
         return $this->hasMany(Quota::class, 'user_id', 'id');
     }
 
-    public function getQuota(QuotaType $type): Quota|Model
+    public function getQuota(QuotaType $type): Quota|Model|null
     {
         return $this->quotas()
             ->where('type', $type)

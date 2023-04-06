@@ -7,6 +7,7 @@ use App\Http\Middleware\RequestLogger;
 use App\Http\Middleware\SetLoggerContext;
 use App\Http\Middleware\SetRequestAccept;
 use App\Http\Middleware\SetRequestId;
+use App\Modules\Quota\Middlewares\CheckQuota;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -73,5 +74,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.client' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class,
+        'quota.check' => CheckQuota::class,
     ];
 }

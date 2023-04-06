@@ -47,6 +47,11 @@ class Quota extends Model
 
     public function getIsExpiredAttribute(): bool
     {
+        return $this->isExpired();
+    }
+
+    public function isExpired(): bool
+    {
         return (bool) $this->expired_at?->isPast();
     }
 
