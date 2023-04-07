@@ -24,6 +24,6 @@ class ListPayableQuotas extends Endpoint
             $pricings[$index]['pricing'] = $index;
         }
 
-        return $pricings;
+        return array_values($pricings);
     }
 }
