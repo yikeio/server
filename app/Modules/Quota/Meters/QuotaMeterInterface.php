@@ -10,7 +10,9 @@ interface QuotaMeterInterface
 
     public function reset(): static;
 
-    public function getBalance(): bool;
+    public function getBalance(): int;
 
     public function getUsage(): array;
+
+    public function setUsage(array $usage): static;
 }

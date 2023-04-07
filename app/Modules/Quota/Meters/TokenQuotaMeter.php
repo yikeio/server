@@ -12,6 +12,11 @@ class TokenQuotaMeter implements QuotaMeterInterface
 
     public function __construct(array $usage = [])
     {
+        $this->setUsage($usage);
+    }
+
+    public function setUsage(array $usage): static
+    {
         $this->tokensCount = $usage['tokens_count'] ?? 0;
         $this->usedTokensCount = $usage['used_tokens_count'] ?? 0;
         $this->availableTokensCount = $usage['available_tokens_count'] ?? 0;
@@ -43,7 +48,7 @@ class TokenQuotaMeter implements QuotaMeterInterface
         return $this;
     }
 
-    public function getBalance(): bool
+    public function getBalance(): int
     {
         return $this->availableTokensCount;
     }

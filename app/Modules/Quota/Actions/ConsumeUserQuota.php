@@ -24,6 +24,8 @@ class ConsumeUserQuota extends Action
                 $meterManager = app(MeterManager::class);
 
                 $meter = $meterManager->get($quota->meter);
+
+                $meter->setUsage($quota->usage ?? []);
                 $meter->consume($tokensCount);
 
                 $quota->usage = $meter->getUsage();

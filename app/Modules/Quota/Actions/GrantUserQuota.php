@@ -20,6 +20,8 @@ class GrantUserQuota extends Action
         $meterManager = app(MeterManager::class);
 
         $meter = $meterManager->get($parameters['quota_meter']);
+
+        $meter->setUsage($quota->usage ?? []);
         $meter->recharge($parameters['tokens_count']);
 
         $quota->usage = $meter->getUsage();
