@@ -6,6 +6,7 @@ use App\Modules\User\Endpoints\CreateUser;
 use App\Modules\User\Endpoints\GetUser;
 use App\Modules\User\Endpoints\ListUserAvailableQuotas;
 use App\Modules\User\Endpoints\ListUserConversations;
+use App\Modules\User\Endpoints\ListUserPayments;
 use App\Modules\User\Endpoints\ListUserQuotas;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,7 @@ class UserRouteRegistrar
                 Route::get('/users/{user}/conversations', ListUserConversations::class);
                 Route::get('/users/{user}/quotas', ListUserQuotas::class);
                 Route::get('/users/{user}/available-quotas', ListUserAvailableQuotas::class);
+                Route::get('/users/{user}/payments', ListUserPayments::class);
             });
         });
     }
