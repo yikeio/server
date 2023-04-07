@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\User\Requests;
+namespace App\Modules\Sms\Requests;
 
 use App\Modules\Sms\Enums\VerificationCodeScene;
 use App\Modules\Sms\Rules\ValidPhoneNumber;
-use App\Modules\Sms\Rules\ValidVerificationCode;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreateUserRequest extends FormRequest
+class SendVerificationCodeRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -17,16 +17,10 @@ class CreateUserRequest extends FormRequest
                 'string',
                 new ValidPhoneNumber(),
             ],
-            'sms_verification_code' => [
+            'scene' => [
                 'required',
                 'string',
-                'size:4',
-                new ValidVerificationCode(VerificationCodeScene::REGISTER),
-            ],
-            'referral_code' => [
-                'string',
-                'size:6',
-                'required',
+                Rule::enum(VerificationCodeScene::class),
             ],
         ];
     }

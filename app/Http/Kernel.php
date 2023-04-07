@@ -2,12 +2,12 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\RefreshUserActiveAt;
-use App\Http\Middleware\RequestLogger;
-use App\Http\Middleware\SetLoggerContext;
-use App\Http\Middleware\SetRequestAccept;
-use App\Http\Middleware\SetRequestId;
 use App\Modules\Quota\Middlewares\CheckQuota;
+use App\Modules\Security\Middlewares\SetRequestAccept;
+use App\Modules\Service\Log\Middlewares\RequestLogger;
+use App\Modules\Service\Log\Middlewares\SetLoggerContext;
+use App\Modules\Service\Log\Middlewares\SetRequestId;
+use App\Modules\User\Middlewares\RefreshUserActiveAt;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel

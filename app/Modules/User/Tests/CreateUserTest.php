@@ -2,7 +2,7 @@
 
 namespace App\Modules\User\Tests;
 
-use App\Modules\Service\Sms\VerificationCode;
+use App\Modules\Sms\VerificationCode;
 use App\Modules\User\User;
 use Mockery\MockInterface;
 use Tests\TestCase;

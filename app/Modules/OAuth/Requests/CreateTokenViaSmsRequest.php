@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\User\Requests;
+namespace App\Modules\OAuth\Requests;
 
 use App\Modules\Sms\Enums\VerificationCodeScene;
 use App\Modules\Sms\Rules\ValidPhoneNumber;
 use App\Modules\Sms\Rules\ValidVerificationCode;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserRequest extends FormRequest
+class CreateTokenViaSmsRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -21,12 +21,7 @@ class CreateUserRequest extends FormRequest
                 'required',
                 'string',
                 'size:4',
-                new ValidVerificationCode(VerificationCodeScene::REGISTER),
-            ],
-            'referral_code' => [
-                'string',
-                'size:6',
-                'required',
+                new ValidVerificationCode(VerificationCodeScene::LOGIN),
             ],
         ];
     }
