@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Modules\Quota\Middlewares\CheckQuota;
 use App\Modules\Security\Middlewares\SetRequestAccept;
+use App\Modules\Security\Middlewares\SetRequestUser;
 use App\Modules\Service\Log\Middlewares\RequestLogger;
 use App\Modules\Service\Log\Middlewares\SetLoggerContext;
 use App\Modules\Service\Log\Middlewares\SetRequestId;
@@ -27,6 +28,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        SetRequestUser::class,
         SetRequestId::class,
         RefreshUserActiveAt::class,
         SetLoggerContext::class,
