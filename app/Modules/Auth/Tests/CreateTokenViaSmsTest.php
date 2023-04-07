@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\OAuth\Tests;
+namespace App\Modules\Auth\Tests;
 
 use App\Modules\Sms\VerificationCode;
 use App\Modules\User\User;

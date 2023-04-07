@@ -199,7 +199,7 @@ return [
          * Custom Service Providers...
          */
         \App\Modules\Service\Snowflake\SnowflakeServiceProvider::class,
-        \App\Modules\OAuth\OAuthServiceProvider::class,
+        \App\Modules\Auth\AuthServiceProvider::class,
 
         \App\Modules\User\UserServiceProvider::class,
         \App\Modules\Sms\SmsServiceProvider::class,

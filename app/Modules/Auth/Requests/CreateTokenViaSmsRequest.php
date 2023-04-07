@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\OAuth\Requests;
+namespace App\Modules\Auth\Requests;
 
 use App\Modules\Sms\Enums\VerificationCodeScene;
 use App\Modules\Sms\Rules\ValidPhoneNumber;

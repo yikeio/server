@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\OAuth;
+namespace App\Modules\Auth;
 
-use App\Modules\OAuth\Endpoints\CreateTokenViaSms;
+use App\Modules\Auth\Endpoints\CreateTokenViaSms;
 use Illuminate\Support\Facades\Route;
 
-class OAuthRouteRegistrar
+class AuthRouteRegistrar
 {
     public static function all()
     {

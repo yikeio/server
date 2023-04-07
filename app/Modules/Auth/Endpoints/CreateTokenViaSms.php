@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Modules\OAuth\Endpoints;
+namespace App\Modules\Auth\Endpoints;
 
+use App\Modules\Auth\Requests\CreateTokenViaSmsRequest;
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\OAuth\Requests\CreateTokenViaSmsRequest;
 use App\Modules\User\User;
 use Jenssegers\Agent\Agent;
 

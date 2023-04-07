@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\OAuth;
+namespace App\Modules\Auth;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 
-class OAuthServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     public function register()
     {
@@ -17,7 +17,7 @@ class OAuthServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        OAuthRouteRegistrar::all();
+        AuthRouteRegistrar::all();
 
         Request::macro('client', function () {
             return app(ClientManager::class)->getClient();
