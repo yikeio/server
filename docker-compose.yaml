@@ -17,7 +17,7 @@ services:
     restart: always
 
   server:
-    image: ccr.ccs.tencentyun.com/yike/server:0.2.0
+    image: ccr.ccs.tencentyun.com/yike/server:0.5.0
     container_name: yike-server
     ports:
       - "80:80"

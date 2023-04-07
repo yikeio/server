@@ -93,7 +93,7 @@ class Gateway implements GatewayInterface
 
     public function isValidSign(array $parameters): bool
     {
-        $sign = $parameters['sign'];
+        $sign = $parameters['sign'] ?? '';
 
         unset($parameters['sign']);
 
