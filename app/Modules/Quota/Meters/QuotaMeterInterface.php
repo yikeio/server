@@ -2,7 +2,7 @@
 
 namespace App\Modules\Quota\Meters;
 
-interface Meter
+interface QuotaMeterInterface
 {
     public function consume(int $tokensCount): static;
 

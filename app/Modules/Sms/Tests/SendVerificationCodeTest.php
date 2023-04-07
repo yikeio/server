@@ -19,7 +19,7 @@ class SendVerificationCodeTest extends TestCase
 
     public function test_send_verification_code_successfully()
     {
-        $this->mock(VerificationCode::class, function (MockInterface $mock) {
+        $this->partialMock(VerificationCode::class, function (MockInterface $mock) {
             $mock->makePartial()
                 ->shouldReceive('send')
                 ->andReturn(true);
@@ -33,7 +33,7 @@ class SendVerificationCodeTest extends TestCase
 
     public function test_send_verification_code_failed()
     {
-        $this->mock(VerificationCode::class, function (MockInterface $mock) {
+        $this->partialMock(VerificationCode::class, function (MockInterface $mock) {
             $mock->makePartial()
                 ->shouldReceive('send')
                 ->andReturn(false);

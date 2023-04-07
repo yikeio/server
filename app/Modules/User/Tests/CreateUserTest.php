@@ -11,7 +11,7 @@ class CreateUserTest extends TestCase
 {
     public function test_create_user_with_referral_code()
     {
-        $this->mock(VerificationCode::class, function (MockInterface $mock) {
+        $this->partialMock(VerificationCode::class, function (MockInterface $mock) {
             $mock->makePartial()
                 ->shouldReceive('check')
                 ->andReturn(true);

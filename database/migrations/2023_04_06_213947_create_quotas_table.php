@@ -16,12 +16,13 @@ return new class extends Migration
             $table->boolean('is_available')->default(false);
             $table->unsignedBigInteger('user_id')->default(0);
             $table->string('type', 30);
+            $table->string('meter', 30);
             $table->json('usage')->nullable();
             $table->timestamps();
             $table->timestamp('expired_at')->nullable();
 
             $table->primary('id');
-            $table->unique(['user_id', 'type', 'is_available']);
+            $table->index(['user_id', 'type', 'is_available']);
         });
     }
 

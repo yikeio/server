@@ -2,8 +2,8 @@
 
 namespace App\Modules\Quota;
 
+use App\Modules\Quota\Enums\QuotaMeter;
 use App\Modules\Quota\Enums\QuotaType;
-use App\Modules\Quota\Meters\Meter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property QuotaMeter $meter
  * @property QuotaType $type
  * @property array $usage
  */
@@ -19,10 +20,13 @@ class Quota extends Model
     use HasSnowflakes;
     use HasFactory;
 
+    public $incrementing = false;
+
     protected $fillable = [
         'user_id',
         'is_available',
         'type',
+        'meter',
         'usage',
         'expired_at',
     ];
@@ -31,6 +35,7 @@ class Quota extends Model
         'id' => 'string',
         'user_id' => 'string',
         'expired_at' => 'datetime',
+        'meter' => QuotaMeter::class,
         'type' => QuotaType::class,
         'usage' => 'array',
         'is_available' => 'boolean',
@@ -53,10 +58,5 @@ class Quota extends Model
     public function isExpired(): bool
     {
         return (bool) $this->expired_at?->isPast();
-    }
-
-    public function getMeter(): Meter
-    {
-        return $this->type->getMeter($this->usage ?? []);
     }
 }

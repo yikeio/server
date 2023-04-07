@@ -2,7 +2,7 @@
 
 namespace App\Modules\Quota\Meters;
 
-class ChatMeter implements Meter
+class TokenQuotaMeter implements QuotaMeterInterface
 {
     protected int $tokensCount;
 

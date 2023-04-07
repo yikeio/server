@@ -82,6 +82,14 @@ return [
             'formatter' => JsonFormatter::class,
         ],
 
+        'pay' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/pay.log'),
+            'level' => 'info',
+            'days' => 30,
+            'formatter' => JsonFormatter::class,
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

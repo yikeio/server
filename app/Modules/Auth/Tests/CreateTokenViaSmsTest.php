@@ -14,7 +14,7 @@ class CreateTokenViaSmsTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $this->mock(VerificationCode::class, function (MockInterface $mock) {
+        $this->partialMock(VerificationCode::class, function (MockInterface $mock) {
             $mock->makePartial()
                 ->shouldReceive('check')
                 ->andReturn(true);

@@ -2,7 +2,9 @@
 
 namespace App\Modules\Quota\Listeners;
 
-use App\Modules\Quota\Actions\CreateUserChatQuota;
+use App\Modules\Quota\Actions\GrantUserQuota;
+use App\Modules\Quota\Enums\QuotaMeter;
+use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\User\Events\UserCreated;
 
 class GrantFreeQuotas
@@ -11,8 +13,13 @@ class GrantFreeQuotas
     {
         $user = $event->user;
 
-        $chat = config('quota.defaults.chat');
+        $default = config('quota.types.chat.default');
 
-        CreateUserChatQuota::run($user, $chat['tokens_count'], $chat['days']);
+        GrantUserQuota::run($user, [
+            'quota_type' => QuotaType::CHAT,
+            'quota_meter' => QuotaMeter::TOKEN,
+            'tokens_count' => $default['tokens_count'] ?? 1000,
+            'days' => $default['days'] ?? 1,
+        ]);
     }
 }

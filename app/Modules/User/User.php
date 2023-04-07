@@ -3,6 +3,7 @@
 namespace App\Modules\User;
 
 use App\Modules\Chat\Conversation;
+use App\Modules\Payment\Payment;
 use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Quota\Quota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
@@ -71,6 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(Conversation::class, 'creator_id', 'id');
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'creator_id', 'id');
+    }
+
     public function quotas(): HasMany
     {
         return $this->hasMany(Quota::class, 'user_id', 'id');
@@ -81,7 +87,8 @@ class User extends Authenticatable
         return $this->quotas()
             ->where('type', $type)
             ->where('is_available', true)
-            ->sole();
+            ->orderByDesc('id')
+            ->first();
     }
 
     protected static function newFactory()
