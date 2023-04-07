@@ -19,6 +19,9 @@ class ListPayableQuotas extends Endpoint
                 'days',
                 'price',
             ]);
+
+            $pricings[$index]['quota_type'] = $request->input('quota_type');
+            $pricings[$index]['pricing'] = $index;
         }
 
         return $pricings;
