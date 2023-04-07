@@ -45,7 +45,7 @@ class CreatePayment extends Endpoint
                     $gateway = app(GatewayInterface::class);
 
                     $response = $gateway->native([
-                        'total_fee' => $pricing['price'],
+                        'total_fee' => intval($pricing['price'] * 100),
                         'body' => $pricing['title'],
                         'out_trade_no' => $number,
                     ]);
