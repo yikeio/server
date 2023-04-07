@@ -13,4 +13,6 @@ interface GatewayInterface
     public function isValidSign(array $parameters): bool;
 
     public function resolveNumber(array $parameters): string;
+
+    public function resolveContext(array $parameters): array;
 }

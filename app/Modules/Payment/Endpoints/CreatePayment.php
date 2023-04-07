@@ -62,6 +62,7 @@ class CreatePayment extends Endpoint
                 $payment->gateway = $gateway->getName();
                 $payment->gateway_number = $gateway->resolveNumber($response);
                 $payment->raws = $response;
+                $payment->context = $gateway->resolveContext($response);
                 $payment->processors = $pricing['processors'];
                 $user->payments()->save($payment);
 

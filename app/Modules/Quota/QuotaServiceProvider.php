@@ -12,4 +12,9 @@ class QuotaServiceProvider extends ServiceProvider
             return new MeterManager();
         });
     }
+
+    public function boot()
+    {
+        QuotaRouteRegistrar::all();
+    }
 }

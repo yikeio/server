@@ -117,4 +117,9 @@ class Gateway implements GatewayInterface
             throw new GatewayException("[PAYJS] - 调用支付网关失败：{$response['return_msg']}");
         }
     }
+
+    public function resolveContext(array $parameters): array
+    {
+        return Arr::only($parameters, ['code_url', 'qrcode']);
+    }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('state', 30);
             $table->string('title', 30);
             $table->json('processors')->nullable();
+            $table->json('context')->nullable();
             $table->string('gateway', 30);
             $table->string('gateway_number', 30);
             $table->json('raws')->nullable();

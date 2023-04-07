@@ -3,6 +3,7 @@
 namespace App\Modules\Payment;
 
 use App\Modules\Payment\Endpoints\CreatePayment;
+use App\Modules\Payment\Endpoints\GetPayment;
 use App\Modules\Payment\Endpoints\ProcessPayment;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ class PaymentRouteRegistrar
                 'middleware' => ['auth'],
             ], function () {
                 Route::post('/payments', CreatePayment::class)->middleware('throttle:5,1');
+                Route::get('/payments/{payment}', GetPayment::class);
             });
         });
     }

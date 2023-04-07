@@ -54,5 +54,6 @@ class ProcessPaymentTest extends TestCase
         $this->assertTrue($payment->fresh()->state->isPaid());
 
         $this->assertCount(2, $user->quotas()->get());
+        $this->assertCount(1, $user->quotas()->where('is_available', true)->get());
     }
 }

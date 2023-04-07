@@ -4,6 +4,7 @@ namespace App\Modules\Payment;
 
 use App\Modules\Payment\Gateways\GatewayInterface;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class PaymentServiceProvider extends ServiceProvider
@@ -21,6 +22,8 @@ class PaymentServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Gate::policy(Payment::class, PaymentPolicy::class);
+
         PaymentRouteRegistrar::all();
     }
 }

@@ -30,6 +30,7 @@ class Payment extends Model
         'gateway_number',
         'raws',
         'processors',
+        'context',
     ];
 
     protected $hidden = [
@@ -43,6 +44,7 @@ class Payment extends Model
         'state' => PaymentState::class,
         'raws' => 'array',
         'processors' => 'array',
+        'context' => 'array',
     ];
 
     public function creator(): BelongsTo
