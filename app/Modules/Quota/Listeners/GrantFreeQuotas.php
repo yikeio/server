@@ -13,7 +13,7 @@ class GrantFreeQuotas
     {
         $user = $event->user;
 
-        $default = config('quota.types.chat.default');
+        $default = config('quota.defaults.chat');
 
         GrantUserQuota::run($user, [
             'quota_type' => QuotaType::CHAT,

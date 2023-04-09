@@ -6,7 +6,7 @@ use App\Modules\Quota\Enums\QuotaType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class ListPayableQuotasRequest extends FormRequest
+class ListPricingsRequest extends FormRequest
 {
     public function rules(): array
     {

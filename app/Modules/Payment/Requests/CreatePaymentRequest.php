@@ -20,7 +20,7 @@ class CreatePaymentRequest extends FormRequest
             'pricing' => [
                 'required',
                 'string',
-                Rule::in(array_keys(config("quota.types.{$this->input('quota_type', 'chat')}.pricings", []))),
+                Rule::in(array_keys(config("quota.pricings.{$this->input('quota_type', 'chat')}", []))),
             ],
         ];
     }

@@ -36,7 +36,11 @@ class CreatePayment extends Endpoint
                     abort(403, '还有未支付的订单，无法购买');
                 }
 
-                $pricing = config("quota.types.{$quotaType->value}.pricings.{$request->input('pricing')}");
+                $pricing = config("quota.pricings.{$quotaType->value}.{$request->input('pricing')}");
+
+                if (empty($pricing)) {
+                    abort(500, '无定价信息');
+                }
 
                 $number = now()->format('ymdHis').random_int(1000, 9999);
 

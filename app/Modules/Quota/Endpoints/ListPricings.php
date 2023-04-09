@@ -3,14 +3,14 @@
 namespace App\Modules\Quota\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\Quota\Requests\ListPayableQuotasRequest;
+use App\Modules\Quota\Requests\ListPricingsRequest;
 use Illuminate\Support\Arr;
 
-class ListPayableQuotas extends Endpoint
+class ListPricings extends Endpoint
 {
-    public function __invoke(ListPayableQuotasRequest $request): array
+    public function __invoke(ListPricingsRequest $request): array
     {
-        $pricings = config("quota.types.{$request->input('quota_type')}.pricings");
+        $pricings = config("quota.pricings.{$request->input('quota_type')}");
 
         foreach ($pricings as $index => $pricing) {
             $pricings[$index] = Arr::only($pricing, [

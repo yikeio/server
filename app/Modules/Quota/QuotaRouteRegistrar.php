@@ -2,7 +2,7 @@
 
 namespace App\Modules\Quota;
 
-use App\Modules\Quota\Endpoints\ListPayableQuotas;
+use App\Modules\Quota\Endpoints\ListPricings;
 use Illuminate\Support\Facades\Route;
 
 class QuotaRouteRegistrar
@@ -13,7 +13,7 @@ class QuotaRouteRegistrar
             'middleware' => ['api'],
             'prefix' => 'api',
         ], function () {
-            Route::get('/payable-quotas', ListPayableQuotas::class);
+            Route::get('/pricings', ListPricings::class);
         });
     }
 }
