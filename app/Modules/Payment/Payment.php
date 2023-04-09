@@ -3,8 +3,10 @@
 namespace App\Modules\Payment;
 
 use App\Modules\Payment\Enums\PaymentState;
+use App\Modules\Payment\Filters\PaymentFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\User;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +19,7 @@ class Payment extends Model
 {
     use HasSnowflakes;
     use HasFactory;
+    use Filterable;
 
     public $incrementing = false;
 
@@ -55,5 +58,10 @@ class Payment extends Model
     protected static function newFactory(): PaymentFactory
     {
         return PaymentFactory::new();
+    }
+
+    public function getModelFilterClass(): string
+    {
+        return PaymentFilter::class;
     }
 }

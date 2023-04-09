@@ -14,6 +14,8 @@ class ListUserPayments extends Endpoint
             abort(403);
         }
 
-        return $user->payments()->orderByDesc('id')->get();
+        return $user->payments()
+            ->filter($request->query())
+            ->get();
     }
 }

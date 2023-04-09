@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "openai-php/client": "^0.4.1",
         "overtrue/easy-sms": "^2.4",
+        "tucker-eric/eloquentfilter": "^3.2",
         "vinkla/hashids": "^11.0"
     },
     "require-dev": {
