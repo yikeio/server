@@ -4,6 +4,7 @@ namespace App\Modules\Chat\Endpoints;
 
 use App\Modules\Chat\Conversation;
 use App\Modules\Common\Endpoints\Endpoint;
+use App\Modules\Security\Actions\CheckSize;
 use Illuminate\Http\Request;
 
 class ListConversationMessages extends Endpoint
@@ -12,6 +13,8 @@ class ListConversationMessages extends Endpoint
     {
         $this->authorize('get', $conversation);
 
-        return $conversation->messages()->get();
+        return $conversation->messages()
+            ->filter($request->query())
+            ->paginate(CheckSize::run($request->query('per_page', 15)));
     }
 }

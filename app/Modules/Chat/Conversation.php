@@ -2,8 +2,10 @@
 
 namespace App\Modules\Chat;
 
+use App\Modules\Chat\Filters\ConversationFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\User;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +17,7 @@ class Conversation extends Model
     use HasSnowflakes;
     use HasFactory;
     use SoftDeletes;
+    use Filterable;
 
     public $incrementing = false;
 
@@ -47,5 +50,10 @@ class Conversation extends Model
     protected static function newFactory(): ConversationFactory
     {
         return ConversationFactory::new();
+    }
+
+    public function getModelFilterClass(): string
+    {
+        return ConversationFilter::class;
     }
 }

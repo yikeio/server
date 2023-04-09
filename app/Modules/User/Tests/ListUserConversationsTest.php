@@ -21,7 +21,7 @@ class ListUserConversationsTest extends TestCase
 
         $this->actingAs($user)
             ->getJson("/api/users/{$user->id}/conversations")
-            ->assertJsonCount(10)
+            ->assertJsonCount(10, 'data')
             ->assertSuccessful();
     }
 }

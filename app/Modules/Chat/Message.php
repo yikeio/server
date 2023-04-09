@@ -3,7 +3,9 @@
 namespace App\Modules\Chat;
 
 use App\Modules\Chat\Enums\MessageRole;
+use App\Modules\Chat\Filters\MessageFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +16,7 @@ class Message extends Model
     use HasSnowflakes;
     use HasFactory;
     use SoftDeletes;
+    use Filterable;
 
     public $incrementing = false;
 
@@ -40,5 +43,10 @@ class Message extends Model
     protected static function newFactory(): MessageFactory
     {
         return MessageFactory::new();
+    }
+
+    public function getModelFilterClass(): string
+    {
+        return MessageFilter::class;
     }
 }

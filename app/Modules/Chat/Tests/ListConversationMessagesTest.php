@@ -19,7 +19,7 @@ class ListConversationMessagesTest extends TestCase
 
         $this->actingAs($user)
             ->getJson("/api/conversations/{$conversation->id}/messages")
-            ->assertJsonCount(10)
+            ->assertJsonCount(10, 'data')
             ->assertSuccessful();
     }
 }

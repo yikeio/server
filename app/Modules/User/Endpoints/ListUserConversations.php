@@ -3,6 +3,7 @@
 namespace App\Modules\User\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
+use App\Modules\Security\Actions\CheckSize;
 use App\Modules\User\User;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,8 @@ class ListUserConversations extends Endpoint
             abort(403);
         }
 
-        return $user->conversations()->orderByDesc('id')->get();
+        return $user->conversations()
+            ->filter($request->query())
+            ->paginate(CheckSize::run($request->query('per_page', 15)));
     }
 }
