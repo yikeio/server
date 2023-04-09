@@ -91,7 +91,11 @@ class CreateSmartMessage extends Endpoint
             RefreshConversationActiveAt::run($conversation);
             RefreshConversationMessagesCount::run($conversation);
             RefreshConversationTokensCount::run($conversation);
-        });
+        }, 200, [
+            'X-Accel-Buffering' => 'no',
+            'Content-Type' => 'text/event-stream',
+            'Cache-Control' => 'no-cache',
+        ]);
     }
 
     protected function getUsage(array $messages, string $completion, string $model): array
