@@ -35,6 +35,10 @@ class Message extends Model
         'raws' => 'array',
     ];
 
+    protected $hidden = [
+        'raws',
+    ];
+
     public function conversation(): BelongsTo
     {
         return $this->belongsTo(Conversation::class, 'conversation_id', 'id');
