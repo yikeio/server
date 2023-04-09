@@ -74,6 +74,10 @@ class CreateSmartMessage extends Endpoint
 
                 // 流式返回数据
                 echo $choice->delta->content;
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
+                flush();
             }
 
             $content = implode('', array_filter($contents));
