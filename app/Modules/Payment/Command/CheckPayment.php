@@ -29,6 +29,7 @@ class CheckPayment extends Command
     {
         Payment::query()
             ->where('expired_at', '<', now())
+            ->where('state', PaymentState::PENDING)
             ->update(['state' => PaymentState::EXPIRED]);
     }
 }
