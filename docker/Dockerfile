@@ -36,8 +36,10 @@ RUN apt update -y \
 RUN rm -f /etc/nginx/sites-enabled/* \
     && cp -f /data/www/docker/config/nginx/nginx.conf /etc/nginx \
     && cp -f /data/www/docker/config/nginx/www.conf /etc/nginx/sites-enabled \
-    && cp -f /data/www/docker/config/php/cli/* /etc/php/8.1/cli \
-    && cp -f /data/www/docker/config/php/fpm/* /etc/php/8.1/fpm \
+    && cp -f /data/www/docker/config/php/cli/php.ini /etc/php/8.1/cli/php.ini \
+    && cp -f /data/www/docker/config/php/fpm/php.ini /etc/php/8.1/fpm/php.ini \
+    && cp -f /data/www/docker/config/php/fpm/php-fpm.conf /etc/php/8.1/fpm/php-fpm.conf \
+    && cp -f /data/www/docker/config/php/fpm/pool.d/www.conf /etc/php/8.1/fpm/pool.d/www.conf \
     && cp -f /data/www/docker/config/supervisord/* /etc/supervisor/conf.d \
     && cp -f /data/www/docker/config/cron.d/* /etc/cron.d \
     && cp -f /data/www/docker/script/* /usr/local/bin \
