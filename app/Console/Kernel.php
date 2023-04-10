@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Modules\Payment\Command\CheckPayment;
 use App\Modules\Quota\Commands\CheckQuota;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -10,6 +11,7 @@ class Kernel extends ConsoleKernel
 {
     protected $commands = [
         CheckQuota::class,
+        CheckPayment::class,
     ];
 
     /**
@@ -20,6 +22,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command(CheckQuota::class)->everyMinute()->withoutOverlapping();
+        $schedule->command(CheckPayment::class)->everyMinute()->withoutOverlapping();
     }
 
     /**

@@ -34,7 +34,13 @@ class Gateway implements GatewayInterface
             ...$parameters,
             'mchid' => $this->merchantId,
             'notify_url' => $this->notifyUrl,
+            'time_expire' => now()->addSeconds($this->getTtl())->format('YmdHis'),
         ]);
+    }
+
+    public function getTtl(): int
+    {
+        return $this->config['native']['ttl'] ?? 3600;
     }
 
     public function getName(): string

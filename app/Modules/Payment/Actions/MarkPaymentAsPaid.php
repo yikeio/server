@@ -12,6 +12,7 @@ class MarkPaymentAsPaid extends Action
     public function handle(Payment $payment)
     {
         $payment->state = PaymentState::PAID;
+        $payment->paid_at = now();
         $payment->save();
 
         if (! is_array($payment->processors)) {

@@ -34,6 +34,8 @@ class Payment extends Model
         'raws',
         'processors',
         'context',
+        'paid_at',
+        'expired_at',
     ];
 
     protected $hidden = [
@@ -48,6 +50,8 @@ class Payment extends Model
         'raws' => 'array',
         'processors' => 'array',
         'context' => 'array',
+        'paid_at' => 'datetime',
+        'expired_at' => 'datetime',
     ];
 
     public function creator(): BelongsTo

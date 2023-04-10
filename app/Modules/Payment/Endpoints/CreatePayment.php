@@ -6,13 +6,14 @@ use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\Payment\Enums\PaymentState;
 use App\Modules\Payment\Exceptions\GatewayException;
 use App\Modules\Payment\Gateways\GatewayInterface;
+use App\Modules\Payment\Jobs\MarkPaymentAsExpired;
 use App\Modules\Payment\Payment;
 use App\Modules\Payment\Requests\CreatePaymentRequest;
 use App\Modules\Quota\Enums\QuotaType;
+use App\Modules\Service\Log\Actions\CreateErrorLog;
 use App\Modules\Service\Log\LogChannel;
 use App\Modules\User\User;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 
 class CreatePayment extends Endpoint
 {
@@ -55,7 +56,10 @@ class CreatePayment extends Endpoint
                         'out_trade_no' => $number,
                     ]);
                 } catch (GatewayException $e) {
-                    Log::channel(LogChannel::PAYMENT->value)->error($e->getMessage());
+                    CreateErrorLog::run('[Payment] - 调用支付网关失败', [
+                        'pricing' => $pricing,
+                        'number' => $number,
+                    ], $e, LogChannel::PAYMENT);
                     abort(500, '支付网关异常，请稍后再试');
                 }
 
@@ -69,7 +73,10 @@ class CreatePayment extends Endpoint
                 $payment->raws = $response;
                 $payment->context = $gateway->resolveContext($response);
                 $payment->processors = $pricing['processors'];
+                $payment->expired_at = now()->addSeconds($gateway->getTtl() - 30);
                 $user->payments()->save($payment);
+
+                MarkPaymentAsExpired::dispatch($payment)->delay($payment->expired_at);
 
                 return $payment;
             });

@@ -14,6 +14,8 @@ return [
                 'default' => [
                     'no_credit' => 0,
                 ],
+
+                'ttl' => 3600,
             ],
         ],
     ],

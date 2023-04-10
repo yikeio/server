@@ -8,6 +8,8 @@ interface GatewayInterface
 
     public function getName(): string;
 
+    public function getTtl(): int;
+
     public function isPaid(string $number): bool;
 
     public function isValidSign(array $parameters): bool;
