@@ -5,6 +5,7 @@ namespace App\Modules\Service\Log\Middlewares;
 use App\Modules\User\User;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -40,6 +41,6 @@ class SetLoggerContext
             $flattenHeaders[Str::lower($key)] = is_array($value) ? implode(',', $value) : $value;
         }
 
-        return $flattenHeaders;
+        return Arr::except($flattenHeaders, ['authorization']);
     }
 }
