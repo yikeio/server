@@ -9,6 +9,7 @@ use App\Modules\Payment\Gateways\GatewayInterface;
 use App\Modules\Payment\Payment;
 use App\Modules\Payment\Requests\CreatePaymentRequest;
 use App\Modules\Quota\Enums\QuotaType;
+use App\Modules\Service\Log\LogChannel;
 use App\Modules\User\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -54,7 +55,7 @@ class CreatePayment extends Endpoint
                         'out_trade_no' => $number,
                     ]);
                 } catch (GatewayException $e) {
-                    Log::channel('pay')->error($e->getMessage());
+                    Log::channel(LogChannel::PAYMENT->value)->error($e->getMessage());
                     abort(500, '支付网关异常，请稍后再试');
                 }
 

@@ -82,11 +82,19 @@ return [
             'formatter' => JsonFormatter::class,
         ],
 
-        'pay' => [
+        'payment' => [
             'driver' => 'daily',
             'path' => storage_path('logs/pay.log'),
             'level' => 'info',
             'days' => 30,
+            'formatter' => JsonFormatter::class,
+        ],
+
+        'openai' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/pay.log'),
+            'level' => 'info',
+            'days' => 7,
             'formatter' => JsonFormatter::class,
         ],
 

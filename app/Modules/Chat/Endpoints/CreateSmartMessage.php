@@ -14,6 +14,7 @@ use App\Modules\Quota\Actions\ConsumeUserQuota;
 use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\Log\Actions\CreateErrorLog;
+use App\Modules\Service\Log\LogChannel;
 use App\Modules\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +46,7 @@ class CreateSmartMessage extends Endpoint
                 'messages' => $messages,
             ];
 
-            Log::info('[CHAT] - 调用 OpenAI 入参', $body);
+            Log::channel(LogChannel::OPENAI->value)->info('[CHAT] - 调用 OpenAI 入参', $body);
 
             $stream = $client->chat()->createStreamed($body);
         } catch (Throwable $e) {
@@ -53,7 +54,7 @@ class CreateSmartMessage extends Endpoint
                 'conversation_id' => $conversation->id,
                 'user_id' => $user->id,
                 'messages' => $messages,
-            ], $e);
+            ], $e, LogChannel::OPENAI);
 
             abort(500, '服务器开小差了，请稍后再试');
         }
@@ -61,8 +62,12 @@ class CreateSmartMessage extends Endpoint
         return response()->stream(function () use ($user, $stream, $conversation, $messages) {
             $contents = [];
 
+            $responses = [];
+
             /** @var CreateStreamedResponse $response */
             foreach ($stream as $response) {
+                $responses[] = $response->toArray();
+
                 /** @var CreateStreamedResponseChoice $choice */
                 $choice = Arr::first($response->choices);
 
@@ -87,7 +92,10 @@ class CreateSmartMessage extends Endpoint
             $conversation->messages()->create([
                 'role' => MessageRole::ASSISTANT,
                 'content' => $content,
-                'raws' => array_merge($usage, $response->toArray()),
+                'raws' => [
+                    'responses' => $responses,
+                    'usage' => $usage,
+                ],
                 'tokens_count' => $usage['tokens_count'],
             ]);
 

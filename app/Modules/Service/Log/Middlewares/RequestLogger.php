@@ -2,6 +2,7 @@
 
 namespace App\Modules\Service\Log\Middlewares;
 
+use App\Modules\Service\Log\LogChannel;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +17,7 @@ class RequestLogger
 
     public function terminate(Request $request, Response $response): void
     {
-        Log::channel('request')->info('request logger middleware', [
+        Log::channel(LogChannel::REQUEST->value)->info('request logger middleware', [
             'status_code' => $response->getStatusCode(),
             'response' => $response->isSuccessful() ? [] : json_decode($response->getContent(), true),
         ]);

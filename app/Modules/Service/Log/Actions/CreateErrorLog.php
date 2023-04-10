@@ -3,12 +3,13 @@
 namespace App\Modules\Service\Log\Actions;
 
 use App\Modules\Common\Actions\Action;
+use App\Modules\Service\Log\LogChannel;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class CreateErrorLog extends Action
 {
-    public function handle(string $message, array $context = [], ?Throwable $e = null)
+    public function handle(string $message, array $context = [], ?Throwable $e = null, ?LogChannel $channel = null)
     {
         if (! empty($e)) {
             $context = array_merge([
@@ -22,6 +23,6 @@ class CreateErrorLog extends Action
             ], $context);
         }
 
-        Log::error($message, $context);
+        Log::channel($channel?->value)->error($message, $context);
     }
 }
