@@ -6,26 +6,35 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=password
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - ./mysql:/var/lib/mysql
     restart: always
 
   redis:
     image: redis:5.0
     container_name: yike-redis
     volumes:
-      - ./data/redis:/data
+      - ./redis:/data
     restart: always
 
   server:
-    image: ccr.ccs.tencentyun.com/yike/server:0.5.0
+    image: ccr.ccs.tencentyun.com/yike/server:0.23.0
     container_name: yike-server
     ports:
       - "80:80"
+    volumes:
+      - ./server/storage:/data/www/storage
     depends_on:
-      - mysql
       - redis
       - tokenizer
 
   tokenizer:
     image: ccr.ccs.tencentyun.com/yike/tokenizer:0.1.0
     container_name: yike-tokenizer
+
+  proxy:
+    image: ccr.ccs.tencentyun.com/yike/proxy:0.7.0
+    container_name: yike-proxy
+    environment:
+      - ALLOW_IPS=43.139.110.102
+    ports:
+      - "80:80"
