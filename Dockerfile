@@ -1,4 +1,4 @@
-FROM ccr.ccs.tencentyun.com/yike/server-core:0.5.0
+FROM ccr.ccs.tencentyun.com/yike/server-core:1.1.0
 
 WORKDIR /data/www
 

@@ -17,12 +17,10 @@ services:
     restart: always
 
   server:
-    image: ccr.ccs.tencentyun.com/yike/server:0.24.0
+    image: ccr.ccs.tencentyun.com/yike/server:1.1.0
     container_name: yike-server
     ports:
       - "80:80"
-    extra_hosts:
-      - "api.openai.com:43.154.70.187"
     depends_on:
       - redis
       - tokenizer
@@ -32,9 +30,13 @@ services:
     container_name: yike-tokenizer
 
   proxy:
-    image: ccr.ccs.tencentyun.com/yike/proxy:0.7.0
+    image: ccr.ccs.tencentyun.com/yike/proxy:1.0.0
     container_name: yike-proxy
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
     environment:
+      - SERVER_NAME=hk-proxy.pengyyy.cn
       - ALLOW_IPS=43.139.110.102
     ports:
       - "80:80"
+      - "443:443"

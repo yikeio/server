@@ -21,8 +21,7 @@ class VerificationCode
 
     public function send(): bool
     {
-        //$code = mt_rand(1000, 9999);
-        $code = 1234;
+        $code = mt_rand(1000, 9999);
 
         try {
             /** @var \libphonenumber\PhoneNumber $phoneNumber */

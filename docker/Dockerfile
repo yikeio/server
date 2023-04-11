@@ -8,7 +8,7 @@ ENV EDITOR=vim \
 
 COPY . /data/www/docker
 
-RUN mkdir -p /data/logs/nginx /data/logs/php /data/www/storage/logs /var/run/php /data/certs \
+RUN mkdir -p /etc/nginx/configs /data/logs/nginx /data/logs/php /data/www/storage/logs /var/run/php /data/certs \
     && touch /data/logs/cron.log \
     && chmod 777 /data/logs/cron.log
 
@@ -35,6 +35,7 @@ RUN apt update -y \
 
 RUN rm -f /etc/nginx/sites-enabled/* \
     && cp -f /data/www/docker/config/nginx/nginx.conf /etc/nginx \
+    && cp -f /data/www/docker/config/nginx/configs/* /etc/nginx/configs \
     && cp -f /data/www/docker/config/nginx/www.conf /etc/nginx/sites-enabled \
     && cp -f /data/www/docker/config/php/cli/php.ini /etc/php/8.1/cli/php.ini \
     && cp -f /data/www/docker/config/php/fpm/php.ini /etc/php/8.1/fpm/php.ini \
