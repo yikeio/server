@@ -9,7 +9,7 @@ return [
                 'title' => '7 天卡',
                 'tokens_count' => 300 * 1000,
                 'days' => 7,
-                'price' => 0.1,
+                'price' => 9.9,
                 'processors' => [
                     [
                         'class' => GrantQuotaProcessor::class,
@@ -27,7 +27,7 @@ return [
                 'title' => '15 天卡',
                 'tokens_count' => 700 * 1000,
                 'days' => 15,
-                'price' => 0.1,
+                'price' => 19.9,
                 'processors' => [
                     [
                         'class' => GrantQuotaProcessor::class,
@@ -45,7 +45,7 @@ return [
                 'title' => '30 天卡',
                 'tokens_count' => 1200 * 1000,
                 'days' => 30,
-                'price' => 0.1,
+                'price' => 29.9,
                 'processors' => [
                     [
                         'class' => GrantQuotaProcessor::class,
