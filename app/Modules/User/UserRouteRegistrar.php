@@ -8,6 +8,8 @@ use App\Modules\User\Endpoints\ListUserAvailableQuotas;
 use App\Modules\User\Endpoints\ListUserConversations;
 use App\Modules\User\Endpoints\ListUserPayments;
 use App\Modules\User\Endpoints\ListUserQuotas;
+use App\Modules\User\Endpoints\ListUserSettings;
+use App\Modules\User\Endpoints\UpdateUserSetting;
 use Illuminate\Support\Facades\Route;
 
 class UserRouteRegistrar
@@ -28,6 +30,8 @@ class UserRouteRegistrar
                 Route::get('/users/{user}/quotas', ListUserQuotas::class);
                 Route::get('/users/{user}/available-quotas', ListUserAvailableQuotas::class);
                 Route::get('/users/{user}/payments', ListUserPayments::class);
+                Route::get('/users/{user}/settings', ListUserSettings::class);
+                Route::put('/users/{user}/settings/{key}', UpdateUserSetting::class);
             });
         });
     }
