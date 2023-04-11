@@ -15,6 +15,7 @@ use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\Log\Actions\CreateErrorLog;
 use App\Modules\Service\Log\LogChannel;
+use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -35,7 +36,12 @@ class CreateSmartMessage extends Endpoint
         /** @var Client $client */
         $client = app(Client::class);
 
+        $contextsCount = $user->getSetting(SettingKey::CHAT_CONTEXTS_COUNT);
+        $messagesCount = $conversation->messages()->count();
+
         $messages = $conversation->messages()
+            ->offset($messagesCount - $contextsCount)
+            ->take($contextsCount)
             ->get(['role', 'content'])
             ->toArray();
 

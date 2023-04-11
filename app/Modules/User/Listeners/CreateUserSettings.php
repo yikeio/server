@@ -2,7 +2,7 @@
 
 namespace App\Modules\User\Listeners;
 
-use App\Modules\User\Enums\UserSetting;
+use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Events\UserCreated;
 
 class CreateUserSettings
@@ -11,7 +11,7 @@ class CreateUserSettings
     {
         $user = $event->user;
 
-        $settings = UserSetting::defaults();
+        $settings = SettingKey::defaults();
 
         foreach ($settings as $key => $value) {
             $user->settings()->updateOrCreate([

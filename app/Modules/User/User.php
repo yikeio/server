@@ -7,6 +7,7 @@ use App\Modules\Payment\Payment;
 use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Quota\Quota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
+use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -85,6 +87,13 @@ class User extends Authenticatable
     public function settings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'user_id', 'id');
+    }
+
+    public function getSetting(SettingKey $key): mixed
+    {
+        $value = $this->settings()->where('key', $key)->first(['value']);
+
+        return ! empty($value) ? $value->value : Arr::get(SettingKey::defaults(), $key->value);
     }
 
     public function getQuota(QuotaType $type): Quota|Model|null

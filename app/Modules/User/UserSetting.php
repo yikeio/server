@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property Enums\UserSetting $key
+ * @property Enums\SettingKey $key
  */
 class UserSetting extends Model
 {
@@ -20,7 +20,7 @@ class UserSetting extends Model
     ];
 
     protected $casts = [
-        'key' => Enums\UserSetting::class,
+        'key' => Enums\SettingKey::class,
     ];
 
     protected function value(): Attribute

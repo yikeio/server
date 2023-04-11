@@ -2,7 +2,7 @@
 
 namespace App\Modules\User\Enums;
 
-enum UserSetting: string
+enum SettingKey: string
 {
     case CHAT_CONTEXTS_COUNT = 'chat_contexts_count';
 

@@ -3,7 +3,7 @@
 namespace App\Modules\User\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\User\Enums\UserSetting;
+use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\User;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,7 @@ class UpdateUserSetting extends Endpoint
             abort(403);
         }
 
-        $key = UserSetting::tryFrom($key);
+        $key = SettingKey::tryFrom($key);
 
         if (empty($key)) {
             abort(422, '无效的设置');
