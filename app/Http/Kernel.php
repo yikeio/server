@@ -8,6 +8,7 @@ use App\Modules\Security\Middlewares\SetRequestUser;
 use App\Modules\Service\Log\Middlewares\RequestLogger;
 use App\Modules\Service\Log\Middlewares\SetLoggerContext;
 use App\Modules\Service\Log\Middlewares\SetRequestId;
+use App\Modules\User\Middlewares\CheckUserState;
 use App\Modules\User\Middlewares\RefreshUserActiveAt;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -33,6 +34,7 @@ class Kernel extends HttpKernel
         RefreshUserActiveAt::class,
         SetLoggerContext::class,
         RequestLogger::class,
+        CheckUserState::class,
     ];
 
     /**
