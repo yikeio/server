@@ -3,11 +3,12 @@
 namespace App\Modules\User;
 
 use App\Modules\Service\Snowflake\HasSnowflakes;
+use App\Modules\User\Enums\SettingKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property Enums\SettingKey $key
+ * @property SettingKey $key
  */
 class UserSetting extends Model
 {
@@ -20,7 +21,7 @@ class UserSetting extends Model
     ];
 
     protected $casts = [
-        'key' => Enums\SettingKey::class,
+        'key' => SettingKey::class,
     ];
 
     protected function value(): Attribute
