@@ -2,6 +2,7 @@
 
 return [
     'api_key' => env('OPENAI_API_KEY'),
+    'endpoint' => env('OPENAI_ENDPOINT'),
 
     'chat' => [
         'model' => 'gpt-3.5-turbo',

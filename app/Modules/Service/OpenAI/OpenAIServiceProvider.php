@@ -10,7 +10,10 @@ class OpenAIServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(OpenAI\Client::class, function () {
-            return OpenAI::client(config('openai.api_key'));
+            return OpenAI::factory()
+                ->withApiKey(config('openai.api_key'))
+                ->withBaseUri(config('openai.endpoint'))
+                ->make();
         });
     }
 }
