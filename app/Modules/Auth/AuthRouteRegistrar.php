@@ -13,7 +13,7 @@ class AuthRouteRegistrar
             'middleware' => ['api'],
             'prefix' => 'api',
         ], function () {
-            Route::post('/oauth/tokens:via-sms', CreateTokenViaSms::class)->middleware('throttle:10,1');
+            Route::post('/auth/tokens:via-sms', CreateTokenViaSms::class)->middleware('throttle:10,1');
         });
     }
 }

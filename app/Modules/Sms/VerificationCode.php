@@ -63,6 +63,7 @@ class VerificationCode
                 'scene' => $this->scene,
                 'code' => $code,
             ], $e);
+
             return false;
         }
     }

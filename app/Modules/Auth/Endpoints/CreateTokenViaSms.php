@@ -5,6 +5,7 @@ namespace App\Modules\Auth\Endpoints;
 use App\Modules\Auth\Requests\CreateTokenViaSmsRequest;
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\User\User;
+use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 
 class CreateTokenViaSms extends Endpoint
@@ -17,7 +18,11 @@ class CreateTokenViaSms extends Endpoint
             ->first();
 
         if (empty($user)) {
-            abort(404, '手机号未注册');
+            $user = new User();
+            $user->name = '用户-'.Str::substr($request->input('phone_number'), -4);
+            $user->phone_number = $request->input('phone_number');
+            $user->referral_code = Str::lower(Str::random(6));
+            $user->save();
         }
 
         /** @var Agent $agent */
