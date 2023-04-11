@@ -28,7 +28,7 @@ class VerificationCode
             $phoneNumber = ParsePhoneNumber::run($this->phoneNumber);
 
             $this->driver->send(new PhoneNumber($phoneNumber->getNationalNumber(), $phoneNumber->getCountryCode()), [
-                'template' => '1168922',
+                'template' => '1755063',
                 'data' => [
                     $code,
                     30,
