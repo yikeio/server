@@ -92,7 +92,7 @@ return [
 
         'openai' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/pay.log'),
+            'path' => storage_path('logs/openai.log'),
             'level' => 'info',
             'days' => 7,
             'formatter' => JsonFormatter::class,
