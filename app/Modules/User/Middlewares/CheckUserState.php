@@ -11,6 +11,7 @@ class CheckUserState
 {
     protected array $except = [
         '/api/users/*:activate',
+        '/api/user',
     ];
 
     public function handle(Request $request, Closure $next): Response

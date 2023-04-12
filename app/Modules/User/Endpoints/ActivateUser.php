@@ -23,9 +23,10 @@ class ActivateUser extends Endpoint
 
         $referrer = User::query()
             ->where('referral_code', $request->input('referral_code'))
+            ->where('state', UserState::ACTIVATED)
             ->first();
 
-        if (empty($referrer)) {
+        if (empty($referrer) || $referrer->is($user)) {
             abort(422, '邀请码无效');
         }
 
