@@ -2,9 +2,9 @@
 
 namespace App\Modules\Chat;
 
+use App\Modules\Chat\Endpoints\CreateCompletion;
 use App\Modules\Chat\Endpoints\CreateConversation;
 use App\Modules\Chat\Endpoints\CreateMessage;
-use App\Modules\Chat\Endpoints\CreateSmartMessage;
 use App\Modules\Chat\Endpoints\DeleteConversation;
 use App\Modules\Chat\Endpoints\ListConversationMessages;
 use App\Modules\Chat\Endpoints\UpdateConversation;
@@ -25,7 +25,7 @@ class ChatRouteRegistrar
             Route::group([
                 'middleware' => ['quota.check:chat'],
             ], function () {
-                Route::post('/conversations/{conversation}/smart-messages', CreateSmartMessage::class)->middleware('throttle:20,1');
+                Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:20,1');
                 Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:20,1');
                 Route::post('/conversations', CreateConversation::class)->middleware('throttle:10,1');
             });

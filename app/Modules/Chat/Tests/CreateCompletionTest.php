@@ -10,9 +10,9 @@ use App\Modules\User\User;
 use OpenAI\Client;
 use Tests\TestCase;
 
-class CreateSmartMessageTest extends TestCase
+class CreateCompletionTest extends TestCase
 {
-    public function test_create_smart_message()
+    public function test_create_completion()
     {
         app()->bind(Client::class, function () {
             return new FakeClient();
@@ -27,7 +27,7 @@ class CreateSmartMessageTest extends TestCase
         Message::factory()->create(['conversation_id' => $conversation->id, 'role' => MessageRole::USER]);
 
         $this->actingAs($user)
-            ->postJson("/api/conversations/{$conversation->id}/smart-messages")
+            ->postJson("/api/conversations/{$conversation->id}/completions")
             ->assertSuccessful();
     }
 }

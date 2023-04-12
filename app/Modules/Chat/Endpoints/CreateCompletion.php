@@ -8,7 +8,6 @@ use App\Modules\Chat\Actions\RefreshConversationMessagesCount;
 use App\Modules\Chat\Actions\RefreshConversationTokensCount;
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
-use App\Modules\Chat\Requests\CreateSmartMessageRequest;
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\Quota\Actions\ConsumeUserQuota;
 use App\Modules\Quota\Enums\QuotaType;
@@ -17,6 +16,7 @@ use App\Modules\Service\Log\Actions\CreateErrorLog;
 use App\Modules\Service\Log\LogChannel;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use OpenAI\Client;
@@ -24,9 +24,9 @@ use OpenAI\Responses\Chat\CreateStreamedResponse;
 use OpenAI\Responses\Chat\CreateStreamedResponseChoice;
 use Throwable;
 
-class CreateSmartMessage extends Endpoint
+class CreateCompletion extends Endpoint
 {
-    public function __invoke(CreateSmartMessageRequest $request, Conversation $conversation)
+    public function __invoke(Request $request, Conversation $conversation)
     {
         $this->authorize('update', $conversation);
 
