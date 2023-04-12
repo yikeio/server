@@ -68,18 +68,18 @@ class CreateSmartMessage extends Endpoint
         return response()->stream(function () use ($user, $stream, $conversation, $messages) {
             $contents = [];
 
-            $responses = [];
+            $choices = [];
 
             /** @var CreateStreamedResponse $response */
             foreach ($stream as $response) {
-                $responses[] = $response->toArray();
-
                 /** @var CreateStreamedResponseChoice $choice */
                 $choice = Arr::first($response->choices);
 
                 if (empty($choice->delta->content)) {
                     continue;
                 }
+
+                $choices[] = $choice->toArray();
 
                 $contents[] = $choice->delta->content;
 
@@ -95,11 +95,18 @@ class CreateSmartMessage extends Endpoint
 
             $usage = $this->getUsage($messages, $content, config('openai.chat.model'));
 
+            if (empty($response)) {
+                $raws = [];
+            } else {
+                $raws = $response->toArray();
+            }
+
             $conversation->messages()->create([
                 'role' => MessageRole::ASSISTANT,
                 'content' => $content,
                 'raws' => [
-                    'responses' => $responses,
+                    ...$raws,
+                    'choices' => $choices,
                     'usage' => $usage,
                 ],
                 'tokens_count' => $usage['tokens_count'],
