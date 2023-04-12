@@ -18,7 +18,7 @@ class ListConversationMessagesTest extends TestCase
         Message::factory()->count(10)->create(['conversation_id' => $conversation->id]);
 
         $this->actingAs($user)
-            ->getJson("/api/conversations/{$conversation->id}/messages")
+            ->getJson("/api/chat/conversations/{$conversation->id}/messages")
             ->assertJsonCount(10, 'data')
             ->assertSuccessful();
     }

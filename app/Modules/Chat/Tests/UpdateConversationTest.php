@@ -15,7 +15,7 @@ class UpdateConversationTest extends TestCase
         $conversation = Conversation::factory()->create(['creator_id' => $user->id]);
 
         $this->actingAs($user)
-            ->putJson("/api/conversations/{$conversation->id}", [
+            ->putJson("/api/chat/conversations/{$conversation->id}", [
                 'title' => 'New title',
             ])
             ->assertSuccessful();

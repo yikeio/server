@@ -17,7 +17,7 @@ class CreateMessageTest extends TestCase
         $conversation = Conversation::factory()->create(['creator_id' => $user->id]);
 
         $this->actingAs($user)
-            ->postJson("/api/conversations/{$conversation->id}/messages", [
+            ->postJson("/api/chat/conversations/{$conversation->id}/messages", [
                 'content' => 'content',
             ])
             ->assertSuccessful();

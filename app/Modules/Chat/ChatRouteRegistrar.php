@@ -16,7 +16,7 @@ class ChatRouteRegistrar
     {
         Route::group([
             'middleware' => ['api', 'auth'],
-            'prefix' => 'api',
+            'prefix' => 'api/chat',
         ], function () {
             Route::get('/conversations/{conversation}/messages', ListConversationMessages::class);
             Route::delete('/conversations/{conversation}', DeleteConversation::class);

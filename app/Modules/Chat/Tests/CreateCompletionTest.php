@@ -27,7 +27,7 @@ class CreateCompletionTest extends TestCase
         Message::factory()->create(['conversation_id' => $conversation->id, 'role' => MessageRole::USER]);
 
         $this->actingAs($user)
-            ->postJson("/api/conversations/{$conversation->id}/completions")
+            ->postJson("/api/chat/conversations/{$conversation->id}/completions")
             ->assertSuccessful();
     }
 }

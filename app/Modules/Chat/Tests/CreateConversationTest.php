@@ -13,7 +13,7 @@ class CreateConversationTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->postJson('/api/conversations', [
+            ->postJson('/api/chat/conversations', [
                 'title' => 'title',
             ])
             ->assertSuccessful();

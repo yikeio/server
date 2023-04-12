@@ -15,7 +15,7 @@ class DeleteConversationTest extends TestCase
         $conversation = Conversation::factory()->create(['creator_id' => $user->id]);
 
         $this->actingAs($user)
-            ->deleteJson("/api/conversations/{$conversation->id}")
+            ->deleteJson("/api/chat/conversations/{$conversation->id}")
             ->assertSuccessful();
     }
 }
