@@ -5,7 +5,7 @@ namespace App\Modules\User;
 use App\Modules\User\Endpoints\ActivateUser;
 use App\Modules\User\Endpoints\GetUser;
 use App\Modules\User\Endpoints\ListUserAvailableQuotas;
-use App\Modules\User\Endpoints\ListUserConversations;
+use App\Modules\User\Endpoints\ListUserChatConversations;
 use App\Modules\User\Endpoints\ListUserPayments;
 use App\Modules\User\Endpoints\ListUserQuotas;
 use App\Modules\User\Endpoints\ListUserSettings;
@@ -22,12 +22,13 @@ class UserRouteRegistrar
         ], function () {
             Route::post('/users/{user}:activate', ActivateUser::class);
             Route::get('/user', GetUser::class);
-            Route::get('/users/{user}/conversations', ListUserConversations::class);
             Route::get('/users/{user}/quotas', ListUserQuotas::class);
             Route::get('/users/{user}/available-quotas', ListUserAvailableQuotas::class);
             Route::get('/users/{user}/payments', ListUserPayments::class);
             Route::get('/users/{user}/settings', ListUserSettings::class);
             Route::put('/users/{user}/settings/{key}', UpdateUserSetting::class);
+
+            Route::get('/users/{user}/chat/conversations', ListUserChatConversations::class);
         });
     }
 }
