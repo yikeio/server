@@ -75,11 +75,15 @@ class CreateSmartMessage extends Endpoint
                 /** @var CreateStreamedResponseChoice $choice */
                 $choice = Arr::first($response->choices);
 
-                if (empty($choice->delta->content)) {
+                if (empty($choice)) {
                     continue;
                 }
 
                 $choices[] = $choice->toArray();
+
+                if (empty($choice->delta->content)) {
+                    continue;
+                }
 
                 $contents[] = $choice->delta->content;
 
