@@ -22,7 +22,10 @@ class UpdateUserSetting extends Endpoint
         }
 
         $this->validate($request, [
-            'value' => $key->rules(),
+            'value' => [
+                ...$key->rules(),
+                'required',
+            ],
         ]);
 
         return $user->settings()->updateOrCreate([
