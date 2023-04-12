@@ -84,7 +84,7 @@ return [
 
         'payment' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/pay.log'),
+            'path' => storage_path('logs/payment.log'),
             'level' => 'info',
             'days' => 30,
             'formatter' => JsonFormatter::class,

@@ -11,6 +11,10 @@ class MarkPaymentAsPaid extends Action
 {
     public function handle(Payment $payment)
     {
+        if (! $payment->state->isPending()) {
+            return;
+        }
+
         $payment->state = PaymentState::PAID;
         $payment->paid_at = now();
         $payment->save();

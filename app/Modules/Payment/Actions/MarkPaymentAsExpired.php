@@ -8,11 +8,13 @@ use App\Modules\Payment\Payment;
 
 class MarkPaymentAsExpired extends Action
 {
-    public function handle(Payment $payment): Payment
+    public function handle(Payment $payment)
     {
+        if (! $payment->state->isPending()) {
+            return;
+        }
+
         $payment->state = PaymentState::EXPIRED;
         $payment->save();
-
-        return $payment;
     }
 }
