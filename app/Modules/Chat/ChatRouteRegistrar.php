@@ -20,14 +20,14 @@ class ChatRouteRegistrar
         ], function () {
             Route::get('/conversations/{conversation}/messages', ListConversationMessages::class);
             Route::delete('/conversations/{conversation}', DeleteConversation::class);
-            Route::put('/conversations/{conversation}', UpdateConversation::class);
+            Route::put('/conversations/{conversation}', UpdateConversation::class)->middleware('throttle:10,1');
 
             Route::group([
                 'middleware' => ['quota.check:chat'],
             ], function () {
-                Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:20,1');
-                Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:20,1');
-                Route::post('/conversations', CreateConversation::class)->middleware('throttle:10,1');
+                Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:30,1');
+                Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:30,1');
+                Route::post('/conversations', CreateConversation::class)->middleware('throttle:30,1');
             });
         });
     }

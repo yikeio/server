@@ -20,13 +20,13 @@ class UserRouteRegistrar
             'middleware' => ['api', 'auth'],
             'prefix' => 'api',
         ], function () {
-            Route::post('/users/{user}:activate', ActivateUser::class);
+            Route::post('/users/{user}:activate', ActivateUser::class)->middleware('throttle:2,1');
             Route::get('/user', GetUser::class);
             Route::get('/users/{user}/quotas', ListUserQuotas::class);
             Route::get('/users/{user}/available-quotas', ListUserAvailableQuotas::class);
             Route::get('/users/{user}/payments', ListUserPayments::class);
             Route::get('/users/{user}/settings', ListUserSettings::class);
-            Route::put('/users/{user}/settings/{key}', UpdateUserSetting::class);
+            Route::put('/users/{user}/settings/{key}', UpdateUserSetting::class)->middleware('throttle:20,1');
 
             Route::get('/users/{user}/chat/conversations', ListUserChatConversations::class);
         });
