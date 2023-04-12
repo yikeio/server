@@ -5,11 +5,11 @@ namespace App\Modules\Quota\Listeners;
 use App\Modules\Quota\Actions\GrantUserQuota;
 use App\Modules\Quota\Enums\QuotaMeter;
 use App\Modules\Quota\Enums\QuotaType;
-use App\Modules\User\Events\UserCreated;
+use App\Modules\User\Events\UserActivated;
 
 class GrantFreeQuotas
 {
-    public function handle(UserCreated $event)
+    public function handle(UserActivated $event)
     {
         $user = $event->user;
 

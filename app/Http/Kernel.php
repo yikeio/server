@@ -8,6 +8,7 @@ use App\Modules\Security\Middlewares\SetRequestUser;
 use App\Modules\Service\Log\Middlewares\RequestLogger;
 use App\Modules\Service\Log\Middlewares\SetLoggerContext;
 use App\Modules\Service\Log\Middlewares\SetRequestId;
+use App\Modules\User\Middlewares\CheckUserState;
 use App\Modules\User\Middlewares\RefreshUserActiveAt;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -22,6 +23,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
+        SetRequestAccept::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -33,6 +35,7 @@ class Kernel extends HttpKernel
         RefreshUserActiveAt::class,
         SetLoggerContext::class,
         RequestLogger::class,
+        CheckUserState::class,
     ];
 
     /**
@@ -52,7 +55,6 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            SetRequestAccept::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];

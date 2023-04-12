@@ -8,6 +8,7 @@ use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Quota\Quota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
+use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @property UserState $state
+ */
 class User extends Authenticatable
 {
     use HasSnowflakes;
@@ -40,6 +44,7 @@ class User extends Authenticatable
         'is_admin',
         'first_active_at',
         'last_active_at',
+        'state',
     ];
 
     protected $hidden = [
@@ -53,6 +58,7 @@ class User extends Authenticatable
         'is_admin' => 'boolean',
         'first_active_at' => 'datetime',
         'last_active_at' => 'datetime',
+        'state' => UserState::class,
     ];
 
     protected static function boot()
