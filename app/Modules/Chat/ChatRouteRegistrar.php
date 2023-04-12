@@ -18,16 +18,16 @@ class ChatRouteRegistrar
             'middleware' => ['api', 'auth'],
             'prefix' => 'api/chat',
         ], function () {
-            Route::get('/conversations/{conversation}/messages', ListConversationMessages::class)->middleware('throttle:60,1');
-            Route::delete('/conversations/{conversation}', DeleteConversation::class)->middleware('throttle:10,1');
-            Route::put('/conversations/{conversation}', UpdateConversation::class)->middleware('throttle:10,1');
+            Route::get('/conversations/{conversation}/messages', ListConversationMessages::class)->middleware('throttle:120,1');
+            Route::delete('/conversations/{conversation}', DeleteConversation::class)->middleware('throttle:60,1');
+            Route::put('/conversations/{conversation}', UpdateConversation::class)->middleware('throttle:60,1');
 
             Route::group([
                 'middleware' => ['quota.check:chat'],
             ], function () {
-                Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:30,1');
-                Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:30,1');
-                Route::post('/conversations', CreateConversation::class)->middleware('throttle:30,1');
+                Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:60,1');
+                Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:60,1');
+                Route::post('/conversations', CreateConversation::class)->middleware('throttle:60,1');
             });
         });
     }

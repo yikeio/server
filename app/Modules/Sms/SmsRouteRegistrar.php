@@ -13,7 +13,7 @@ class SmsRouteRegistrar
             'middleware' => ['api'],
             'prefix' => 'api',
         ], function () {
-            Route::post('/sms/verification-codes:send', SendVerificationCode::class)->middleware('throttle:2,1');
+            Route::post('/sms/verification-codes:send', SendVerificationCode::class)->middleware('throttle:3,1');
         });
     }
 }

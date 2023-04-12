@@ -14,9 +14,7 @@ class ActivateUser extends Endpoint
 {
     public function __invoke(ActivateUserRequest $request, User $user)
     {
-        if ($user->isNot($request->user())) {
-            abort(403);
-        }
+        $this->authorize('update', $user);
 
         if (! $user->state->unactivated()) {
             abort(403, '您已经激活过了');

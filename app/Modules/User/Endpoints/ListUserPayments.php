@@ -10,9 +10,7 @@ class ListUserPayments extends Endpoint
 {
     public function __invoke(Request $request, User $user)
     {
-        if ($user->isNot($request->user())) {
-            abort(403);
-        }
+        $this->authorize('get', $user);
 
         return $user->payments()
             ->filter($request->query())

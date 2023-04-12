@@ -13,7 +13,7 @@ class QuotaRouteRegistrar
             'middleware' => ['api'],
             'prefix' => 'api',
         ], function () {
-            Route::get('/pricings', ListPricings::class)->middleware('throttle:60,1');
+            Route::get('/pricings', ListPricings::class)->middleware('throttle:120,1');
         });
     }
 }

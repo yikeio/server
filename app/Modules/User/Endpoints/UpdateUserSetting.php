@@ -11,9 +11,7 @@ class UpdateUserSetting extends Endpoint
 {
     public function __invoke(Request $request, User $user, string $key)
     {
-        if ($user->isNot($request->user())) {
-            abort(403);
-        }
+        $this->authorize('update', $user);
 
         $key = SettingKey::tryFrom($key);
 
