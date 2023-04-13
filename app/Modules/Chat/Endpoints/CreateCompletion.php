@@ -60,6 +60,9 @@ class CreateCompletion extends Endpoint
                 'messages' => $messages,
             ];
 
+            // 这里把 max_tokens 移除，让 OpenAI 自适应
+            unset($body['max_tokens']);
+
             Log::channel(LogChannel::OPENAI->value)->info('[CHAT] - 调用 OpenAI 入参', $body);
 
             $stream = $client->chat()->createStreamed($body);
