@@ -16,8 +16,6 @@ class ValidString implements ValidationRule
         }
 
         if (empty($value)) {
-            $fail('输入不能为空');
-
             return;
         }
 
@@ -33,7 +31,12 @@ class ValidString implements ValidationRule
             return;
         }
 
-        if (preg_match('/[^\p{Han}a-zA-Z0-9\s。，、；：？！“”‘’（）【】「」《》…～.,;:?!\'"()\[\]{}~+\-=_<>@#]/u', $value)) {
+        // https://www.php.net/manual/zh/regexp.reference.unicode.php
+        // Han 匹配所有汉字
+        // P 匹配所有标点符号
+        // S 匹配所有符号
+        // Z 匹配所有分隔符
+        if (preg_match('/[^a-zA-Z0-9\s\p{Han}\p{P}\p{S}\p{Z}]/u', $value)) {
             $fail('仅支持输入中英文，数字和常用符号');
 
             return;
