@@ -35,7 +35,7 @@ class RequestLogger
             'client_ip' => $request->getClientIp(),
             'client_ips' => implode(',', $request->getClientIps() ?? []),
             'user_id' => $user?->id ?? 0,
-            'user_name' => $user?->username ?? '',
+            'user_name' => $user?->name ?? '',
             'client_id' => $request->client()?->id ?? 0,
             'client_name' => $request->client()?->name ?? '',
         ];
