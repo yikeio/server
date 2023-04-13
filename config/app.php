@@ -207,6 +207,7 @@ return [
         \App\Modules\Chat\ChatServiceProvider::class,
         \App\Modules\Payment\PaymentServiceProvider::class,
         \App\Modules\Quota\QuotaServiceProvider::class,
+        \App\Modules\Security\SecurityServiceProvider::class,
 
         /**
          * Custom Event Service Providers...
