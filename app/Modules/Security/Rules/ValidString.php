@@ -38,8 +38,6 @@ class ValidString implements ValidationRule
         // Z 匹配所有分隔符
         if (preg_match('/[^a-zA-Z0-9\s\p{Han}\p{P}\p{S}\p{Z}]/u', $value)) {
             $fail('仅支持输入中英文，数字和常用符号');
-
-            return;
         }
     }
 }
