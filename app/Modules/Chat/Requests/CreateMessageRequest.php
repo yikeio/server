@@ -13,7 +13,7 @@ class CreateMessageRequest extends FormRequest
             'content' => [
                 'required',
                 'string',
-                'max:1000',
+                'between:1,15000',
                 new ValidString(),
             ],
         ];

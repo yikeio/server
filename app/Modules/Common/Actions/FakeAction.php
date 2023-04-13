@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Modules\Common\Actions;
 
 use Closure;
 use Illuminate\Support\Fluent;

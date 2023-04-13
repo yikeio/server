@@ -45,6 +45,14 @@ class CreateCompletion extends Endpoint
             ->get(['role', 'content'])
             ->toArray();
 
+        if (! empty($messages)) {
+            $usage = $this->getUsage($messages, '', config('openai.chat.model'));
+
+            if ($usage['tokens_count'] >= config('openai.chat.max_tokens')) {
+                abort(422, '附带历史消息长度超过限制，请降低附带历史消息数量或者新建聊天窗口');
+            }
+        }
+
         try {
             $body = [
                 ...config('openai.chat'),

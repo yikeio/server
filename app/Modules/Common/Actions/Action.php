@@ -2,7 +2,6 @@
 
 namespace App\Modules\Common\Actions;
 
-use App\Actions\FakeAction;
 use Mockery\MockInterface;
 
 abstract class Action

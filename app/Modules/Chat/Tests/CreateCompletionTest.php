@@ -2,6 +2,7 @@
 
 namespace App\Modules\Chat\Tests;
 
+use App\Modules\Chat\Actions\InvokeTokenizer;
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
 use App\Modules\Chat\Message;
@@ -14,6 +15,9 @@ class CreateCompletionTest extends TestCase
 {
     public function test_create_completion()
     {
+        InvokeTokenizer::shouldReceive('handle')
+            ->andReturn([]);
+
         app()->bind(Client::class, function () {
             return new FakeClient();
         });
