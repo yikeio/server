@@ -17,7 +17,7 @@ class UserRouteRegistrar
     public static function all(): void
     {
         Route::group([
-            'middleware' => ['api', 'auth'],
+            'middleware' => ['api', 'auth', 'limiter'],
             'prefix' => 'api',
         ], function () {
             Route::post('/users/{user}:activate', ActivateUser::class)->middleware('throttle:2,1');

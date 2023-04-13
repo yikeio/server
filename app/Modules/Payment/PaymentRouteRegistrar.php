@@ -18,7 +18,7 @@ class PaymentRouteRegistrar
             Route::any('/payments:process', ProcessPayment::class);
 
             Route::group([
-                'middleware' => ['auth'],
+                'middleware' => ['auth', 'limiter'],
             ], function () {
                 Route::post('/payments', CreatePayment::class)->middleware('throttle:10,1');
                 Route::get('/payments/{payment}', GetPayment::class);

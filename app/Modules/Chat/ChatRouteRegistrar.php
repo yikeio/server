@@ -15,11 +15,11 @@ class ChatRouteRegistrar
     public static function all()
     {
         Route::group([
-            'middleware' => ['api', 'auth'],
+            'middleware' => ['api', 'auth', 'limiter'],
             'prefix' => 'api/chat',
         ], function () {
             Route::get('/conversations/{conversation}/messages', ListConversationMessages::class);
-            Route::delete('/conversations/{conversation}', DeleteConversation::class);
+            Route::delete('/conversations/{conversation}', DeleteConversation::class)->middleware('throttle:10,1');
             Route::put('/conversations/{conversation}', UpdateConversation::class)->middleware('throttle:10,1');
 
             Route::group([
