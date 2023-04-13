@@ -19,18 +19,6 @@ class ValidString implements ValidationRule
             return;
         }
 
-        if ($value !== htmlspecialchars($value)) {
-            $fail('仅支持输入中英文，数字和常用符号');
-
-            return;
-        }
-
-        if ($value !== strip_tags($value)) {
-            $fail('仅支持输入中英文，数字和常用符号');
-
-            return;
-        }
-
         // https://www.php.net/manual/zh/regexp.reference.unicode.php
         // Han 匹配所有汉字
         // P 匹配所有标点符号
