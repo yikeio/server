@@ -6,8 +6,6 @@ use App\Modules\Quota\Middlewares\CheckQuota;
 use App\Modules\Security\Middlewares\SetRequestAccept;
 use App\Modules\Security\Middlewares\SetRequestUser;
 use App\Modules\Service\Log\Middlewares\RequestLogger;
-use App\Modules\Service\Log\Middlewares\SetLoggerContext;
-use App\Modules\Service\Log\Middlewares\SetRequestId;
 use App\Modules\User\Middlewares\CheckUserState;
 use App\Modules\User\Middlewares\RefreshUserActiveAt;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -22,8 +20,9 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
-        // \App\Http\Middleware\TrustHosts::class,
+        RequestLogger::class,
         SetRequestAccept::class,
+        // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -31,10 +30,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         SetRequestUser::class,
-        SetRequestId::class,
         RefreshUserActiveAt::class,
-        SetLoggerContext::class,
-        RequestLogger::class,
         CheckUserState::class,
     ];
 
