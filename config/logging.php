@@ -84,7 +84,7 @@ return [
 
         'service' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/request.log'),
+            'path' => storage_path('logs/service.log'),
             'level' => 'info',
             'days' => 7,
             'formatter' => JsonFormatter::class,
