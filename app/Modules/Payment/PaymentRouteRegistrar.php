@@ -18,10 +18,10 @@ class PaymentRouteRegistrar
             Route::any('/payments:process', ProcessPayment::class);
 
             Route::group([
-                'middleware' => ['auth', 'limiter'],
+                'middleware' => ['auth'],
             ], function () {
+                Route::get('/payments/{payment}', GetPayment::class)->middleware('throttle:60,1');
                 Route::post('/payments', CreatePayment::class)->middleware('throttle:10,1');
-                Route::get('/payments/{payment}', GetPayment::class);
             });
         });
     }

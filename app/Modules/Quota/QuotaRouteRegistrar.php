@@ -10,10 +10,10 @@ class QuotaRouteRegistrar
     public static function all()
     {
         Route::group([
-            'middleware' => ['api', 'limiter'],
+            'middleware' => ['api'],
             'prefix' => 'api',
         ], function () {
-            Route::get('/pricings', ListPricings::class);
+            Route::get('/pricings', ListPricings::class)->middleware('throttle:60,1');
         });
     }
 }
