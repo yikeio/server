@@ -27,12 +27,6 @@ class VerificationCode
             /** @var \libphonenumber\PhoneNumber $phoneNumber */
             $phoneNumber = ParsePhoneNumber::run($this->phoneNumber);
 
-            $this->logger->info('[SMS] - 发送验证码', [
-                'phone_number' => $this->phoneNumber,
-                'scene' => $this->scene,
-                'code' => $code,
-            ]);
-
             $this->driver->send(new PhoneNumber($phoneNumber->getNationalNumber(), $phoneNumber->getCountryCode()), [
                 'template' => '1755063',
                 'data' => [
