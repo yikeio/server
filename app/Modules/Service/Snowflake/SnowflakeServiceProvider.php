@@ -4,8 +4,8 @@ namespace App\Modules\Service\Snowflake;
 
 use Godruoyi\Snowflake\LaravelSequenceResolver;
 use Godruoyi\Snowflake\Snowflake;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class SnowflakeServiceProvider extends ServiceProvider
@@ -15,9 +15,12 @@ class SnowflakeServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(Snowflake::class, function (Application $app) {
+            /** @var CacheManager $cacheManager */
+            $cacheManager = $app->make(CacheManager::class);
+
             return (new Snowflake())
                 ->setStartTimeStamp(strtotime(self::START_DATE) * 1000)
-                ->setSequenceResolver(new LaravelSequenceResolver(Cache::store()));
+                ->setSequenceResolver(new LaravelSequenceResolver($cacheManager->store()));
         });
     }
 

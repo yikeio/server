@@ -55,7 +55,7 @@ class CreatePayment extends Endpoint
                         'out_trade_no' => $number,
                     ]);
                 } catch (GatewayException $e) {
-                    Log::error('[Payment] - 调用支付网关失败', [
+                    Log::error('[PAYMENT] - 调用支付网关失败', [
                         'pricing' => $pricing,
                         'number' => $number,
                         'exception' => $e,
