@@ -2,11 +2,11 @@
 
 namespace App\Modules\Sms;
 
-use App\Modules\Service\Log\Actions\CreateErrorLog;
 use App\Modules\Sms\Actions\ParsePhoneNumber;
 use Illuminate\Contracts\Cache\Repository;
 use Overtrue\EasySms\EasySms;
 use Overtrue\EasySms\PhoneNumber;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class VerificationCode
@@ -15,7 +15,7 @@ class VerificationCode
 
     protected string $scene;
 
-    public function __construct(protected EasySms $driver, protected Repository $repository)
+    public function __construct(protected EasySms $driver, protected Repository $repository, protected LoggerInterface $logger)
     {
     }
 
@@ -27,6 +27,12 @@ class VerificationCode
             /** @var \libphonenumber\PhoneNumber $phoneNumber */
             $phoneNumber = ParsePhoneNumber::run($this->phoneNumber);
 
+            $this->logger->info('[SMS] - 发送验证码', [
+                'phone_number' => $this->phoneNumber,
+                'scene' => $this->scene,
+                'code' => $code,
+            ]);
+
             $this->driver->send(new PhoneNumber($phoneNumber->getNationalNumber(), $phoneNumber->getCountryCode()), [
                 'template' => '1755063',
                 'data' => [
@@ -37,11 +43,12 @@ class VerificationCode
 
             return $this->repository->set($this->getCacheKey(), $code, now()->addMinutes(30));
         } catch (Throwable $e) {
-            CreateErrorLog::run('[SMS] - 发送验证码失败', [
+            $this->logger->error('[SMS] - 发送验证码失败', [
                 'phone_number' => $this->phoneNumber,
                 'scene' => $this->scene,
                 'code' => $code,
-            ], $e);
+                'exception' => $e,
+            ]);
 
             return false;
         }
@@ -58,11 +65,12 @@ class VerificationCode
 
             return $result;
         } catch (Throwable $e) {
-            CreateErrorLog::run('[SMS] - 验证码校验失败', [
+            $this->logger->error('[SMS] - 验证码校验失败', [
                 'phone_number' => $this->phoneNumber,
                 'scene' => $this->scene,
                 'code' => $code,
-            ], $e);
+                'exception' => $e,
+            ]);
 
             return false;
         }

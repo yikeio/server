@@ -11,8 +11,6 @@ use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\Quota\Actions\ConsumeUserQuota;
 use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
-use App\Modules\Service\Log\Actions\CreateErrorLog;
-use App\Modules\Service\Log\LogChannel;
 use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\User;
@@ -65,15 +63,16 @@ class CreateCompletion extends Endpoint
             // 这里把 max_tokens 移除，让 OpenAI 自适应
             unset($body['max_tokens']);
 
-            Log::channel(LogChannel::OPENAI->value)->info('[CHAT] - 调用 OpenAI 入参', $body);
+            Log::channel('service')->info('[CHAT] - 调用 OpenAI 入参', $body);
 
             $stream = $client->chat()->createStreamed($body);
         } catch (Throwable $e) {
-            CreateErrorLog::run('[CHAT] - 调用 OpenAI 失败', [
+            Log::error('[CHAT] - 调用 OpenAI 失败', [
                 'conversation_id' => $conversation->id,
                 'user_id' => $user->id,
                 'messages' => $messages,
-            ], $e, LogChannel::OPENAI);
+                'exception' => $e,
+            ]);
 
             abort(500, '服务器开小差了，请稍后再试');
         }

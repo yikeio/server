@@ -3,6 +3,7 @@
 namespace App\Modules\Sms;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Overtrue\EasySms\EasySms;
 
@@ -15,7 +16,7 @@ class SmsServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(VerificationCode::class, function () {
-            return new VerificationCode(new EasySms(config('sms')), Cache::store());
+            return new VerificationCode(new EasySms(config('sms')), Cache::store(), Log::channel());
         });
     }
 

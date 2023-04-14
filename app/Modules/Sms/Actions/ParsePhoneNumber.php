@@ -3,7 +3,7 @@
 namespace App\Modules\Sms\Actions;
 
 use App\Modules\Common\Actions\Action;
-use App\Modules\Service\Log\Actions\CreateErrorLog;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumber;
@@ -20,9 +20,10 @@ class ParsePhoneNumber extends Action
         try {
             return $phoneNumberToolkit->parse($phoneNumber);
         } catch (NumberParseException $e) {
-            CreateErrorLog::run('[SMS] - 解析手机号码失败', [
-                'number' => $phoneNumber,
-            ], $e);
+            Log::error('[SMS] - 解析手机号码失败', [
+                'phone_number' => $phoneNumber,
+                'exception' => $e,
+            ]);
 
             throw $e;
         }

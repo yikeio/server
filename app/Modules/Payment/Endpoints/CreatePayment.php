@@ -10,10 +10,9 @@ use App\Modules\Payment\Jobs\MarkPaymentAsExpired;
 use App\Modules\Payment\Payment;
 use App\Modules\Payment\Requests\CreatePaymentRequest;
 use App\Modules\Quota\Enums\QuotaType;
-use App\Modules\Service\Log\Actions\CreateErrorLog;
-use App\Modules\Service\Log\LogChannel;
 use App\Modules\User\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class CreatePayment extends Endpoint
 {
@@ -56,10 +55,12 @@ class CreatePayment extends Endpoint
                         'out_trade_no' => $number,
                     ]);
                 } catch (GatewayException $e) {
-                    CreateErrorLog::run('[Payment] - 调用支付网关失败', [
+                    Log::error('[Payment] - 调用支付网关失败', [
                         'pricing' => $pricing,
                         'number' => $number,
-                    ], $e, LogChannel::PAYMENT);
+                        'exception' => $e,
+                    ]);
+
                     abort(500, '支付网关异常，请稍后再试');
                 }
 
