@@ -2,7 +2,6 @@
 
 namespace App\Modules\Chat\Endpoints;
 
-use App\Modules\Chat\Actions\InvokeTokenizer;
 use App\Modules\Chat\Actions\RefreshConversationActiveAt;
 use App\Modules\Chat\Actions\RefreshConversationMessagesCount;
 use App\Modules\Chat\Actions\RefreshConversationTokensCount;
@@ -14,6 +13,7 @@ use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\Log\Actions\CreateErrorLog;
 use App\Modules\Service\Log\LogChannel;
+use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\User;
 use Illuminate\Http\Request;
@@ -36,6 +36,10 @@ class CreateCompletion extends Endpoint
         /** @var Client $client */
         $client = app(Client::class);
 
+        /** @var Tokenizer $tokenizer */
+        $tokenizer = app(Tokenizer::class);
+        $tokenizer->setModel(config('openai.chat.model'));
+
         $contextsCount = $user->getSetting(SettingKey::CHAT_CONTEXTS_COUNT);
         $messagesCount = $conversation->messages()->count();
 
@@ -46,9 +50,7 @@ class CreateCompletion extends Endpoint
             ->toArray();
 
         if (! empty($messages)) {
-            $usage = $this->getUsage($messages, '', config('openai.chat.model'));
-
-            if ($usage['tokens_count'] >= config('openai.chat.max_tokens')) {
+            if ($tokenizer->predict($messages) >= config('openai.chat.max_tokens')) {
                 abort(422, '附带历史消息长度超过限制，请降低附带历史消息数量或者新建聊天窗口');
             }
         }
@@ -76,7 +78,7 @@ class CreateCompletion extends Endpoint
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        return response()->stream(function () use ($user, $stream, $conversation, $messages) {
+        return response()->stream(function () use ($user, $stream, $conversation, $messages, $tokenizer) {
             $contents = [];
 
             $choices = [];
@@ -108,7 +110,7 @@ class CreateCompletion extends Endpoint
 
             $content = implode('', array_filter($contents));
 
-            $usage = $this->getUsage($messages, $content, config('openai.chat.model'));
+            $usage = $tokenizer->predictUsage($messages, $content);
 
             if (empty($response)) {
                 $raws = [];
@@ -135,25 +137,5 @@ class CreateCompletion extends Endpoint
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
         ]);
-    }
-
-    protected function getUsage(array $messages, string $completion, string $model): array
-    {
-        $prompts = [];
-
-        foreach ($messages as $message) {
-            $prompts[] = sprintf('%s:%s', $message['role'], $message['content']);
-        }
-
-        $prompt = implode("\n\n", $prompts);
-
-        $promptTokens = count(InvokeTokenizer::run($prompt, $model)) + 8;
-        $completionTokens = count(InvokeTokenizer::run($completion, $model));
-
-        return [
-            'prompt_tokens_count' => $promptTokens,
-            'completion_tokens_count' => $completionTokens,
-            'tokens_count' => $promptTokens + $completionTokens,
-        ];
     }
 }

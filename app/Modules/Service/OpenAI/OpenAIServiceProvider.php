@@ -9,7 +9,11 @@ class OpenAIServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(OpenAI\Client::class, function () {
+        $this->app->singleton(Tokenizer::class, function () {
+            return new Tokenizer(config('openai.tokenizer'));
+        });
+
+        $this->app->singleton(OpenAI\Client::class, function () {
             return OpenAI::factory()
                 ->withBaseUri(config('openai.endpoint'))
                 ->withApiKey(config('openai.api_key'))

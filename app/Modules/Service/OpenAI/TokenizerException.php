@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Chat\Exceptions;
+namespace App\Modules\Service\OpenAI;
 
 use RuntimeException;
 
-class InvokeTokenizerException extends RuntimeException
+class TokenizerException extends RuntimeException
 {
     public function __construct(string $string)
     {

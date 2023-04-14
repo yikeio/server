@@ -2,12 +2,13 @@
 
 namespace App\Modules\Chat\Tests;
 
-use App\Modules\Chat\Actions\InvokeTokenizer;
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
 use App\Modules\Chat\Message;
 use App\Modules\Service\OpenAI\FakeClient;
+use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\User;
+use Mockery\MockInterface;
 use OpenAI\Client;
 use Tests\TestCase;
 
@@ -15,11 +16,13 @@ class CreateCompletionTest extends TestCase
 {
     public function test_create_completion()
     {
-        InvokeTokenizer::shouldReceive('handle')
-            ->andReturn([]);
-
-        app()->bind(Client::class, function () {
+        $this->app->bind(Client::class, function () {
             return new FakeClient();
+        });
+
+        $this->mock(Tokenizer::class, function (MockInterface $mock) {
+            $mock->shouldReceive('setModel')->once();
+            $mock->shouldReceive('predict')->andReturn(10);
         });
 
         /** @var User $user */
