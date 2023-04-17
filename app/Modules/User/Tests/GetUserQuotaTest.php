@@ -5,14 +5,14 @@ namespace App\Modules\User\Tests;
 use App\Modules\User\User;
 use Tests\TestCase;
 
-class ListUserAvailableQuotasTest extends TestCase
+class GetUserQuotaTest extends TestCase
 {
-    public function test_list_user_available_quotas()
+    public function test_get_user_quota()
     {
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->getJson("/api/users/{$user->id}/available-quota")
+            ->getJson("/api/users/{$user->id}/quota")
             ->assertSuccessful();
     }
 }

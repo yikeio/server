@@ -27,8 +27,6 @@ class ProcessPaymentTest extends TestCase
                 [
                     'class' => GrantQuotaProcessor::class,
                     'parameters' => [
-                        'quota_type' => 'chat',
-                        'quota_meter' => 'token',
                         'tokens_count' => 300 * 1000,
                         'days' => 7,
                     ],

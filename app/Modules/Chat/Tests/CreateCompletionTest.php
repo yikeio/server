@@ -21,8 +21,13 @@ class CreateCompletionTest extends TestCase
         });
 
         $this->mock(Tokenizer::class, function (MockInterface $mock) {
-            $mock->shouldReceive('setModel')->once();
+            $mock->shouldReceive('setModel');
             $mock->shouldReceive('predict')->andReturn(10);
+            $mock->shouldReceive('predictUsage')->andReturn([
+                'tokens_count' => 8,
+                'prompt_tokens_count' => 5,
+                'completion_tokens_count' => 3,
+            ]);
         });
 
         /** @var User $user */
@@ -35,6 +40,13 @@ class CreateCompletionTest extends TestCase
 
         $this->actingAs($user)
             ->postJson("/api/chat/conversations/{$conversation->id}/completions")
-            ->assertSuccessful();
+            ->streamedContent();
+
+        $this->assertDatabaseCount('messages', 2);
+        $this->assertDatabaseCount('quota_statements', 1);
+        $this->assertDatabaseCount('quotas', 1);
+        $this->assertEquals(1000, $user->getAvailableQuota()->tokens_count);
+        $this->assertEquals(8, $user->getAvailableQuota()->used_tokens_count);
+        $this->assertEquals(992, $user->getAvailableQuota()->available_tokens_count);
     }
 }

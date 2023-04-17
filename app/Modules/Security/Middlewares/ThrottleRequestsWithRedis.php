@@ -3,17 +3,11 @@
 namespace App\Modules\Security\Middlewares;
 
 use App\Modules\User\User;
-use Closure;
 use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis as ThrottleRequests;
 use Illuminate\Routing\Route;
 
 class ThrottleRequestsWithRedis extends ThrottleRequests
 {
-    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1, $prefix = '')
-    {
-        return $next($request);
-    }
-
     protected function resolveRequestSignature($request): string
     {
         /** @var User $user */

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $tokens_count
  * @property int $used_tokens_count
+ * @property int $available_tokens_count
  * @property array $usage
  */
 class Quota extends Model
