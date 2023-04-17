@@ -8,11 +8,10 @@ use App\Modules\Quota\Quota;
 use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CompletionCreated implements ConsumeQuotaEvent, ShouldQueue
+class CompletionCreated implements ConsumeQuotaEvent
 {
     use Dispatchable;
     use InteractsWithSockets;

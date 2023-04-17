@@ -7,8 +7,9 @@ use App\Modules\Chat\Actions\RefreshConversationMessagesCount;
 use App\Modules\Chat\Actions\RefreshConversationTokensCount;
 use App\Modules\Chat\Enums\MessageRole;
 use App\Modules\Chat\Events\CompletionCreated;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CompletionRecorder
+class CompletionRecorder implements ShouldQueue
 {
     public function handle(CompletionCreated $event)
     {
