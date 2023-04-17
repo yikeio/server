@@ -17,7 +17,7 @@ class ConsumeUserQuota
         Log::info('[QUOTA] - 计费事件触发成功', [
             'event' => get_class($event),
             'creator_id' => $event->getCreator()->id,
-            'quota_type' => $event->getQuotaType(),
+            'quota_type' => $event->getQuota()->type,
             'usage' => $event->getUsage(),
         ]);
 
