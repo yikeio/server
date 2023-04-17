@@ -6,6 +6,7 @@ use App\Modules\Chat\Completion;
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Events\CompletionCreated;
 use App\Modules\Common\Endpoints\Endpoint;
+use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\Enums\SettingKey;
@@ -26,6 +27,12 @@ class CreateCompletion extends Endpoint
 
         /** @var User $user */
         $user = $request->user();
+
+        $quota = $user->getQuota(QuotaType::CHAT);
+
+        if (empty($quota)) {
+            abort(403, '您没有可用的配额');
+        }
 
         /** @var Client $client */
         $client = app(Client::class);
@@ -73,7 +80,7 @@ class CreateCompletion extends Endpoint
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        return response()->stream(function () use ($user, $stream, $conversation, $messages) {
+        return response()->stream(function () use ($user, $stream, $conversation, $messages, $quota) {
             $contents = [];
 
             $choices = [];
@@ -121,7 +128,7 @@ class CreateCompletion extends Endpoint
                 'choices' => $choices,
             ]);
 
-            event(new CompletionCreated($completion));
+            event(new CompletionCreated($completion, $quota));
         }, 200, [
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',

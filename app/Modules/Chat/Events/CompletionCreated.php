@@ -4,7 +4,7 @@ namespace App\Modules\Chat\Events;
 
 use App\Modules\Chat\Completion;
 use App\Modules\Quota\ConsumeQuotaEvent;
-use App\Modules\Quota\Enums\QuotaType;
+use App\Modules\Quota\Quota;
 use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -20,7 +20,7 @@ class CompletionCreated implements ConsumeQuotaEvent, ShouldQueue
 
     protected array $usage;
 
-    public function __construct(protected Completion $completion)
+    public function __construct(protected Completion $completion, protected Quota $quota)
     {
     }
 
@@ -29,9 +29,9 @@ class CompletionCreated implements ConsumeQuotaEvent, ShouldQueue
         return $this->completion->getCreator();
     }
 
-    public function getQuotaType(): QuotaType
+    public function getQuota(): Quota
     {
-        return QuotaType::CHAT;
+        return $this->quota;
     }
 
     public function getTokensCount(): int

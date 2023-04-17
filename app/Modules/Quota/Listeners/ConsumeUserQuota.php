@@ -21,6 +21,6 @@ class ConsumeUserQuota
             'usage' => $event->getUsage(),
         ]);
 
-        ConsumeUserQuotaAction::run($event->getCreator(), $event->getQuotaType(), $event->getTokensCount());
+        ConsumeUserQuotaAction::run($event->getQuota(), $event->getTokensCount());
     }
 }
