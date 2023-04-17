@@ -2,14 +2,10 @@
 
 namespace App\Modules\Chat\Endpoints;
 
-use App\Modules\Chat\Actions\RefreshConversationActiveAt;
-use App\Modules\Chat\Actions\RefreshConversationMessagesCount;
-use App\Modules\Chat\Actions\RefreshConversationTokensCount;
+use App\Modules\Chat\Completion;
 use App\Modules\Chat\Conversation;
-use App\Modules\Chat\Enums\MessageRole;
+use App\Modules\Chat\Events\CompletionCreated;
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\Quota\Actions\ConsumeUserQuota;
-use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\Enums\SettingKey;
@@ -77,7 +73,7 @@ class CreateCompletion extends Endpoint
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        return response()->stream(function () use ($user, $stream, $conversation, $messages, $tokenizer) {
+        return response()->stream(function () use ($user, $stream, $conversation, $messages) {
             $contents = [];
 
             $choices = [];
@@ -109,29 +105,23 @@ class CreateCompletion extends Endpoint
 
             $content = implode('', array_filter($contents));
 
-            $usage = $tokenizer->predictUsage($messages, $content);
-
             if (empty($response)) {
                 $raws = [];
             } else {
                 $raws = $response->toArray();
             }
 
-            $conversation->messages()->create([
-                'role' => MessageRole::ASSISTANT,
-                'content' => $content,
-                'raws' => [
-                    ...$raws,
-                    'choices' => $choices,
-                    'usage' => $usage,
-                ],
-                'tokens_count' => $usage['tokens_count'],
+            $completion = new Completion();
+            $completion->setCreator($user);
+            $completion->setConversation($conversation);
+            $completion->setPrompts($messages);
+            $completion->setValue($content);
+            $completion->setRaws([
+                ...$raws,
+                'choices' => $choices,
             ]);
 
-            ConsumeUserQuota::run($user, QuotaType::CHAT, $usage['tokens_count']);
-            RefreshConversationActiveAt::run($conversation);
-            RefreshConversationMessagesCount::run($conversation);
-            RefreshConversationTokensCount::run($conversation);
+            event(new CompletionCreated($completion));
         }, 200, [
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
