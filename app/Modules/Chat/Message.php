@@ -26,6 +26,7 @@ class Message extends Model
         'content',
         'raws',
         'tokens_count',
+        'creator_id',
     ];
 
     protected $casts = [
@@ -33,6 +34,7 @@ class Message extends Model
         'conversation_id' => 'string',
         'role' => MessageRole::class,
         'raws' => 'array',
+        'creator_id' => 'string',
     ];
 
     protected $hidden = [

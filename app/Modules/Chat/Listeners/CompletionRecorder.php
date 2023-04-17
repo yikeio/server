@@ -16,6 +16,7 @@ class CompletionRecorder
         $conversation = $completion->getConversation();
 
         $message = [
+            'creator_id' => $event->getCreator()->id,
             'role' => MessageRole::ASSISTANT,
             'content' => $completion->getValue(),
             'raws' => [
