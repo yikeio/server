@@ -4,14 +4,12 @@ namespace App\Modules\User;
 
 use App\Modules\Chat\Conversation;
 use App\Modules\Payment\Payment;
-use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Quota\Quota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -102,13 +100,15 @@ class User extends Authenticatable
         return ! empty($value) ? $value->value : Arr::get(SettingKey::defaults(), $key->value);
     }
 
-    public function getQuota(QuotaType $type): Quota|Model|null
+    public function getAvailableQuota(): ?Quota
     {
-        return $this->quotas()
-            ->where('type', $type)
+        /** @var Quota $quota */
+        $quota = $this->quotas()
             ->where('is_available', true)
             ->orderByDesc('id')
             ->first();
+
+        return $quota;
     }
 
     protected static function newFactory()

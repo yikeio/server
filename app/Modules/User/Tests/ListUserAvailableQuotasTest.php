@@ -12,7 +12,7 @@ class ListUserAvailableQuotasTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->getJson("/api/users/{$user->id}/available-quotas")
+            ->getJson("/api/users/{$user->id}/available-quota")
             ->assertSuccessful();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Chat;
 
+use App\Modules\Quota\Quota;
 use App\Modules\User\User;
 
 class Completion
@@ -10,9 +11,13 @@ class Completion
 
     protected Conversation $conversation;
 
+    protected Quota $quota;
+
     protected array $prompts;
 
     protected string $value;
+
+    protected string $model;
 
     protected array $raws;
 
@@ -64,5 +69,25 @@ class Completion
     public function setRaws(array $raws): void
     {
         $this->raws = $raws;
+    }
+
+    public function getModel(): string
+    {
+        return $this->model;
+    }
+
+    public function setModel(string $model): void
+    {
+        $this->model = $model;
+    }
+
+    public function getQuota(): Quota
+    {
+        return $this->quota;
+    }
+
+    public function setQuota(Quota $quota): void
+    {
+        $this->quota = $quota;
     }
 }

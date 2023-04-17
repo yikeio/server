@@ -3,8 +3,6 @@
 namespace App\Modules\Quota\Listeners;
 
 use App\Modules\Quota\Actions\GrantUserQuota;
-use App\Modules\Quota\Enums\QuotaMeter;
-use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\User\Events\UserActivated;
 
 class GrantFreeQuotas
@@ -16,8 +14,6 @@ class GrantFreeQuotas
         $default = config('quota.defaults.chat');
 
         GrantUserQuota::run($user, [
-            'quota_type' => QuotaType::CHAT,
-            'quota_meter' => QuotaMeter::TOKEN,
             'tokens_count' => $default['tokens_count'] ?? 1000,
             'days' => $default['days'] ?? 1,
         ]);

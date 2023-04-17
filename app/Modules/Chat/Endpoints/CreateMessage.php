@@ -23,6 +23,7 @@ class CreateMessage extends Endpoint
             'creator_id' => $user->id,
             'role' => MessageRole::USER->value,
             'content' => $request->input('content'),
+            'tokens_count' => 0,
         ]);
 
         RefreshConversationActiveAt::run($conversation);

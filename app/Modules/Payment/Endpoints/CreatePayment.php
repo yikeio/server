@@ -9,7 +9,6 @@ use App\Modules\Payment\Gateways\GatewayInterface;
 use App\Modules\Payment\Jobs\MarkPaymentAsExpired;
 use App\Modules\Payment\Payment;
 use App\Modules\Payment\Requests\CreatePaymentRequest;
-use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\User\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -25,9 +24,7 @@ class CreatePayment extends Endpoint
                 /** @var User $user */
                 $user = $request->user();
 
-                $quotaType = QuotaType::from($request->input('quota_type'));
-
-                if (! empty($user->getQuota($quotaType))) {
+                if (! empty($user->getAvailableQuota())) {
                     abort(403, '还有未用尽配额，无法购买');
                 }
 
@@ -37,7 +34,7 @@ class CreatePayment extends Endpoint
                     abort(403, '还有未支付的订单，无法购买');
                 }
 
-                $pricing = config("quota.pricings.{$quotaType->value}.{$request->input('pricing')}");
+                $pricing = config("quota.pricings.{$request->input('pricing')}");
 
                 if (empty($pricing)) {
                     abort(500, '无定价信息');

@@ -6,7 +6,6 @@ use App\Modules\Chat\Completion;
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Events\CompletionCreated;
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\Quota\Enums\QuotaType;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\Enums\SettingKey;
@@ -28,7 +27,7 @@ class CreateCompletion extends Endpoint
         /** @var User $user */
         $user = $request->user();
 
-        $quota = $user->getQuota(QuotaType::CHAT);
+        $quota = $user->getAvailableQuota();
 
         if (empty($quota)) {
             abort(403, '您没有可用的配额');
@@ -80,7 +79,14 @@ class CreateCompletion extends Endpoint
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        return response()->stream(function () use ($user, $stream, $conversation, $messages, $quota) {
+        $completion = new Completion();
+        $completion->setCreator($user);
+        $completion->setConversation($conversation);
+        $completion->setPrompts($messages);
+        $completion->setModel(config('openai.chat.model'));
+        $completion->setQuota($quota);
+
+        return response()->stream(function () use ($stream, $completion) {
             $contents = [];
 
             $choices = [];
@@ -118,17 +124,13 @@ class CreateCompletion extends Endpoint
                 $raws = $response->toArray();
             }
 
-            $completion = new Completion();
-            $completion->setCreator($user);
-            $completion->setConversation($conversation);
-            $completion->setPrompts($messages);
             $completion->setValue($content);
             $completion->setRaws([
                 ...$raws,
                 'choices' => $choices,
             ]);
 
-            event(new CompletionCreated($completion, $quota));
+            event(new CompletionCreated($completion));
         }, 200, [
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',

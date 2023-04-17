@@ -8,7 +8,7 @@ class ListPricingsTest extends TestCase
 {
     public function test_list_pricings()
     {
-        $this->getJson('/api/pricings?quota_type=chat')
+        $this->getJson('/api/pricings')
             ->assertSuccessful();
     }
 }

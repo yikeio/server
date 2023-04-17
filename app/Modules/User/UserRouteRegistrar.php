@@ -4,7 +4,7 @@ namespace App\Modules\User;
 
 use App\Modules\User\Endpoints\ActivateUser;
 use App\Modules\User\Endpoints\GetUser;
-use App\Modules\User\Endpoints\ListUserAvailableQuotas;
+use App\Modules\User\Endpoints\GetUserAvailableQuotas;
 use App\Modules\User\Endpoints\ListUserChatConversations;
 use App\Modules\User\Endpoints\ListUserPayments;
 use App\Modules\User\Endpoints\ListUserQuotas;
@@ -25,7 +25,7 @@ class UserRouteRegistrar
 
             Route::get('/user', GetUser::class)->middleware('throttle:120,1');
             Route::get('/users/{user}/quotas', ListUserQuotas::class)->middleware('throttle:120,1');
-            Route::get('/users/{user}/available-quotas', ListUserAvailableQuotas::class)->middleware('throttle:120,1');
+            Route::get('/users/{user}/available-quota', GetUserAvailableQuotas::class)->middleware('throttle:120,1');
             Route::get('/users/{user}/payments', ListUserPayments::class)->middleware('throttle:120,1');
             Route::get('/users/{user}/settings', ListUserSettings::class)->middleware('throttle:120,1');
             Route::get('/users/{user}/chat/conversations', ListUserChatConversations::class)->middleware('throttle:120,1');

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('quotas', function (Blueprint $table) {
             $table->unsignedBigInteger('tokens_count')->default(0);
             $table->unsignedBigInteger('used_tokens_count')->default(0);
-            $table->unsignedBigInteger('available_tokens_count')->default(0);
         });
     }
 
@@ -26,7 +25,6 @@ return new class extends Migration
         Schema::table('quotas', function (Blueprint $table) {
             $table->dropColumn('tokens_count');
             $table->dropColumn('used_tokens_count');
-            $table->dropColumn('available_tokens_count');
         });
     }
 };
