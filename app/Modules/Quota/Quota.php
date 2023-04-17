@@ -29,6 +29,9 @@ class Quota extends Model
         'meter',
         'usage',
         'expired_at',
+        'tokens_count',
+        'used_tokens_count',
+        'available_tokens_count',
     ];
 
     protected $casts = [
