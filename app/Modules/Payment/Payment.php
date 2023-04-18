@@ -5,11 +5,10 @@ namespace App\Modules\Payment;
 use App\Modules\Payment\Enums\PaymentState;
 use App\Modules\Payment\Filters\PaymentFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
-use App\Modules\User\User;
+use App\Modules\User\BelongsToCreator;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property PaymentState $state
@@ -20,6 +19,7 @@ class Payment extends Model
     use HasSnowflakes;
     use HasFactory;
     use Filterable;
+    use BelongsToCreator;
 
     public $incrementing = false;
 
@@ -53,11 +53,6 @@ class Payment extends Model
         'paid_at' => 'datetime',
         'expired_at' => 'datetime',
     ];
-
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'creator_id', 'id');
-    }
 
     protected static function newFactory(): PaymentFactory
     {

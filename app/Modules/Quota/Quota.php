@@ -51,9 +51,9 @@ class Quota extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function statements(): HasMany
+    public function usages(): HasMany
     {
-        return $this->hasMany(QuotaStatement::class, 'quota_id', 'id');
+        return $this->hasMany(QuotaUsage::class, 'quota_id', 'id');
     }
 
     public function getAvailableTokensCountAttribute(): int

@@ -4,13 +4,15 @@ namespace App\Modules\Quota;
 
 use App\Modules\Quota\Jobs\RefreshQuota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
-use App\Modules\User\User;
+use App\Modules\User\BelongsToCreator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class QuotaStatement extends Model
+class QuotaUsage extends Model
 {
     use HasSnowflakes;
+    use BelongsToCreator;
+    use BelongsToQuota;
 
     public $incrementing = false;
 
@@ -32,19 +34,9 @@ class QuotaStatement extends Model
     {
         parent::boot();
 
-        static::created(function (QuotaStatement $statement) {
-            RefreshQuota::dispatch($statement->quota);
+        static::created(function (QuotaUsage $usage) {
+            RefreshQuota::dispatch($usage->quota);
         });
-    }
-
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'creator_id', 'id');
-    }
-
-    public function quota(): BelongsTo
-    {
-        return $this->belongsTo(Quota::class, 'quota_id', 'id');
     }
 
     public function tokenizable(): BelongsTo

@@ -2,9 +2,9 @@
 
 namespace App\Modules\Chat\Endpoints;
 
-use App\Modules\Chat\Completion;
 use App\Modules\Chat\Conversation;
-use App\Modules\Chat\Events\CompletionCreated;
+use App\Modules\Chat\Enums\MessageRole;
+use App\Modules\Chat\Message;
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\OpenAI\Tokenizer;
@@ -79,14 +79,13 @@ class CreateCompletion extends Endpoint
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        $completion = new Completion();
-        $completion->setCreator($user);
-        $completion->setConversation($conversation);
-        $completion->setPrompts($messages);
-        $completion->setModel(config('openai.chat.model'));
-        $completion->setQuota($quota);
+        $completion = new Message();
+        $completion->creator_id = $user->id;
+        $completion->role = MessageRole::ASSISTANT;
+        $completion->conversation_id = $conversation->id;
+        $completion->quota_id = $quota->id;
 
-        return response()->stream(function () use ($stream, $completion) {
+        return response()->stream(function () use ($stream, $messages, $completion, $tokenizer) {
             $contents = [];
 
             $choices = [];
@@ -124,13 +123,16 @@ class CreateCompletion extends Endpoint
                 $raws = $response->toArray();
             }
 
-            $completion->setValue($content);
-            $completion->setRaws([
+            $usage = $tokenizer->predictUsage($messages, $content);
+
+            $completion->tokens_count = $usage['tokens_count'] ?? 0;
+            $completion->content = $content;
+            $completion->raws = [
                 ...$raws,
                 'choices' => $choices,
-            ]);
-
-            event(new CompletionCreated($completion));
+                'usage' => $usage,
+            ];
+            $completion->save();
         }, 200, [
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',

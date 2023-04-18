@@ -3,13 +3,10 @@
 namespace App\Modules\Quota;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 interface TokenizableInterface
 {
     public function getTokensCount(): int;
-
-    public function quotaStatements(): MorphMany;
 
     public function quota(): BelongsTo;
 
@@ -18,4 +15,8 @@ interface TokenizableInterface
     public function creator(): BelongsTo;
 
     public function getCreatorId(): int;
+
+    public function getTokenizableId(): int;
+
+    public function getTokenizableType(): string;
 }

@@ -26,10 +26,11 @@ class RefreshQuota implements ShouldQueue
      */
     public function handle(): void
     {
-        $usedTokensCount = $this->quota->statements()->sum('tokens_count');
+        $usedTokensCount = $this->quota->usages()->sum('tokens_count');
 
         $this->quota->used_tokens_count = $usedTokensCount;
-        $this->quota->is_available = $this->quota->tokens_count - $usedTokensCount > 0;
+        $availableTokensCount = $this->quota->tokens_count - $usedTokensCount;
+        $this->quota->is_available = $availableTokensCount > 0 && ! $this->quota->isExpired();
         $this->quota->save();
     }
 }

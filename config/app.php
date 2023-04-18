@@ -215,7 +215,6 @@ return [
         \App\Modules\Quota\QuotaEventServiceProvider::class,
         \App\Modules\User\UserEventServiceProvider::class,
         \App\Modules\Service\Log\LogEventServiceProvider::class,
-        \App\Modules\Chat\ChatEventServiceProvider::class,
     ],
 
     /*

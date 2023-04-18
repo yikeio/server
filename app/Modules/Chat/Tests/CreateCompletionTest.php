@@ -43,7 +43,7 @@ class CreateCompletionTest extends TestCase
             ->streamedContent();
 
         $this->assertDatabaseCount('messages', 2);
-        $this->assertDatabaseCount('quota_statements', 1);
+        $this->assertDatabaseCount('quota_usages', 1);
         $this->assertDatabaseCount('quotas', 1);
         $this->assertEquals(1000, $user->getAvailableQuota()->tokens_count);
         $this->assertEquals(8, $user->getAvailableQuota()->used_tokens_count);
