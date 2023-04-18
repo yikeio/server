@@ -4,6 +4,7 @@ namespace App\Modules\Security;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 
 class Watchdog
@@ -22,6 +23,6 @@ class Watchdog
 
     public function hasValidAuthorizationHeader(): bool
     {
-        return ! empty(trim($this->request->bearerToken()));
+        return ! empty(trim($this->request->bearerToken())) && Str::startsWith(trim($this->request->bearerToken()), 'eyJ');
     }
 }
