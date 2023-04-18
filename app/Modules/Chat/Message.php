@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Message extends Model implements TokenizableInterface
 {
@@ -79,6 +80,6 @@ class Message extends Model implements TokenizableInterface
 
     public function getMorphClass(): string
     {
-        return $this->getTable();
+        return Str::singular($this->getTable());
     }
 }

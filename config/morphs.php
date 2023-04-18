@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'messages' => 'App\\Modules\\Chat\\Message',
+    'message' => 'App\\Modules\\Chat\\Message',
 ];
