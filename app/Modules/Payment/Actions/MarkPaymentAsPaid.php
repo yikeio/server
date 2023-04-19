@@ -6,6 +6,7 @@ use App\Modules\Common\Actions\Action;
 use App\Modules\Payment\Enums\PaymentState;
 use App\Modules\Payment\Payment;
 use App\Modules\Payment\Processors\Processor;
+use App\Modules\User\Actions\RefreshUserPaidTotal;
 
 class MarkPaymentAsPaid extends Action
 {
@@ -18,6 +19,8 @@ class MarkPaymentAsPaid extends Action
         $payment->state = PaymentState::PAID;
         $payment->paid_at = now();
         $payment->save();
+
+        RefreshUserPaidTotal::run($payment->creator);
 
         if (! is_array($payment->processors)) {
             return;

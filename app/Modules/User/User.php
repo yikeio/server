@@ -44,10 +44,16 @@ class User extends Authenticatable
         'first_active_at',
         'last_active_at',
         'state',
+        'paid_total',
+    ];
+
+    protected $appends = [
+        'has_paid',
     ];
 
     protected $hidden = [
         'phone_number',
+        'paid_total',
     ];
 
     protected $casts = [
@@ -97,6 +103,11 @@ class User extends Authenticatable
     public function settings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'user_id', 'id');
+    }
+
+    public function getHasPaidAttribute(): bool
+    {
+        return $this->paid_total > 0;
     }
 
     public function getSetting(SettingKey $key): mixed
