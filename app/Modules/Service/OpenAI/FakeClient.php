@@ -40,7 +40,7 @@ class FakeClient
                         'index' => 0,
                         'delta' => [
                             'role' => MessageRole::ASSISTANT->value,
-                            'content' => $word,
+                            'content' => "$word ",
                         ],
                         'finish_reason' => null,
                     ],
