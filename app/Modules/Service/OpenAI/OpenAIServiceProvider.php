@@ -2,8 +2,10 @@
 
 namespace App\Modules\Service\OpenAI;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use OpenAI;
+use OpenAI\Client;
 
 class OpenAIServiceProvider extends ServiceProvider
 {
@@ -13,11 +15,15 @@ class OpenAIServiceProvider extends ServiceProvider
             return new Tokenizer(config('openai.tokenizer'));
         });
 
-        $this->app->singleton(OpenAI\Client::class, function () {
-            return OpenAI::factory()
-                ->withBaseUri(config('openai.endpoint'))
-                ->withApiKey(config('openai.api_key'))
-                ->make();
+        $this->app->singleton(Client::class, function (Application $app) {
+            if ($app->isProduction()) {
+                return OpenAI::factory()
+                    ->withBaseUri(config('openai.endpoint'))
+                    ->withApiKey(config('openai.api_key'))
+                    ->make();
+            }
+
+            return new FakeClient();
         });
     }
 }

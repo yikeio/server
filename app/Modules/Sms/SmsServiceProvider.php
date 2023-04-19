@@ -23,7 +23,11 @@ class SmsServiceProvider extends ServiceProvider
             /** @var LogManager $logManager */
             $logManager = $app->make(LogManager::class);
 
-            return new VerificationCode(new EasySms(config('sms')), $cacheManager->store(), $logManager->channel());
+            if ($app->isProduction()) {
+                return new VerificationCode(new EasySms(config('sms')), $cacheManager->store(), $logManager->channel());
+            }
+
+            return new FakeVerificationCode(new EasySms(config('sms')), $cacheManager->store(), $logManager->channel());
         });
     }
 

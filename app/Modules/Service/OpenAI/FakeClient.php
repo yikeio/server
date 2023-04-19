@@ -25,7 +25,7 @@ class FakeClient
                         'index' => 0,
                         'delta' => [
                             'role' => MessageRole::ASSISTANT->value,
-                            'content' => 'Hello, world!',
+                            'content' => 'Hello, OpenAI!',
                         ],
                         'finish_reason' => 'stop',
                     ],
