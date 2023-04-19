@@ -3,10 +3,16 @@
 namespace App\Modules\Service\OpenAI;
 
 use App\Modules\Chat\Enums\MessageRole;
+use Faker\Generator;
+use Illuminate\Contracts\Foundation\Application;
 use OpenAI\Responses\Chat\CreateStreamedResponse;
 
 class FakeClient
 {
+    public function __construct(protected Application $app)
+    {
+    }
+
     public function chat(): static
     {
         return $this;
@@ -14,8 +20,17 @@ class FakeClient
 
     public function createStreamed(): array
     {
-        return [
-            CreateStreamedResponse::from([
+        /** @var Generator $generator */
+        $generator = $this->app->make(Generator::class);
+
+        $text = $generator->paragraphs(random_int(1, 4), true);
+
+        $words = array_filter(explode(' ', $text));
+
+        $response = [];
+
+        foreach ($words as $word) {
+            $response[] = CreateStreamedResponse::from([
                 'id' => 'chatcmpl-71vWOjIJX0jfrGJDROYnUFcUiVJed',
                 'object' => 'chat.completion.chunk',
                 'created' => 1680693796,
@@ -25,12 +40,28 @@ class FakeClient
                         'index' => 0,
                         'delta' => [
                             'role' => MessageRole::ASSISTANT->value,
-                            'content' => 'Hello, OpenAI!',
+                            'content' => $word,
                         ],
-                        'finish_reason' => 'stop',
+                        'finish_reason' => null,
                     ],
                 ],
-            ]),
-        ];
+            ]);
+        }
+
+        $response[] = CreateStreamedResponse::from([
+            'id' => 'chatcmpl-71vWOjIJX0jfrGJDROYnUFcUiVJed',
+            'object' => 'chat.completion.chunk',
+            'created' => 1680693796,
+            'model' => 'gpt-3.5-turbo',
+            'choices' => [
+                [
+                    'index' => 0,
+                    'delta' => [],
+                    'finish_reason' => 'stop',
+                ],
+            ],
+        ]);
+
+        return $response;
     }
 }

@@ -23,7 +23,7 @@ class OpenAIServiceProvider extends ServiceProvider
                     ->make();
             }
 
-            return new FakeClient();
+            return new FakeClient($app);
         });
     }
 }
