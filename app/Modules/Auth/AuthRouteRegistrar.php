@@ -2,7 +2,9 @@
 
 namespace App\Modules\Auth;
 
+use App\Modules\Auth\Endpoints\CreateTokenViaCode;
 use App\Modules\Auth\Endpoints\CreateTokenViaSms;
+use App\Modules\Auth\Endpoints\Redirect;
 use Illuminate\Support\Facades\Route;
 
 class AuthRouteRegistrar
@@ -14,6 +16,8 @@ class AuthRouteRegistrar
             'prefix' => 'api',
         ], function () {
             Route::post('/auth/tokens:via-sms', CreateTokenViaSms::class)->middleware('throttle:60,1');
+            Route::post('/auth/tokens:via-code', CreateTokenViaCode::class)->middleware('throttle:60,1');
+            Route::get('/auth/redirect', Redirect::class)->middleware('throttle:120,1');
         });
 
         Route::group([
