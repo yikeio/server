@@ -33,7 +33,7 @@ class Message extends Model implements TokenizableInterface
         'conversation_id',
         'role',
         'content',
-        'raws',
+        'raw',
         'tokens_count',
         'creator_id',
         'quota_id',
@@ -43,13 +43,13 @@ class Message extends Model implements TokenizableInterface
         'id' => 'string',
         'conversation_id' => 'string',
         'role' => MessageRole::class,
-        'raws' => 'array',
+        'raw' => 'array',
         'creator_id' => 'string',
         'quota_id' => 'string',
     ];
 
     protected $hidden = [
-        'raws',
+        'raw',
     ];
 
     protected static function boot()

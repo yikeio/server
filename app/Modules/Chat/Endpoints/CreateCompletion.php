@@ -127,7 +127,7 @@ class CreateCompletion extends Endpoint
 
             $completion->tokens_count = $usage['tokens_count'] ?? 0;
             $completion->content = $content;
-            $completion->raws = [
+            $completion->raw = [
                 ...$raws,
                 'choices' => $choices,
                 'usage' => $usage,

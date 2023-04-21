@@ -8,9 +8,9 @@ use Illuminate\Support\Str;
 class StateManager
 {
     protected int $ttl = 3600;
+
     public function __construct(protected Repository $repository)
     {
-
     }
 
     public function create(mixed $value): string

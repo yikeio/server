@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "doctrine/dbal": "^3.6",
         "giggsey/libphonenumber-for-php": "^8.13",
         "godruoyi/php-snowflake": "^2.2",
         "guzzlehttp/guzzle": "^7.2",

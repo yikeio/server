@@ -31,7 +31,7 @@ class Payment extends Model
         'title',
         'gateway',
         'gateway_number',
-        'raws',
+        'raw',
         'processors',
         'context',
         'paid_at',
@@ -39,7 +39,7 @@ class Payment extends Model
     ];
 
     protected $hidden = [
-        'raws',
+        'raw',
         'processors',
     ];
 
@@ -47,7 +47,7 @@ class Payment extends Model
         'id' => 'string',
         'creator_id' => 'string',
         'state' => PaymentState::class,
-        'raws' => 'array',
+        'raw' => 'array',
         'processors' => 'array',
         'context' => 'array',
         'paid_at' => 'datetime',

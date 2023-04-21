@@ -3,7 +3,6 @@
 namespace App\Modules\Auth\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class CreateTokenViaCodeRequest extends FormRequest
 {

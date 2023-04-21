@@ -68,7 +68,7 @@ class CreatePayment extends Endpoint
                 $payment->title = $pricing['title'];
                 $payment->gateway = $gateway->getName();
                 $payment->gateway_number = $gateway->resolveNumber($response);
-                $payment->raws = $response;
+                $payment->raw = $response;
                 $payment->context = $gateway->resolveContext($response);
                 $payment->processors = $pricing['processors'];
                 $payment->expired_at = now()->addSeconds($gateway->getTtl() - 30);

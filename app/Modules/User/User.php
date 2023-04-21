@@ -105,6 +105,11 @@ class User extends Authenticatable
         return $this->hasMany(UserSetting::class, 'user_id', 'id');
     }
 
+    public function profiles(): HasMany
+    {
+        return $this->hasMany(Profile::class, 'user_id', 'id');
+    }
+
     public function getHasPaidAttribute(): bool
     {
         return $this->paid_total > 0;
