@@ -46,18 +46,19 @@ class CreateTokenViaCode extends Endpoint
                 'raw' => $user->getRaw(),
             ]);
 
-        if (empty($profile->user_id)) {
-            /** @var User $user */
-            $user = User::query()->create([
-                'name' => $user->getName(),
-                'referral_code' => Str::lower(Str::random(6)),
-            ]);
+        if (empty($profile->user)) {
+            $user = new User();
+            $user->name = $user->getName();
+            $user->avatar = $user->getAvatar();
+            $user->referral_code = Str::lower(Str::random(6));
+            $user->save();
 
             $profile->user_id = $user->id;
             $profile->save();
         } else {
             $user = $profile->user;
             $user->name = $profile->name;
+            $user->avatar = $profile->avatar;
             $user->save();
         }
 

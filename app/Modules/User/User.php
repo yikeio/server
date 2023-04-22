@@ -45,6 +45,7 @@ class User extends Authenticatable
         'last_active_at',
         'state',
         'paid_total',
+        'avatar',
     ];
 
     protected $appends = [
