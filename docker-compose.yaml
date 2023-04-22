@@ -17,10 +17,11 @@ services:
     restart: always
 
   server:
-    image: ccr.ccs.tencentyun.com/yike/server:1.1.0
+    image: ccr.ccs.tencentyun.com/yike/server:1.5.0-testing
     container_name: yike-server
     volumes:
-      - ./server/storage/logs:/data/www/storage/logs
+      - ./server/logs/app:/data/www/storage/logs
+      - ./server/logs/nginx:/data/logs/nginx
     ports:
       - "80:80"
     depends_on:
@@ -28,7 +29,7 @@ services:
       - tokenizer
 
   tokenizer:
-    image: ccr.ccs.tencentyun.com/yike/tokenizer:0.1.0
+    image: ccr.ccs.tencentyun.com/yike/tokenizer:1.0.0
     container_name: yike-tokenizer
 
   proxy:
