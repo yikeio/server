@@ -19,6 +19,8 @@ services:
   server:
     image: ccr.ccs.tencentyun.com/yike/server:1.1.0
     container_name: yike-server
+    volumes:
+      - ./server/storage/logs:/data/www/storage/logs
     ports:
       - "80:80"
     depends_on:
