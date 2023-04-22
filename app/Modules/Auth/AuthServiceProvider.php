@@ -5,7 +5,6 @@ namespace App\Modules\Auth;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
-use Overtrue\Socialite\SocialiteManager;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,10 +12,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ClientManager::class, function (Application $app) {
             return new ClientManager($app);
-        });
-
-        $this->app->singleton(SocialiteManager::class, function (Application $app) {
-            return new SocialiteManager(config('socialite'));
         });
     }
 
