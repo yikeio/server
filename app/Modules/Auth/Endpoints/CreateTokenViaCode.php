@@ -9,6 +9,7 @@ use App\Modules\User\Profile;
 use App\Modules\User\User;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
+use Overtrue\Socialite\Exceptions\AuthorizeFailedException;
 use Overtrue\Socialite\SocialiteManager;
 
 class CreateTokenViaCode extends Endpoint
@@ -27,7 +28,11 @@ class CreateTokenViaCode extends Endpoint
         /** @var SocialiteManager $manager */
         $manager = app(SocialiteManager::class);
 
-        $user = $manager->create($driver)->userFromCode($request->input('code'));
+        try {
+            $user = $manager->create($driver)->userFromCode($request->input('code'));
+        } catch (AuthorizeFailedException $e) {
+            abort(403, '授权失败');
+        }
 
         /** @var Profile $profile */
         $profile = Profile::query()
