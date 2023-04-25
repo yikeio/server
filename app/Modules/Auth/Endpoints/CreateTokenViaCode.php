@@ -48,8 +48,8 @@ class CreateTokenViaCode extends Endpoint
 
         if (empty($profile->user)) {
             $user = new User();
-            $user->name = $user->getName();
-            $user->avatar = $user->getAvatar();
+            $user->name = $profile->name;
+            $user->avatar = $profile->avatar;
             $user->referral_code = Str::lower(Str::random(6));
             $user->save();
 
