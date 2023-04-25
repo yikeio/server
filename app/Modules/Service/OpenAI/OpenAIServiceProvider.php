@@ -3,6 +3,7 @@
 namespace App\Modules\Service\OpenAI;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use OpenAI;
 use OpenAI\Client;
@@ -17,9 +18,11 @@ class OpenAIServiceProvider extends ServiceProvider
 
         $this->app->singleton(Client::class, function (Application $app) {
             if ($app->isProduction()) {
+                $keys = explode(',', config('openai.api_key'));
+
                 return OpenAI::factory()
                     ->withBaseUri(config('openai.endpoint'))
-                    ->withApiKey(config('openai.api_key'))
+                    ->withApiKey(Arr::random($keys))
                     ->make();
             }
 
