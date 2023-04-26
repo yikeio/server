@@ -19,8 +19,6 @@ class Conversation extends Model
     use Filterable;
     use BelongsToCreator;
 
-    public $incrementing = false;
-
     protected $fillable = [
         'creator_id',
         'title',

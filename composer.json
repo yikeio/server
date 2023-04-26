@@ -57,6 +57,7 @@
             "@php artisan key:generate --ansi"
         ],
         "pint": "@php vendor/bin/pint",
+        "fix": "@php vendor/bin/pint",
         "test": "@php artisan test --parallel"
     },
     "extra": {

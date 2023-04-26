@@ -20,6 +20,7 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * @property UserState $state
+ * @property int     $id
  */
 class User extends Authenticatable
 {
@@ -28,8 +29,6 @@ class User extends Authenticatable
     use Notifiable;
     use HasFactory;
     use SoftDeletes;
-
-    public $incrementing = false;
 
     protected $fillable = [
         'root_referrer_id',

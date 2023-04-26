@@ -3,6 +3,7 @@
 namespace App\Modules\Payment\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
+use App\Modules\Payment\Actions\CreatePaymentOrderNumber;
 use App\Modules\Payment\Enums\PaymentState;
 use App\Modules\Payment\Exceptions\GatewayException;
 use App\Modules\Payment\Gateways\GatewayInterface;
@@ -40,7 +41,7 @@ class CreatePayment extends Endpoint
                     abort(500, '无定价信息');
                 }
 
-                $number = now()->format('ymdHis').random_int(1000, 9999);
+                $number = CreatePaymentOrderNumber::run();
 
                 try {
                     /** @var GatewayInterface $gateway */

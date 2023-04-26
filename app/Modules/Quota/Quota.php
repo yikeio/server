@@ -20,8 +20,6 @@ class Quota extends Model
     use HasSnowflakes;
     use HasFactory;
 
-    public $incrementing = false;
-
     protected $fillable = [
         'user_id',
         'is_available',
