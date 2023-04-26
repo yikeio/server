@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property PaymentState $state
- * @property array $processors
+ * @property array        $processors
+ * @property int          $amount
+ * @property int        $number
  */
 class Payment extends Model
 {
@@ -20,8 +22,6 @@ class Payment extends Model
     use HasFactory;
     use Filterable;
     use BelongsToCreator;
-
-    public $incrementing = false;
 
     protected $fillable = [
         'creator_id',

@@ -14,8 +14,6 @@ class QuotaUsage extends Model
     use BelongsToCreator;
     use BelongsToQuota;
 
-    public $incrementing = false;
-
     protected $fillable = [
         'creator_id',
         'quota_id',

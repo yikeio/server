@@ -27,8 +27,6 @@ class Message extends Model implements TokenizableInterface
     use BelongsToCreator;
     use BelongsToQuota;
 
-    public $incrementing = false;
-
     protected $fillable = [
         'conversation_id',
         'role',

@@ -15,8 +15,6 @@ class Profile extends Model
     use HasSnowflakes;
     use SoftDeletes;
 
-    public $incrementing = false;
-
     protected $fillable = [
         'user_id',
         'platform',
