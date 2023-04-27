@@ -12,7 +12,7 @@ class GiftCardRouterRegistrar
             'middleware' => ['api', 'auth'],
             'prefix' => 'api',
         ], function () {
-            Route::post('/gift-cards:activate', Endpoints\ActivateGiftCard::class);
+            Route::post('/gift-cards:activate', Endpoints\ActivateGiftCard::class)->middleware('throttle:60,1');
         });
     }
 }
