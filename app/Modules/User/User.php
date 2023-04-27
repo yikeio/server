@@ -10,8 +10,6 @@ use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
