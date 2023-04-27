@@ -51,7 +51,7 @@ class CreateCompletion extends Endpoint
             ->toArray();
 
         if (! empty($messages)) {
-            if ($tokenizer->predict($messages) >= config('openai.chat.max_tokens')) {
+            if ($tokenizer->predict($messages) >= config('openai.chat.max_tokens', 4096)) {
                 abort(422, '附带历史消息长度超过限制，请降低附带历史消息数量或者新建聊天窗口');
             }
         }
