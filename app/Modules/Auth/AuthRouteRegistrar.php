@@ -15,7 +15,7 @@ class AuthRouteRegistrar
             'middleware' => ['api'],
             'prefix' => 'api',
         ], function () {
-            Route::post('/auth/tokens:via-sms', CreateTokenViaSms::class)->middleware('throttle:60,1');
+            Route::post('/auth/tokens:via-sms', CreateTokenViaSms::class)->middleware('throttle:5,1');
             Route::post('/auth/tokens:via-code', CreateTokenViaCode::class)->middleware('throttle:60,1');
             Route::get('/auth/redirect', Redirect::class)->middleware('throttle:120,1');
         });

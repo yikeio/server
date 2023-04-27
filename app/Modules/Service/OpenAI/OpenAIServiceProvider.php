@@ -13,8 +13,8 @@ class OpenAIServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Tokenizer::class, function () {
-            if (!$this->app->isProduction()) {
-                return \Mockery::mock(Tokenizer::class, function($mock){
+            if (! $this->app->isProduction()) {
+                return \Mockery::mock(Tokenizer::class, function ($mock) {
                     $mock->shouldReceive('tokenize')->andReturn([]);
                 })->makePartial();
             }
