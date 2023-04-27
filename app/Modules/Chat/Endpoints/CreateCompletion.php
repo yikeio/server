@@ -4,6 +4,7 @@ namespace App\Modules\Chat\Endpoints;
 
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
+use App\Modules\Chat\Jobs\SummarizeConversation;
 use App\Modules\Chat\Message;
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\Security\Actions\EncryptString;
@@ -62,9 +63,6 @@ class CreateCompletion extends Endpoint
                 'messages' => $messages,
             ];
 
-            // 这里把 max_tokens 移除，让 OpenAI 自适应
-            unset($body['max_tokens']);
-
             Log::channel('service')->info('[CHAT] - 调用 OpenAI 入参', $body);
 
             $stream = $client->chat()->createStreamed($body);
@@ -85,7 +83,7 @@ class CreateCompletion extends Endpoint
         $completion->conversation_id = $conversation->id;
         $completion->quota_id = $quota->id;
 
-        return response()->stream(function () use ($stream, $messages, $completion, $tokenizer) {
+        return response()->stream(function () use ($stream, $messages, $completion, $tokenizer, $conversation) {
             $contents = [];
 
             $choices = [];
@@ -133,6 +131,10 @@ class CreateCompletion extends Endpoint
                 'usage' => $usage,
             ];
             $completion->save();
+
+            if ($conversation->title === '新的聊天') {
+                SummarizeConversation::dispatch($conversation);
+            }
         }, 200, [
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
