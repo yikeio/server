@@ -127,7 +127,7 @@ class User extends Authenticatable
 
     public function getReferralUrlAttribute(): string
     {
-        return url('/?referrer=' . $this->referral_code);
+        return config('app.url'). '/?referrer=' . $this->referral_code;
     }
 
     public function getSetting(SettingKey $key): mixed
