@@ -10,17 +10,21 @@ use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 
 /**
  * @property UserState $state
- * @property int     $id
+ * @property int       $id
+ * @property string     $referral_code
  */
 class User extends Authenticatable
 {
@@ -49,6 +53,7 @@ class User extends Authenticatable
 
     protected $appends = [
         'has_paid',
+        'referral_url',
     ];
 
     protected $hidden = [
@@ -113,6 +118,16 @@ class User extends Authenticatable
     public function getHasPaidAttribute(): bool
     {
         return $this->paid_total > 0;
+    }
+
+    public function getReferralCodeAttribute(string $referralCode): string
+    {
+        return Str::upper($referralCode);
+    }
+
+    public function getReferralUrlAttribute(): string
+    {
+        return url('/?referrer=' . $this->referral_code);
     }
 
     public function getSetting(SettingKey $key): mixed
