@@ -10,8 +10,6 @@ use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -127,7 +125,7 @@ class User extends Authenticatable
 
     public function getReferralUrlAttribute(): string
     {
-        return url('/?referrer=' . $this->referral_code);
+        return url('/?referrer='.$this->referral_code);
     }
 
     public function getSetting(SettingKey $key): mixed
