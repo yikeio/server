@@ -4,20 +4,20 @@ namespace App\Modules\Leaderboard\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\User\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class ListLeaderboards extends Endpoint
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Collection|array
     {
-        $referrers = User::query()
+        return User::query()
             ->where('referrals_count', '>', 0)
             ->orderByDesc('referrals_count')
-            ->limit(1000)
-            ->get(['name', 'referrals_count']);
-
-        return [
-            'referrers' => $referrers,
-        ];
+            ->take(100)
+            ->get()
+            ->transform(function (User $user) {
+                return $user->onlySafeFields();
+            });
     }
 }

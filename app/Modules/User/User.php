@@ -49,6 +49,15 @@ class User extends Authenticatable
         'avatar',
     ];
 
+    protected $safeFields = [
+        'id',
+        'name',
+        'avatar',
+        'referrals_count',
+        'is_admin',
+        'state',
+    ];
+
     protected $appends = [
         'has_paid',
         'referral_url',
@@ -144,6 +153,11 @@ class User extends Authenticatable
             ->first();
 
         return $quota;
+    }
+
+    public function onlySafeFields(): array
+    {
+        return $this->only($this->safeFields);
     }
 
     protected static function newFactory()
