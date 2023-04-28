@@ -20,7 +20,7 @@ class CreateTokenViaSmsRequest extends FormRequest
             'sms_verification_code' => [
                 'required',
                 'string',
-                'size:4',
+                'size:6',
                 new ValidVerificationCode(VerificationCodeScene::LOGIN),
             ],
         ];
