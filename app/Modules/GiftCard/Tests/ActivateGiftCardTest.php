@@ -3,6 +3,7 @@
 namespace App\Modules\GiftCard\Tests;
 
 use App\Modules\GiftCard\GiftCard;
+use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\User\User;
 use Tests\TestCase;
 
@@ -17,10 +18,8 @@ class ActivateGiftCardTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $user->getAvailableQuota()->delete();
-
-        $this->actingAs($user)->postJson(route('gift-cards.activate'), [
+        $this->actingAs($user)->postJson('/gift-cards:activate', [
             'code' => $giftCard->code,
-        ])->dump()->assertOk();
+        ])->assertOk();
     }
 }

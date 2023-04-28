@@ -25,10 +25,6 @@ class CreatePayment extends Endpoint
                 /** @var User $user */
                 $user = $request->user();
 
-                if (! empty($user->getAvailableQuota())) {
-                    abort(403, '还有未用尽配额，无法购买');
-                }
-
                 if ($user->payments()
                     ->where('state', PaymentState::PENDING)
                     ->exists()) {

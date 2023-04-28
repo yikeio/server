@@ -12,7 +12,7 @@ class GetUserQuota extends Endpoint
     {
         $this->authorize('get', $user);
 
-        $quota = $user->getAvailableQuota();
+        $quota = $user->getUsingQuota();
 
         if (! empty($quota)) {
             return $quota;

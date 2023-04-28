@@ -2,6 +2,7 @@
 
 namespace App\Modules\Quota\Commands;
 
+use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\Quota\Quota;
 use Illuminate\Console\Command;
 
@@ -28,6 +29,7 @@ class CheckQuota extends Command
     {
         Quota::query()
             ->where('expired_at', '<', now())
-            ->update(['is_available' => false]);
+            ->where('state', QuotaState::USING)
+            ->update(['state' => QuotaState::EXPIRED]);
     }
 }

@@ -14,7 +14,7 @@ class CheckQuota
         $user = $request->user();
 
         if (! empty($user)) {
-            $quota = $user->getAvailableQuota();
+            $quota = $user->getUsingQuota();
 
             if (empty($quota)) {
                 abort(403, '您没有可用的配额');

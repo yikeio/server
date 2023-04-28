@@ -28,7 +28,7 @@ class CreateCompletion extends Endpoint
         /** @var User $user */
         $user = $request->user();
 
-        $quota = $user->getAvailableQuota();
+        $quota = $user->getUsingQuota();
 
         if (empty($quota)) {
             abort(403, '您没有可用的配额');
