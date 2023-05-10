@@ -210,6 +210,7 @@ return [
         \App\Modules\Security\SecurityServiceProvider::class,
         \App\Modules\Leaderboard\LeaderboardServiceProvider::class,
         \App\Modules\GiftCard\GiftCardServiceProvider::class,
+        \App\Modules\Prompt\PromptServiceProvider::class,
         \App\Modules\Service\Socialite\SocialiteServiceProvider::class,
 
         /**

@@ -13,7 +13,7 @@ class LeaderboardRouteRegistrar
             'middleware' => ['api', 'auth'],
             'prefix' => 'api',
         ], function () {
-            Route::get('/leaderboards', ListLeaderboards::class);
+            Route::get('/leaderboards', ListLeaderboards::class)->middleware('throttle:60,1');
         });
     }
 }

@@ -17,6 +17,7 @@
         "openai-php/client": "^0.4.1",
         "overtrue/easy-sms": "^2.4",
         "overtrue/socialite": "^4.8",
+        "predis/predis": "^2.1",
         "tucker-eric/eloquentfilter": "^3.2",
         "vinkla/hashids": "^11.0"
     },
