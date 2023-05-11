@@ -5,9 +5,10 @@ use App\Modules\Payment\Processors\GrantQuotaProcessor;
 return [
     'pricings' => [
         'weekly' => [
-            'title' => '7 天卡',
+            'title' => '试用',
             'tokens_count' => 300 * 1000,
             'days' => 7,
+            'is_popular' => false,
             'price' => floatval(env('QUOTA_PRICINGS_WEEKLY_PRICE', 9.9)),
             'processors' => [
                 [
@@ -21,9 +22,10 @@ return [
         ],
 
         'biweekly' => [
-            'title' => '15 天卡',
+            'title' => '双周套餐',
             'tokens_count' => 700 * 1000,
             'days' => 15,
+            'is_popular' => false,
             'price' => floatval(env('QUOTA_PRICINGS_BIWEEKLY_PRICE', 19.9)),
             'processors' => [
                 [
@@ -37,9 +39,10 @@ return [
         ],
 
         'monthly' => [
-            'title' => '30 天卡',
+            'title' => '月卡',
             'tokens_count' => 1200 * 1000,
             'days' => 30,
+            'is_popular' => true,
             'price' => floatval(env('QUOTA_PRICINGS_MONTHLY_PRICE', 29.9)),
             'processors' => [
                 [
@@ -47,6 +50,23 @@ return [
                     'parameters' => [
                         'tokens_count' => 1200 * 1000,
                         'days' => 30,
+                    ],
+                ],
+            ],
+        ],
+
+        'half-year' => [
+            'title' => '半年卡',
+            'tokens_count' => 5000 * 1000,
+            'days' => 180,
+            'is_popular' => false,
+            'price' => floatval(env('QUOTA_PRICINGS_HALFYEAR_PRICE', 129.9)),
+            'processors' => [
+                [
+                    'class' => GrantQuotaProcessor::class,
+                    'parameters' => [
+                        'tokens_count' => 5000 * 1000,
+                        'days' => 180,
                     ],
                 ],
             ],

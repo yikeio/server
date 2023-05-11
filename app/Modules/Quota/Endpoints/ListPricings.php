@@ -18,6 +18,7 @@ class ListPricings extends Endpoint
                 'tokens_count',
                 'days',
                 'price',
+                'is_popular',
             ]);
 
             $pricings[$index]['pricing'] = $index;

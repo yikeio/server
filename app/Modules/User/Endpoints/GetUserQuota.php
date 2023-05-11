@@ -18,6 +18,6 @@ class GetUserQuota extends Endpoint
             return $quota;
         }
 
-        return $user->quotas()->orderByDesc('id')->first();
+        return $user->quotas()->orderByDesc('id')->firstOrNew();
     }
 }
