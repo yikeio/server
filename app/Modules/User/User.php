@@ -11,6 +11,7 @@ use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -85,6 +86,11 @@ class User extends Authenticatable
         static::created(function (User $user) {
             event(new UserCreated($user));
         });
+    }
+
+    public function referrer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'referrer_id', 'id')->withTrashed();
     }
 
     public function referrals(): HasMany
