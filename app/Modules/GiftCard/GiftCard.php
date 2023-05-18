@@ -5,6 +5,7 @@ namespace App\Modules\GiftCard;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\BelongsToCreator;
 use App\Modules\User\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -38,6 +39,10 @@ class GiftCard extends Model
         'expired_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'state',
+    ];
+
     protected static function booted()
     {
         static::creating(function (GiftCard $card) {
@@ -59,6 +64,21 @@ class GiftCard extends Model
     public function hasExpired(): bool
     {
         return ! is_null($this->expired_at) && $this->expired_at->isPast();
+    }
+
+    public function state(): Attribute
+    {
+        return new Attribute(get: function () {
+            if ($this->hasUsed()) {
+                return 'used';
+            }
+
+            if ($this->hasExpired()) {
+                return 'expired';
+            }
+
+            return 'pending';
+        });
     }
 
     protected static function newFactory(): GiftCardFactory

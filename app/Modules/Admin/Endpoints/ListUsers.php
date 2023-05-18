@@ -9,6 +9,6 @@ class ListUsers
 {
     public function __invoke()
     {
-        return User::with(['referrer'])->paginate(15);
+        return tap(User::query()->with(['referrer'])->paginate(15), fn($resource) => $resource->makeVisible('phone_number'));
     }
 }

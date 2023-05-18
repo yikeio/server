@@ -17,6 +17,7 @@ class AdminRouteRegistrar
             'as' => 'admin.',
         ], function () {
             Route::get('prompts', Endpoints\ListPrompts::class);
+            Route::post('prompts', Endpoints\CreatePrompt::class);
             Route::get('users', Endpoints\ListUsers::class);
             Route::get('payments', Endpoints\ListPayments::class);
             Route::get('gift-cards', Endpoints\ListGiftCards::class);
