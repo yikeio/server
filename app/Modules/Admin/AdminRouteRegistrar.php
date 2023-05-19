@@ -4,6 +4,7 @@ namespace App\Modules\Admin;
 
 use App\Modules\Admin\Endpoints;
 use App\Modules\Admin\Middlewares\MustBeAdmin;
+use App\Modules\Auth\Endpoints\Redirect;
 use Illuminate\Support\Facades\Route;
 
 class AdminRouteRegistrar
@@ -11,8 +12,7 @@ class AdminRouteRegistrar
     static function all()
     {
         Route::group([
-//            'middleware' => ['api', 'auth:api', MustBeAdmin::class],
-            'middleware' => ['api'],
+            'middleware' => ['api', 'auth:api', MustBeAdmin::class],
             'prefix' => 'api/admin/',
             'as' => 'admin.',
         ], function () {

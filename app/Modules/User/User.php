@@ -143,6 +143,11 @@ class User extends Authenticatable
         return config('app.url').'/?referrer='.$this->referral_code;
     }
 
+    public function isAdmin(): bool
+    {
+        return !!$this->is_admin;
+    }
+
     public function getSetting(SettingKey $key): mixed
     {
         $value = $this->settings()->where('key', $key)->first(['value']);
@@ -166,7 +171,7 @@ class User extends Authenticatable
         return $this->only($this->safeFields);
     }
 
-    protected static function newFactory()
+protected static function newFactory()
     {
         return UserFactory::new();
     }

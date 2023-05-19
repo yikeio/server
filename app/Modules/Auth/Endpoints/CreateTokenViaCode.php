@@ -14,7 +14,7 @@ use Overtrue\Socialite\SocialiteManager;
 
 class CreateTokenViaCode extends Endpoint
 {
-    public function __invoke(CreateTokenViaCodeRequest $request)
+    public function __invoke(CreateTokenViaCodeRequest $request): array
     {
         /** @var StateManager $stateManager */
         $stateManager = app(StateManager::class);
