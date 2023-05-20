@@ -18,6 +18,9 @@ class GiftCardFactory extends Factory
             'expired_at' => now()->addYear(),
             'creator_id' => 1,
             'user_id' => random_int(0, 1) ? fn() => User::factory()->create()->id : 0,
+            'used_at' => [null, $this->faker->dateTimeBetween('-5 month', 'now')][random_int(0, 1)],
+            'created_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
 }

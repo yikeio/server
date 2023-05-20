@@ -31,7 +31,7 @@ class CreateTokenViaCode extends Endpoint
         try {
             $socialiteUser = $manager->create($driver)->userFromCode($request->input('code'));
         } catch (AuthorizeFailedException $e) {
-            abort(403, '授权失败');
+            abort(403, '授权失败: '.$e->getMessage());
         }
 
         $query = $socialiteUser->getEmail() ? ['email' => $socialiteUser->getEmail()] : ['platform' => $driver, 'open_id' => $socialiteUser->getId()];
@@ -43,14 +43,20 @@ class CreateTokenViaCode extends Endpoint
                 'name' => $socialiteUser->getName(),
                 'avatar' => $socialiteUser->getAvatar(),
                 'raw' => $socialiteUser->getRaw(),
+                'platform' => $driver,
+                'open_id' => $socialiteUser->getId(),
             ]);
 
-        $user = $profile->user ?? ($socialiteUser->getEmail() ? User::where('email', $socialiteUser->getEmail())->first() : new User());
+        $user = $profile->user ?? ($socialiteUser->getEmail() ? User::where('email', $socialiteUser->getEmail())->firstOrNew() : new User());
 
         $user->name ??= $profile->name;
         $user->email ??= $profile->email;
         $user->avatar ??= $profile->avatar;
-        $user->referral_code ??= Str::lower(Str::random(6));
+
+        if (!$user->id) {
+            $user->referral_code = Str::lower(Str::random(6));
+        }
+
         $user->save();
 
         if (empty($profile->user)) {

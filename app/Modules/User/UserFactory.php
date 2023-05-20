@@ -13,9 +13,13 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'phone_number' => '+86:1860000'.mt_rand(1000, 9999),
+            'phone_number' => '+86:186'.mt_rand(10000000, 99999999),
             'referral_code' => Str::lower(Str::random(6)),
             'state' => UserState::ACTIVATED,
+            'paid_total' => $this->faker->randomFloat(2, 0, 100000),
+            'referrals_count' => random_int(0, 10000),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 
