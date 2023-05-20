@@ -11,6 +11,7 @@ use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -87,6 +88,11 @@ class User extends Authenticatable
         });
     }
 
+    public function referrer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'referrer_id', 'id')->withTrashed();
+    }
+
     public function referrals(): HasMany
     {
         return $this->hasMany(User::class, 'referrer_id', 'id');
@@ -137,6 +143,11 @@ class User extends Authenticatable
         return config('app.url').'/?referrer='.$this->referral_code;
     }
 
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
+    }
+
     public function getSetting(SettingKey $key): mixed
     {
         $value = $this->settings()->where('key', $key)->first(['value']);
@@ -160,8 +171,8 @@ class User extends Authenticatable
         return $this->only($this->safeFields);
     }
 
-    protected static function newFactory()
-    {
-        return UserFactory::new();
-    }
+protected static function newFactory()
+{
+    return UserFactory::new();
+}
 }

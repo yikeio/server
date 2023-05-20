@@ -3,12 +3,17 @@
 namespace App\Modules\GiftCard;
 
 use App\Modules\Service\Snowflake\HasSnowflakes;
+use App\Modules\User\BelongsToCreator;
+use App\Modules\User\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * @property \Carbon\Carbon $expired_at
  * @property \Carbon\Carbon $used_at
+ * @property int            $creator_id
  * @property int            $user_id
  * @property int            $tokens_count
  * @property int            $days
@@ -18,6 +23,7 @@ class GiftCard extends Model
 {
     use HasSnowflakes;
     use HasFactory;
+    use BelongsToCreator;
 
     protected $fillable = [
         'name',
@@ -33,12 +39,21 @@ class GiftCard extends Model
         'expired_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'state',
+    ];
+
     protected static function booted()
     {
         static::creating(function (GiftCard $card) {
-            $card->code ??= \Illuminate\Support\Str::uuid()->toString();
+            $card->code ??= Str::uuid()->toString();
             $card->expired_at ??= now()->addYear();
         });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     public function hasUsed(): bool
@@ -49,6 +64,21 @@ class GiftCard extends Model
     public function hasExpired(): bool
     {
         return ! is_null($this->expired_at) && $this->expired_at->isPast();
+    }
+
+    public function state(): Attribute
+    {
+        return new Attribute(get: function () {
+            if ($this->hasUsed()) {
+                return 'used';
+            }
+
+            if ($this->hasExpired()) {
+                return 'expired';
+            }
+
+            return 'pending';
+        });
     }
 
     protected static function newFactory(): GiftCardFactory
