@@ -14,6 +14,8 @@ return [
         'client_id' => env('DASHBOARD_GITHUB_CLIENT_ID'),
         'client_secret' => env('DASHBOARD_GITHUB_CLIENT_SECRET'),
         'redirect' => env('DASHBOARD_GITHUB_REDIRECT_URI'),
+        'endpoint' => env('GITHUB_ENDPOINT'),
+        'token_endpoint' => env('GITHUB_TOKEN_ENDPOINT'),
     ],
 
     'google' => [
