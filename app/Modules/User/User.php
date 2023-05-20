@@ -145,7 +145,7 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return !!$this->is_admin;
+        return (bool) $this->is_admin;
     }
 
     public function getSetting(SettingKey $key): mixed
@@ -172,7 +172,7 @@ class User extends Authenticatable
     }
 
 protected static function newFactory()
-    {
-        return UserFactory::new();
-    }
+{
+    return UserFactory::new();
+}
 }

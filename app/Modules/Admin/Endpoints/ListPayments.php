@@ -3,8 +3,6 @@
 namespace App\Modules\Admin\Endpoints;
 
 use App\Modules\Payment\Payment;
-use App\Modules\Prompt\Prompt;
-use App\Modules\User\User;
 
 class ListPayments
 {

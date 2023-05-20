@@ -3,9 +3,6 @@
 namespace App\Modules\Admin\Endpoints;
 
 use App\Modules\GiftCard\GiftCard;
-use App\Modules\Payment\Payment;
-use App\Modules\Prompt\Prompt;
-use App\Modules\User\User;
 
 class ListGiftCards
 {

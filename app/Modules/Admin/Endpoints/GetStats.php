@@ -12,7 +12,7 @@ class GetStats
 {
     public function __invoke()
     {
-        return Cache::remember('stats', app()->isLocal() ? 0 : 3600 * 5, function(){
+        return Cache::remember('stats', app()->isLocal() ? 0 : 3600 * 5, function () {
             return [
                 'users' => [
                     'total' => User::count(),
@@ -79,7 +79,7 @@ class GetStats
                         return $conversation->created_at->format('Y-m-d');
                     })->map(function ($conversations) {
                         return $conversations->count();
-                    }))
+                    })),
                 ],
             ];
         });

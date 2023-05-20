@@ -53,7 +53,7 @@ class CreateTokenViaCode extends Endpoint
         $user->email ??= $profile->email;
         $user->avatar ??= $profile->avatar;
 
-        if (!$user->id) {
+        if (! $user->id) {
             $user->referral_code = Str::lower(Str::random(6));
         }
 
