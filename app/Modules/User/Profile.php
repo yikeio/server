@@ -21,6 +21,7 @@ class Profile extends Model
         'open_id',
         'nickname',
         'name',
+        'email',
         'avatar',
         'raw',
     ];
