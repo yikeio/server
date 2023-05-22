@@ -34,18 +34,28 @@ class CreateTokenViaCode extends Endpoint
             abort(403, '授权失败: '.$e->getMessage());
         }
 
-        $query = $socialiteUser->getEmail() ? ['email' => $socialiteUser->getEmail()] : ['platform' => $driver, 'open_id' => $socialiteUser->getId()];
-
-        /** @var Profile $profile */
+        // 按 open_id 和 email 查找用户
         $profile = Profile::query()
-            ->updateOrCreate($query, [
-                'nickname' => $socialiteUser->getNickname(),
-                'name' => $socialiteUser->getName(),
-                'avatar' => $socialiteUser->getAvatar(),
-                'raw' => $socialiteUser->getRaw(),
-                'platform' => $driver,
-                'open_id' => $socialiteUser->getId(),
-            ]);
+            ->where('platform', $driver)
+            ->where(function ($query) use ($socialiteUser) {
+                $query->where('open_id', $socialiteUser->getId())
+                    ->when($socialiteUser->getEmail(), function ($query, $email) {
+                        $query->orWhere('email', $email);
+                    });
+            })
+            ->firstOrNew();
+
+        if (!$profile->id) {
+            $profile->platform = $driver;
+            $profile->open_id = $socialiteUser->getId();
+            $profile->raw = $socialiteUser->getRaw();
+        }
+
+        $profile->nickname = $socialiteUser->getNickname();
+        $profile->name = $socialiteUser->getName();
+        $profile->avatar = $socialiteUser->getAvatar();
+        $profile->email = $socialiteUser->getEmail();
+        $profile->save();
 
         $user = $profile->user ?? ($socialiteUser->getEmail() ? User::where('email', $socialiteUser->getEmail())->firstOrNew() : new User());
 
