@@ -3,6 +3,7 @@
 namespace App\Modules\Admin\Endpoints;
 
 use App\Modules\Chat\Conversation;
+use App\Modules\Chat\Message;
 use App\Modules\Payment\Payment;
 use App\Modules\User\User;
 use Illuminate\Support\Collection;
@@ -81,6 +82,20 @@ class GetStats
                         return $conversations->count();
                     })),
                 ],
+
+                'messages' => [
+                    'total' => Message::count(),
+                    'today_total' => Message::whereDate('created_at', today())->count(),
+                    'last_month_total' => Message::where('created_at', '<=', today()->subMonth())->count(),
+                    'this_month_total' => Message::where('created_at', '>=', today()->subMonth())->count(),
+
+                    // 30 天每日新增消息数
+                    'recent_daily_count' => $this->padInDays(Message::where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($messages) {
+                        return $messages->created_at->format('Y-m-d');
+                    })->map(function ($conversations) {
+                        return $conversations->count();
+                    })),
+                ]
             ];
         });
     }

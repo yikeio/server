@@ -3,12 +3,13 @@
 namespace App\Modules\Admin\Endpoints;
 
 use App\Modules\Chat\Conversation;
+use App\Modules\Chat\Message;
 use Illuminate\Http\Request;
 
-class ListConversations
+class ListMessages
 {
     public function __invoke(Request $request)
     {
-        return Conversation::with('creator')->latest('created_at')->filter($request->query())->paginate(15);
+        return Message::with(['creator'])->filter($request->query())->latest('created_at')->paginate(15);
     }
 }

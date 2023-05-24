@@ -2,9 +2,11 @@
 
 namespace App\Modules\GiftCard;
 
+use App\Modules\GiftCard\Filters\GiftCardFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\BelongsToCreator;
 use App\Modules\User\User;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +25,7 @@ class GiftCard extends Model
 {
     use HasSnowflakes;
     use HasFactory;
+    use Filterable;
     use BelongsToCreator;
 
     protected $fillable = [
@@ -84,5 +87,10 @@ class GiftCard extends Model
     protected static function newFactory(): GiftCardFactory
     {
         return GiftCardFactory::new();
+    }
+
+    public function getModelFilterClass(): string
+    {
+        return GiftCardFilter::class;
     }
 }

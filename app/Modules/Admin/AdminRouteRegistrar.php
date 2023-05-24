@@ -21,6 +21,7 @@ class AdminRouteRegistrar
             Route::get('payments', Endpoints\ListPayments::class);
             Route::get('gift-cards', Endpoints\ListGiftCards::class);
             Route::get('conversations', Endpoints\ListConversations::class);
+            Route::get('messages', Endpoints\ListMessages::class);
 
             Route::patch('users/{user}', Endpoints\UpdateUser::class);
             Route::delete('users/{user}', Endpoints\DeleteUser::class);

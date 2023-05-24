@@ -10,6 +10,8 @@ use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
+use App\Modules\User\Filters\UserFilter;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,13 +25,14 @@ use Laravel\Passport\HasApiTokens;
 /**
  * @property UserState $state
  * @property int       $id
- * @property string     $referral_code
+ * @property string    $referral_code
  */
 class User extends Authenticatable
 {
     use HasSnowflakes;
     use HasApiTokens;
     use Notifiable;
+    use Filterable;
     use HasFactory;
     use SoftDeletes;
 
@@ -140,19 +143,19 @@ class User extends Authenticatable
 
     public function getReferralUrlAttribute(): string
     {
-        return config('app.url').'/?referrer='.$this->referral_code;
+        return config('app.url') . '/?referrer=' . $this->referral_code;
     }
 
     public function isAdmin(): bool
     {
-        return (bool) $this->is_admin;
+        return (bool)$this->is_admin;
     }
 
     public function getSetting(SettingKey $key): mixed
     {
         $value = $this->settings()->where('key', $key)->first(['value']);
 
-        return ! empty($value) ? $value->value : Arr::get(SettingKey::defaults(), $key->value);
+        return !empty($value) ? $value->value : Arr::get(SettingKey::defaults(), $key->value);
     }
 
     public function getAvailableQuota(): ?Quota
@@ -171,8 +174,13 @@ class User extends Authenticatable
         return $this->only($this->safeFields);
     }
 
-protected static function newFactory()
-{
-    return UserFactory::new();
-}
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
+
+    public function getModelFilterClass(): string
+    {
+        return UserFilter::class;
+    }
 }
