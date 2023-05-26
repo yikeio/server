@@ -14,6 +14,7 @@ class AdminRouteRegistrar
             'prefix' => 'api/admin/',
             'as' => 'admin.',
         ], function () {
+            Route::get('user', Endpoints\GetUser::class);
             Route::get('stats', Endpoints\GetStats::class);
             Route::get('prompts', Endpoints\ListPrompts::class);
             Route::post('prompts', Endpoints\CreatePrompt::class);
