@@ -68,4 +68,9 @@ class Quota extends Model
     {
         return (bool) $this->expired_at?->isPast();
     }
+
+    protected static function newFactory()
+    {
+        return QuotaFactory::new();
+    }
 }
