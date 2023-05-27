@@ -143,19 +143,19 @@ class User extends Authenticatable
 
     public function getReferralUrlAttribute(): string
     {
-        return config('app.url') . '/?referrer=' . $this->referral_code;
+        return config('app.url').'/?referrer='.$this->referral_code;
     }
 
     public function isAdmin(): bool
     {
-        return (bool)$this->is_admin;
+        return (bool) $this->is_admin;
     }
 
     public function getSetting(SettingKey $key): mixed
     {
         $value = $this->settings()->where('key', $key)->first(['value']);
 
-        return !empty($value) ? $value->value : Arr::get(SettingKey::defaults(), $key->value);
+        return ! empty($value) ? $value->value : Arr::get(SettingKey::defaults(), $key->value);
     }
 
     public function getAvailableQuota(): ?Quota

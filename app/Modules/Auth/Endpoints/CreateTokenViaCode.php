@@ -45,7 +45,7 @@ class CreateTokenViaCode extends Endpoint
             })
             ->firstOrNew();
 
-        if (!$profile->id) {
+        if (! $profile->id) {
             $profile->platform = $driver;
             $profile->open_id = $socialiteUser->getId();
             $profile->raw = $socialiteUser->getRaw();

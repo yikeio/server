@@ -10,16 +10,17 @@ class ActivateGiftCardTest extends TestCase
 {
     public function test_user_can_activate_gift_card()
     {
-        $giftCard = GiftCard::factory()->create([
+        $giftCard = GiftCard::factory()->unused()->create([
             'name' => '测试礼品卡',
-            'tokens_count' => 10,
-            'days' => 30,
         ]);
 
+        /** @var User $user */
         $user = User::factory()->create();
 
-        $this->actingAs($user)->postJson('/gift-cards:activate', [
+        $user->getAvailableQuota()->delete();
+
+        $this->actingAs($user)->postJson(route('gift-cards.activate'), [
             'code' => $giftCard->code,
-        ])->assertOk();
+        ])->dump()->assertOk();
     }
 }

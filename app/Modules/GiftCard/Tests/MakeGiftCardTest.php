@@ -8,7 +8,7 @@ class MakeGiftCardTest extends TestCase
 {
     public function test_system_can_create_gift_card()
     {
-        $this->artisan('make:gift-card', [
+        $this->artisan('yike:make-gift-card', [
             'name' => '好友礼品卡',
             '--tokens_count' => 10,
             '--days' => 30,

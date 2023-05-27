@@ -95,7 +95,7 @@ class GetStats
                     })->map(function ($conversations) {
                         return $conversations->count();
                     })),
-                ]
+                ],
             ];
         });
     }

@@ -20,7 +20,7 @@ class ActivateGiftCard
             'code' => 'required|string|size:36',
         ]);
 
-        if ((bool) $request->user()->getAvailableQuota()) {
+        if ($request->user()->getAvailableQuota()) {
             abort(403, '您还有可用的配额，无法激活礼品卡');
         }
 
