@@ -12,18 +12,19 @@ services:
   redis:
     image: redis:5.0
     container_name: yike-redis
+    command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - ./redis:/data
     restart: always
 
   server:
-    image: ccr.ccs.tencentyun.com/yike/server:1.5.0-testing
+    image: "ccr.ccs.tencentyun.com/yike/server:${DOCKER_SERVER_IMAGE_TAG}"
     container_name: yike-server
     volumes:
       - ./server/logs/app:/data/www/storage/logs
       - ./server/logs/nginx:/data/logs/nginx
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - redis
       - tokenizer
@@ -33,7 +34,7 @@ services:
     container_name: yike-tokenizer
 
   proxy:
-    image: ccr.ccs.tencentyun.com/yike/proxy:1.0.0
+    image: ccr.ccs.tencentyun.com/yike/proxy:1.0.1
     container_name: yike-proxy
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
