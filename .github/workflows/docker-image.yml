@@ -16,6 +16,12 @@ jobs:
     - name: Checkout Branch
       uses: actions/checkout@v3
       
+    - name: Composer Install
+      run: composer install --ignore-platform-reqs --optimize-autoloader --no-interaction --no-scripts
+      
+    - name: Copy Config
+      run: echo ${{ secrets.PRODUCTION_LARAVEL_ENV }} >> .env && cat .env
+      
     - name: Docker Login
       uses: docker/login-action@v2.1.0
       with:
