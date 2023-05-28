@@ -54,4 +54,4 @@ jobs:
           script: |
             cd yike
             cat docker_registry_password.txt | docker login ccr.ccs.tencentyun.com --username=${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
-            DOCKER_SERVER_IMAGE_TAG=${{ github.sha }} docker-compose up -d server
+            DOCKER_SERVER_IMAGE_TAG=${{ github.sha }} docker compose up -d server
