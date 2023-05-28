@@ -20,7 +20,7 @@ jobs:
         run: composer install --ignore-platform-reqs --optimize-autoloader --no-interaction --no-scripts
 
       - name: Copy Config
-        run: echo ${{ secrets.PRODUCTION_LARAVEL_ENV }} >> .env
+        run: cat > .env ${{ secrets.PRODUCTION_LARAVEL_ENV }}
 
       - name: Docker Login
         uses: docker/login-action@v2.1.0
