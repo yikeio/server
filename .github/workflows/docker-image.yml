@@ -13,27 +13,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Branch
-      uses: actions/checkout@v3
-      
-    - name: Composer Install
-      run: composer install --ignore-platform-reqs --optimize-autoloader --no-interaction --no-scripts
-      
-    - name: Copy Config
-      run: echo ${{ secrets.PRODUCTION_LARAVEL_ENV }} >> .env && cat .env
-      
-    - name: Docker Login
-      uses: docker/login-action@v2.1.0
-      with:
-        registry: ccr.ccs.tencentyun.com
-        username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-        password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-        ecr: auto
-        logout: true
-    
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4.0.0
-      with:
-        context: .
-        push: true
-        tags: ccr.ccs.tencentyun.com/yike/server:${{ github.sha }}
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+
+      - name: Composer Install
+        run: composer install --ignore-platform-reqs --optimize-autoloader --no-interaction --no-scripts
+
+      - name: Copy Config
+        run: echo ${{ secrets.PRODUCTION_LARAVEL_ENV }} >> .env && cat .env
+
+      - name: Docker Login
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ccr.ccs.tencentyun.com
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          ecr: auto
+          logout: true
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: true
+          tags: ccr.ccs.tencentyun.com/yike/server:${{ github.sha }}
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_USERNAME }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          port: ${{ secrets.PRODUCTION_PORT }}
+          script: |
+            whoami
+            ls -al
