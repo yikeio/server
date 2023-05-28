@@ -13,7 +13,7 @@ class TagRouterRegistrar
             'middleware' => ['api'],
             'prefix' => 'api/',
         ], function () {
-            Route::get('tags', ListTags::class)->name('tags.index')->middleware('throttle:60,1');
+            Route::get('tags', ListTags::class)->name('tags.index')->middleware('throttle:600,1');
         });
     }
 }

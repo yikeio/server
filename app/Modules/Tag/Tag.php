@@ -30,6 +30,10 @@ class Tag extends Model
         'sort_order',
     ];
 
+    protected $casts = [
+        'id' => 'string',
+    ];
+
     public function prompts(): MorphToMany
     {
         return $this->morphedByMany(Prompt::class, 'taggable');

@@ -46,6 +46,7 @@ class Prompt extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
         'settings' => 'array',
     ];
 

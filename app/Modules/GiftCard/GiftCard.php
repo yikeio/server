@@ -38,6 +38,7 @@ class GiftCard extends Model
     ];
 
     protected $casts = [
+        'id' => 'string',
         'used_at' => 'datetime',
         'expired_at' => 'datetime',
     ];
