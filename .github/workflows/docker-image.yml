@@ -34,5 +34,6 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v4.0.0
       with:
+        context: .
         push: true
         tags: ccr.ccs.tencentyun.com/yike/server:${{ github.sha }}
