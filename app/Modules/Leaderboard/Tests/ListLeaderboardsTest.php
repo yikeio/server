@@ -19,8 +19,6 @@ class ListLeaderboardsTest extends TestCase
         $this->actingAs($user)
             ->getJson('/api/leaderboards')
             ->assertSuccessful()
-            ->assertJsonStructure([
-                'referrers',
-            ]);
+            ->assertJsonCount(2);
     }
 }

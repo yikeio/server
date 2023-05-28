@@ -9,7 +9,7 @@ class GiftCardFactory extends Factory
 {
     protected $model = GiftCard::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name,
@@ -22,5 +22,28 @@ class GiftCardFactory extends Factory
             'created_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
+    }
+
+    public function expired(): GiftCardFactory
+    {
+        return $this->state([
+            'expired_at' => now()->subYear(),
+        ]);
+    }
+
+    public function used(User $user): GiftCardFactory
+    {
+        return $this->state([
+            'user_id' => $user->id,
+            'used_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
+        ]);
+    }
+
+    public function unused(): GiftCardFactory
+    {
+        return $this->state([
+            'user_id' => 0,
+            'used_at' => null,
+        ]);
     }
 }

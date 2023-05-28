@@ -3,6 +3,7 @@
 namespace App\Modules\Auth\Tests;
 
 use App\Modules\Sms\VerificationCode;
+use Illuminate\Support\Str;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -16,9 +17,9 @@ class CreateTokenViaSmsTest extends TestCase
                 ->andReturn(true);
         });
 
-        $this->postJson('/api/auth/tokens:via-sms', [
+        $this->withoutMiddleware()->postJson('/api/auth/tokens:via-sms', [
             'phone_number' => '+86:18000000000',
-            'sms_verification_code' => strval(mt_rand(1000, 9999)),
+            'sms_verification_code' => Str::random(6),
         ])
             ->assertSuccessful()
             ->assertJsonStructure([

@@ -211,6 +211,7 @@ return [
         \App\Modules\Leaderboard\LeaderboardServiceProvider::class,
         \App\Modules\GiftCard\GiftCardServiceProvider::class,
         \App\Modules\Prompt\PromptServiceProvider::class,
+        \App\Modules\Tag\TagServiceProvider::class,
         \App\Modules\Admin\AdminServiceProvider::class,
         \App\Modules\Service\Socialite\SocialiteServiceProvider::class,
 

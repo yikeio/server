@@ -4,14 +4,13 @@ namespace App\Modules\Chat;
 
 use App\Modules\Chat\Enums\MessageRole;
 use App\Modules\Quota\Quota;
-use App\Modules\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MessageFactory extends Factory
 {
     public function definition(): array
     {
-        $content =  $this->faker->text;
+        $content = $this->faker->text;
         $conversation = Conversation::query()->inRandomOrder()->first() ?? Conversation::factory()->create();
 
         return [

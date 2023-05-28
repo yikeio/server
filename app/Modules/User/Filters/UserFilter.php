@@ -21,7 +21,7 @@ class UserFilter extends ModelFilter
         if (empty(trim($keywords))) {
             return $this;
         }
-        
+
         return $this->where(function ($query) use ($keywords) {
             $query->where('name', 'like', "%{$keywords}%")
                 ->orWhere('phone_number', 'like', "%{$keywords}%")

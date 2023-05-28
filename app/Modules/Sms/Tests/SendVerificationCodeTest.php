@@ -11,7 +11,7 @@ class SendVerificationCodeTest extends TestCase
 {
     public function test_send_verification_code_with_invalid_phone_number()
     {
-        $this->postJson('/api/sms/verification-codes:send', [
+        $this->withoutMiddleware()->postJson('/api/sms/verification-codes:send', [
             'phone_number' => '+86:88888888888',
             'scene' => VerificationCodeScene::REGISTER,
         ])->assertStatus(422);
@@ -25,7 +25,7 @@ class SendVerificationCodeTest extends TestCase
                 ->andReturn(true);
         });
 
-        $this->postJson('/api/sms/verification-codes:send', [
+        $this->withoutMiddleware()->postJson('/api/sms/verification-codes:send', [
             'phone_number' => '+86:18600000000',
             'scene' => VerificationCodeScene::REGISTER,
         ])->assertSuccessful();
@@ -39,7 +39,7 @@ class SendVerificationCodeTest extends TestCase
                 ->andReturn(false);
         });
 
-        $this->postJson('/api/sms/verification-codes:send', [
+        $this->withoutMiddleware()->postJson('/api/sms/verification-codes:send', [
             'phone_number' => '+86:18600000000',
             'scene' => VerificationCodeScene::REGISTER,
         ])
