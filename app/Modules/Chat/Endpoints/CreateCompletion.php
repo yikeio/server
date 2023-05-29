@@ -51,11 +51,15 @@ class CreateCompletion extends Endpoint
             ->toArray();
 
         // 消息体头部插入提示词
-        if (! empty($conversation->prompt?->prompt_en)) {
-            array_unshift($messages, [
-                'role' => MessageRole::SYSTEM->value,
-                'content' => $conversation->prompt->prompt_en,
-            ]);
+        if ($conversation->prompt) {
+            $prompt = $conversation->prompt->prompt_en ?: $conversation->prompt->prompt_cn;
+
+            if ($prompt) {
+                array_unshift($messages, [
+                    'role' => MessageRole::SYSTEM->value,
+                    'content' => $prompt,
+                ]);
+            }
         }
 
         if (! empty($messages)) {
