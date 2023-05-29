@@ -50,6 +50,14 @@ class CreateCompletion extends Endpoint
             ->get(['role', 'content'])
             ->toArray();
 
+        // 消息体头部插入提示词
+        if (! empty($conversation->prompt?->prompt_en)) {
+            array_unshift($messages, [
+                'role' => MessageRole::SYSTEM->value,
+                'content' => $conversation->prompt->prompt_en,
+            ]);
+        }
+
         if (! empty($messages)) {
             if ($tokenizer->predict($messages) >= config('openai.chat.max_tokens', 4096)) {
                 abort(422, '附带历史消息长度超过限制，请降低附带历史消息数量或者新建聊天窗口');
