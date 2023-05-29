@@ -23,9 +23,14 @@ class AdminRouteRegistrar
             Route::get('gift-cards', Endpoints\ListGiftCards::class);
             Route::get('conversations', Endpoints\ListConversations::class);
             Route::get('messages', Endpoints\ListMessages::class);
+            Route::get('tags', Endpoints\ListTags::class);
 
             Route::patch('users/{user}', Endpoints\UpdateUser::class);
             Route::delete('users/{user}', Endpoints\DeleteUser::class);
+
+            Route::post('tags', Endpoints\CreateTag::class);
+            Route::patch('tags/{tag}', Endpoints\UpdateTag::class);
+            Route::delete('tags/{tag}', Endpoints\DeleteTag::class);
 
             Route::patch('prompts/{prompt}', Endpoints\UpdatePrompt::class);
             Route::delete('prompts/{prompt}', Endpoints\DeletePrompt::class);
