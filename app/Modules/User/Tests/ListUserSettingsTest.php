@@ -12,7 +12,7 @@ class ListUserSettingsTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->getJson("/api/users/{$user->id}/settings")
+            ->getJson("/api/settings")
             ->assertSuccessful();
     }
 }
