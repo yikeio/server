@@ -35,29 +35,29 @@ class ListPromptsTest extends TestCase
         $this->getJson(route('prompts.index', ['tag' => $tag1->id]))
             ->assertOk()
             ->assertJsonCount(2, 'data')
-            ->assertJsonFragment(['id' => (int) $prompt1->id])
-            ->assertJsonFragment(['id' => (int) $prompt3->id]);
+            ->assertJsonFragment(['id' => $prompt1->id])
+            ->assertJsonFragment(['id' => $prompt3->id]);
 
         // Filter by tag2: $prompt2, $prompt3
         $this->getJson(route('prompts.index', ['tag' => $tag2->id]))
             ->assertOk()
             ->assertJsonCount(2, 'data')
-            ->assertJsonFragment(['id' => (int) $prompt2->id])
-            ->assertJsonFragment(['id' => (int) $prompt3->id]);
+            ->assertJsonFragment(['id' => $prompt2->id])
+            ->assertJsonFragment(['id' => $prompt3->id]);
 
         // Filter by tag3: $prompt2, $prompt3
         $this->getJson(route('prompts.index', ['tag' => $tag3->id]))
             ->assertOk()
             ->assertJsonCount(2, 'data')
-            ->assertJsonFragment(['id' => (int) $prompt2->id])
-            ->assertJsonFragment(['id' => (int) $prompt3->id]);
+            ->assertJsonFragment(['id' => $prompt2->id])
+            ->assertJsonFragment(['id' => $prompt3->id]);
 
         // Filter by tag1, tag2: $prompt1, $prompt2, $prompt3
         $this->getJson(route('prompts.index', ['tag' => [$tag1->id, $tag2->id]]))
             ->assertOk()
             ->assertJsonCount(3, 'data')
-            ->assertJsonFragment(['id' => (int) $prompt1->id])
-            ->assertJsonFragment(['id' => (int) $prompt2->id])
-            ->assertJsonFragment(['id' => (int) $prompt3->id]);
+            ->assertJsonFragment(['id' => $prompt1->id])
+            ->assertJsonFragment(['id' => $prompt2->id])
+            ->assertJsonFragment(['id' => $prompt3->id]);
     }
 }

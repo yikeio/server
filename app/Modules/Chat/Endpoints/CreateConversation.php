@@ -16,6 +16,7 @@ class CreateConversation extends Endpoint
 
         $conversation = new Conversation();
         $conversation->title = $request->input('title');
+        $conversation->prompt_id = $request->input('prompt_id') ?: 0;
         $user->conversations()->save($conversation);
 
         return $conversation;
