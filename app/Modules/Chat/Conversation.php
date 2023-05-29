@@ -46,7 +46,7 @@ class Conversation extends Model
 
     public function prompt(): BelongsTo
     {
-        return $this->belongsTo(Prompt::class, 'prompt_id', 'id');
+        return $this->belongsTo(Prompt::class, 'prompt_id', 'id')->withTrashed();
     }
 
     protected static function newFactory(): ConversationFactory

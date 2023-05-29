@@ -11,6 +11,8 @@ class GetConversation
     {
         abort_if($conversation->creator_id !== $request->user()->id, 403);
 
+        $conversation->loadMissing('prompt');
+
         return $conversation;
     }
 }
