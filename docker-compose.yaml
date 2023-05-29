@@ -21,7 +21,7 @@ services:
     image: "ccr.ccs.tencentyun.com/yike/server:${DOCKER_SERVER_IMAGE_TAG}"
     container_name: yike-server
     environment:
-      AUTO_MIGRATION="yes"
+      - AUTO_MIGRATION="yes"
     volumes:
       - ./server/logs/app:/data/www/storage/logs
       - ./server/logs/nginx:/data/logs/nginx
