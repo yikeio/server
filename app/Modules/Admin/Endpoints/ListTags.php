@@ -2,7 +2,6 @@
 
 namespace App\Modules\Admin\Endpoints;
 
-use App\Modules\Chat\Conversation;
 use App\Modules\Tag\Tag;
 use Illuminate\Http\Request;
 
