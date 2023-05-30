@@ -150,6 +150,7 @@ class CreateCompletion extends Endpoint
         }, 200, [
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
+            'Content-Type' => 'text/plain; charset=utf-8',
         ]);
     }
 }
