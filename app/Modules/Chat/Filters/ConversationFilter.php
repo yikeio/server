@@ -11,6 +11,11 @@ class ConversationFilter extends ModelFilter
 
     public $relations = [];
 
+    protected function prompt($promptId): ConversationFilter
+    {
+        return $this->where('prompt_id', $promptId);
+    }
+
     protected function getSortableFields(): array
     {
         return ['id', 'last_active_at'];
