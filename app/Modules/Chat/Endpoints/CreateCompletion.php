@@ -8,6 +8,7 @@ use App\Modules\Chat\Jobs\SummarizeConversation;
 use App\Modules\Chat\Message;
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\Security\Actions\EncryptString;
+use App\Modules\Service\OpenAI\FakeClient;
 use App\Modules\Service\OpenAI\Tokenizer;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\User;
@@ -95,7 +96,7 @@ class CreateCompletion extends Endpoint
         $completion->conversation_id = $conversation->id;
         $completion->quota_id = $quota->id;
 
-        return response()->stream(function () use ($stream, $messages, $completion, $tokenizer, $conversation) {
+        return response()->stream(function () use ($client, $stream, $messages, $completion, $tokenizer, $conversation) {
             $contents = [];
 
             $choices = [];
@@ -119,6 +120,11 @@ class CreateCompletion extends Endpoint
 
                 // 流式返回数据
                 echo $choice->delta->content;
+
+                if ($client instanceof FakeClient) {
+                    usleep(10000);
+                }
+
                 if (ob_get_level() > 0) {
                     ob_flush();
                 }
