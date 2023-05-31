@@ -27,7 +27,7 @@ class UserRouteRegistrar
         ], function () {
             Route::get('/settings', ListSettings::class)->middleware('throttle:120,1');
             Route::get('/referrals', ListReferrals::class)->middleware('throttle:120,1');
-            Route::get('/payments',  ListPayments::class)->middleware('throttle:120,1');
+            Route::get('/payments', ListPayments::class)->middleware('throttle:120,1');
 
             Route::put('/settings/{key}', UpdateSetting::class)->middleware('throttle:60,1');
             Route::post('/users/{user}:activate', ActivateUser::class)->middleware('throttle:60,1');

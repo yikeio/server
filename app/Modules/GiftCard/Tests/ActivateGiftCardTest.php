@@ -3,7 +3,6 @@
 namespace App\Modules\GiftCard\Tests;
 
 use App\Modules\GiftCard\GiftCard;
-use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\User\User;
 use Tests\TestCase;
 
@@ -18,7 +17,7 @@ class ActivateGiftCardTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $this->actingAs($user)->postJson('/gift-cards:activate', [
+        $this->actingAs($user)->postJson('/api/gift-cards:activate', [
             'code' => $giftCard->code,
         ])->assertOk();
     }

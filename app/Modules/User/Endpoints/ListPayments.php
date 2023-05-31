@@ -3,7 +3,6 @@
 namespace App\Modules\User\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\User\User;
 use Illuminate\Http\Request;
 
 class ListPayments extends Endpoint
