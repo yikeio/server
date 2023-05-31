@@ -17,7 +17,7 @@ class ListUserReferralsTest extends TestCase
         RefreshUserReferrer::run($referral, $user);
 
         $this->actingAs($user)
-            ->getJson("/api/referrals")
+            ->getJson('/api/referrals')
             ->assertJsonCount(1);
     }
 }

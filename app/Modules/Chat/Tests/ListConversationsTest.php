@@ -37,7 +37,7 @@ class ListConversationsTest extends TestCase
         /** @var User $anotherUser */
         $anotherUser = User::factory()->create();
 
-        $prompt= Prompt::factory()->create(['creator_id' => $user->id]);
+        $prompt = Prompt::factory()->create(['creator_id' => $user->id]);
 
         /** @var Conversation $conversation */
         $conversation1 = Conversation::factory()->create(['creator_id' => $user->id]);

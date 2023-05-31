@@ -6,7 +6,6 @@ use App\Modules\Chat\Enums\MessageRole;
 use Faker\Generator;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Log;
 use OpenAI\Responses\Chat\CreateStreamedResponse;
 use OpenAI\Responses\StreamResponse;
 
@@ -65,7 +64,7 @@ class FakeClient
             ],
         ]);
 
-        $file = tempnam(sys_get_temp_dir(), uniqid('chat-response-', true) . '.json');
+        $file = tempnam(sys_get_temp_dir(), uniqid('chat-response-', true).'.json');
         file_put_contents($file, json_encode($response));
         $resource = fopen($file, 'r+');
         $stream = Psr17FactoryDiscovery::findStreamFactory()

@@ -20,7 +20,7 @@ class ListUserPaymentsTest extends TestCase
         ]);
 
         $this->actingAs($user)
-            ->getJson("/api/payments")
+            ->getJson('/api/payments')
             ->assertSuccessful()
             ->assertJsonCount(1);
     }

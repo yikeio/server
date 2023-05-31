@@ -9,6 +9,7 @@ use App\Modules\Chat\Endpoints\DeleteConversation;
 use App\Modules\Chat\Endpoints\GetConversation;
 use App\Modules\Chat\Endpoints\ListConversationMessages;
 use App\Modules\Chat\Endpoints\ListConversations;
+use App\Modules\Chat\Endpoints\TruncateConversation;
 use App\Modules\Chat\Endpoints\UpdateConversation;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ class ChatRouteRegistrar
             Route::get('/conversations/{conversation}/messages', ListConversationMessages::class)->middleware('throttle:120,1');
             Route::delete('/conversations/{conversation}', DeleteConversation::class)->middleware('throttle:60,1');
             Route::put('/conversations/{conversation}', UpdateConversation::class)->middleware('throttle:60,1');
+            Route::post('/conversations/{conversation}:truncate', TruncateConversation::class)->middleware('throttle:30,1');
 
             Route::group([
                 'middleware' => ['quota.check:chat'],
