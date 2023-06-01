@@ -17,10 +17,8 @@ class ActivateGiftCardTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $user->getAvailableQuota()->delete();
-
-        $this->actingAs($user)->postJson(route('gift-cards.activate'), [
+        $this->actingAs($user)->postJson('/api/gift-cards:activate', [
             'code' => $giftCard->code,
-        ])->dump()->assertOk();
+        ])->assertOk();
     }
 }

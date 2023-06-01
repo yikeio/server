@@ -30,7 +30,7 @@ class RefreshQuota implements ShouldQueue
 
         $this->quota->used_tokens_count = $usedTokensCount;
         $availableTokensCount = $this->quota->tokens_count - $usedTokensCount;
-        $this->quota->is_available = $availableTokensCount > 0 && ! $this->quota->isExpired();
+        // TODO 变更状态
         $this->quota->save();
     }
 }

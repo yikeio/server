@@ -16,8 +16,6 @@ class ProcessPaymentTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $user->quotas()->update(['is_available' => false]);
-
         /** @var Payment $payment */
         $payment = Payment::factory()->create([
             'creator_id' => $user->id,
@@ -52,6 +50,5 @@ class ProcessPaymentTest extends TestCase
         $this->assertTrue($payment->fresh()->state->isPaid());
 
         $this->assertCount(2, $user->quotas()->get());
-        $this->assertCount(1, $user->quotas()->where('is_available', true)->get());
     }
 }

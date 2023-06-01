@@ -12,6 +12,6 @@ class ListUserQuotas extends Endpoint
     {
         $this->authorize('get', $user);
 
-        return $user->quotas()->orderByDesc('id')->get();
+        return $user->quotas()->filter($request->query())->get();
     }
 }

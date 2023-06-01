@@ -5,6 +5,7 @@ namespace App\Modules\User;
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Message;
 use App\Modules\Payment\Payment;
+use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\Quota\Quota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
@@ -158,12 +159,11 @@ class User extends Authenticatable
         return ! empty($value) ? $value->value : Arr::get(SettingKey::defaults(), $key->value);
     }
 
-    public function getAvailableQuota(): ?Quota
+    public function getUsingQuota(): ?Quota
     {
         /** @var Quota $quota */
         $quota = $this->quotas()
-            ->where('is_available', true)
-            ->orderByDesc('id')
+            ->where('state', QuotaState::USING)
             ->first();
 
         return $quota;

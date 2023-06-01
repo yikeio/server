@@ -37,10 +37,6 @@ class UserFactory extends Factory
             return [
                 'state' => UserState::UNACTIVATED,
             ];
-        })->afterCreating(function (User $user) {
-            $user->getAvailableQuota()->update([
-                'is_available' => false,
-            ]);
         });
     }
 

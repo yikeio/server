@@ -2,21 +2,13 @@
 
 namespace App\Modules\Chat;
 
-use App\Modules\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ConversationFactory extends Factory
 {
     public function definition(): array
     {
-        if (User::count() > 10) {
-            $creator = User::inRandomOrder()->first();
-        } else {
-            $creator = User::factory()->create();
-        }
-
         return [
-            'creator_id' => $creator->id,
             'title' => $this->faker->title,
             'messages_count' => random_int(0, 6000),
             'tokens_count' => random_int(1000, 100000),
@@ -27,7 +19,7 @@ class ConversationFactory extends Factory
         ];
     }
 
-    public function modelName()
+    public function modelName(): string
     {
         return Conversation::class;
     }

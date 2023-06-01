@@ -4,6 +4,7 @@ namespace App\Modules\GiftCard\Endpoints;
 
 use App\Modules\GiftCard\Actions\AssignGiftCardToUser;
 use App\Modules\GiftCard\GiftCard;
+use App\Modules\User\User;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 
@@ -20,13 +21,12 @@ class ActivateGiftCard
             'code' => 'required|string|size:36',
         ]);
 
-        if ($request->user()->getAvailableQuota()) {
-            abort(403, '您还有可用的配额，无法激活礼品卡');
-        }
+        /** @var User $user */
+        $user = $request->user();
 
-        $giftCard = GiftCard::where('code', $request->input('code'))->firstOrFail();
+        $giftCard = GiftCard::query()->where($request->only('code'))->firstOrFail();
 
-        AssignGiftCardToUser::run($giftCard, $request->user());
+        AssignGiftCardToUser::run($giftCard, $user);
 
         return $giftCard->refresh();
     }
