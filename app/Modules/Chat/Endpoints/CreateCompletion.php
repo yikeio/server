@@ -122,7 +122,7 @@ class CreateCompletion extends Endpoint
                 echo $choice->delta->content;
 
                 if ($client instanceof FakeClient) {
-                    usleep(10000);
+                    usleep(random_int(1000, 80000));
                 }
 
                 if (ob_get_level() > 0) {
