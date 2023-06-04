@@ -2,6 +2,7 @@
 
 namespace App\Modules\Chat;
 
+use App\Modules\Chat\Endpoints\AbortCompletion;
 use App\Modules\Chat\Endpoints\CreateCompletion;
 use App\Modules\Chat\Endpoints\CreateConversation;
 use App\Modules\Chat\Endpoints\CreateMessage;
@@ -34,6 +35,7 @@ class ChatRouteRegistrar
                 Route::post('/conversations', CreateConversation::class)->middleware('throttle:30,1');
                 Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:120,1');
                 Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:60,1');
+                Route::post('/conversations/{conversation}/completions:abort', AbortCompletion::class)->middleware('throttle:60,1');
             });
         });
     }

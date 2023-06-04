@@ -95,6 +95,7 @@ class CreateCompletion extends Endpoint
         $completion->role = MessageRole::ASSISTANT;
         $completion->conversation_id = $conversation->id;
         $completion->quota_id = $quota->id;
+        $completion->save();
 
         return response()->stream(function () use ($client, $stream, $messages, $completion, $tokenizer, $conversation) {
             $contents = [];
@@ -154,6 +155,7 @@ class CreateCompletion extends Endpoint
                 SummarizeConversation::dispatch($conversation);
             }
         }, 200, [
+            'X-Message-Id' => $completion->id,
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
         ]);
