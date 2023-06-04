@@ -10,13 +10,15 @@ class ListUserPrompts
 {
     public function __invoke(Request $request): Paginator
     {
+        $user = $request->user();
+
         return Prompt::query()
-            ->where(function($query) use ($request) {
+            ->where(function($query) use ($user) {
                 // 用户创建的
-                $query->where('creator_id', $request->user()->id)
+                $query->where('creator_id', $user->id)
                     // 或者用户用过的
-                    ->orWhereHas('conversations', function($query) use ($request) {
-                        $query->where('user_id', $request->user()->id);
+                    ->orWhereHas('conversations', function($query) use ($user) {
+                        $query->where('creator_id', $user->id);
                     });
             })
             ->withCount('conversations')
@@ -24,6 +26,6 @@ class ListUserPrompts
             ->orderByDesc('sort_order')
             ->take(100)
             ->filter($request->query())
-            ->get();
+            ->simplePaginate(100);
     }
 }

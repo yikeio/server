@@ -16,6 +16,6 @@ class ListFeaturedPrompts
             ->orderByDesc('sort_order')
             ->take(100)
             ->filter($request->query())
-            ->get();
+            ->simplePaginate(100);
     }
 }
