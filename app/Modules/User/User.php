@@ -5,6 +5,7 @@ namespace App\Modules\User;
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Message;
 use App\Modules\Payment\Payment;
+use App\Modules\Prompt\Prompt;
 use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\Quota\Quota;
 use App\Modules\Service\Snowflake\HasSnowflakes;
@@ -115,6 +116,11 @@ class User extends Authenticatable
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'creator_id', 'id');
+    }
+
+    public function prompts(): HasMany
+    {
+        return $this->hasMany(Prompt::class, 'creator_id', 'id');
     }
 
     public function quotas(): HasMany

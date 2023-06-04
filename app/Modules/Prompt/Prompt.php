@@ -2,12 +2,15 @@
 
 namespace App\Modules\Prompt;
 
+use App\Modules\Chat\Conversation;
 use App\Modules\Prompt\Filters\PromptFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\Tag\Tag;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -25,8 +28,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string                                        $updated_at
  * @property \Illuminate\Database\Eloquent\Collection<Tag> $tags
  * @property int                                           $tags_count
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Prompt filter(array $input = [], $filter = null)
+ * @property int                                           $creator_id
+ * @method static Builder|Prompt filter(array $input = [], $filter = null)
  */
 class Prompt extends Model
 {
@@ -53,6 +56,11 @@ class Prompt extends Model
     public function tags(): MorphToMany
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class);
     }
 
     protected static function newFactory(): PromptFactory

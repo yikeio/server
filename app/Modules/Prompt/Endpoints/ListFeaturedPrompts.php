@@ -6,15 +6,16 @@ use App\Modules\Prompt\Prompt;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Request;
 
-class ListPrompts
+class ListFeaturedPrompts
 {
     public function __invoke(Request $request): Paginator
     {
         return Prompt::query()
             ->withCount('conversations')
+            ->orderByDesc('conversations_count')
             ->orderByDesc('sort_order')
-            ->orderByDesc('created_at')
+            ->take(100)
             ->filter($request->query())
-            ->simplePaginate(100);
+            ->get();
     }
 }

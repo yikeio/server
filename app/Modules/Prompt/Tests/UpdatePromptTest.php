@@ -5,9 +5,9 @@ use App\Modules\Tag\Tag;
 use App\Modules\User\User;
 use Tests\TestCase;
 
-class CreatePromptTest extends TestCase
+class UpdatePromptTest extends TestCase
 {
-    public function test_create_prompt()
+    public function test_update_prompt()
     {
         $user = User::factory()->create();
         $tag1 = Tag::factory()->create();
@@ -16,20 +16,22 @@ class CreatePromptTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->postJson(route('prompts.store'), [
+        $prompt = Prompt::factory()->create([
+            'creator_id' => $user->id,
+        ]);
+
+        $response = $this->patchJson(route('prompts.update', $prompt->id), [
             'name' => 'test',
             'description' => 'description here',
-            'logo' => 'logo here',
             'prompt_cn' => 'cn here',
             'prompt_en' => 'en here',
             'tags' => [$tag1->id, $tag2->id],
         ]);
 
-        $response->assertStatus(201);
+        $response->assertSuccessful();
         $this->assertDatabaseHas('prompts', [
             'name' => 'test',
             'description' => 'description here',
-            'logo' => 'logo here',
             'prompt_cn' => 'cn here',
             'prompt_en' => 'en here',
         ]);
@@ -43,21 +45,14 @@ class CreatePromptTest extends TestCase
             'taggable_id' => Prompt::first()->id,
             'tag_id' => $tag2->id,
         ]);
-    }
 
-    public function test_prompt_has_tags()
-    {
-        /** @var Prompt $prompt */
-        $prompt = Prompt::factory()->create();
-
-        $this->assertEmpty($prompt->tags);
-
-        $tag1 = Tag::factory()->create();
-        $tag2 = Tag::factory()->create();
-        $tag3 = Tag::factory()->create();
-
-        $prompt->tags()->sync([$tag1->id, $tag2->id]);
-
-        $this->assertCount(2, $prompt->fresh()->tags);
+        // cannot use same name
+        $prompt2 = Prompt::factory()->create([
+            'creator_id' => $user->id,
+        ]);
+        $response = $this->patchJson(route('prompts.update', $prompt2->id), [
+            'name' => 'test', // same name with $prompt
+        ]);
+        $response->assertBadRequest();
     }
 }
