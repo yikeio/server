@@ -119,11 +119,16 @@ class CreateCompletion extends Endpoint
 
                 $contents[] = $choice->delta->content;
 
+                $completion->content = implode('', array_filter($contents));
+                $usage = $tokenizer->predictUsage($messages, $completion->content);
+                $completion->tokens_count = $usage['tokens_count'] ?? 0;
+                $completion->save();
+
                 // 流式返回数据
                 echo $choice->delta->content;
 
                 if ($client instanceof FakeClient) {
-                    usleep(10000);
+                    usleep(random_int(1000, 9000));
                 }
 
                 if (ob_get_level() > 0) {
@@ -132,18 +137,13 @@ class CreateCompletion extends Endpoint
                 flush();
             }
 
-            $content = implode('', array_filter($contents));
-
             if (empty($response)) {
                 $raws = [];
             } else {
                 $raws = $response->toArray();
             }
 
-            $usage = $tokenizer->predictUsage($messages, $content);
-
-            $completion->tokens_count = $usage['tokens_count'] ?? 0;
-            $completion->content = $content;
+            $usage = $tokenizer->predictUsage($messages, $completion->content);
             $completion->raw = [
                 ...$raws,
                 'choices' => $choices,

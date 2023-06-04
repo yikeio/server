@@ -3,21 +3,18 @@
 namespace App\Modules\User\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\User\User;
 use Illuminate\Http\Request;
 
 class GetUserQuota extends Endpoint
 {
-    public function __invoke(Request $request, User $user)
+    public function __invoke(Request $request)
     {
-        $this->authorize('get', $user);
-
-        $quota = $user->getAvailableQuota();
+        $quota = $request->user()->getAvailableQuota();
 
         if (! empty($quota)) {
             return $quota;
         }
 
-        return $user->quotas()->orderByDesc('id')->firstOrNew();
+        return $request->user()->quotas()->orderByDesc('id')->firstOrNew();
     }
 }

@@ -12,9 +12,12 @@ use Illuminate\Support\Str;
 
 class ActivateUser extends Endpoint
 {
-    public function __invoke(ActivateUserRequest $request, User $user)
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function __invoke(ActivateUserRequest $request)
     {
-        $this->authorize('update', $user);
+        $user = $request->user();
 
         if (! $user->state->unactivated()) {
             abort(403, '您已经激活过了');

@@ -3,6 +3,7 @@
 namespace App\Modules\Quota;
 
 use App\Modules\Quota\Endpoints\ListPricings;
+use App\Modules\Quota\Endpoints\ListQuotas;
 use Illuminate\Support\Facades\Route;
 
 class QuotaRouteRegistrar
@@ -14,6 +15,12 @@ class QuotaRouteRegistrar
             'prefix' => 'api',
         ], function () {
             Route::get('/pricings', ListPricings::class)->middleware('throttle:120,1');
+
+            Route::group([
+                'middleware' => ['auth'],
+            ], function () {
+                Route::get('/quotas', ListQuotas::class)->middleware('throttle:120,1');
+            });
         });
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\User\Endpoints;
+namespace App\Modules\Payment\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
 use Illuminate\Http\Request;

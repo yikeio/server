@@ -13,7 +13,7 @@ class ActivateUserTest extends TestCase
         $user = User::factory()->unactivated()->create();
 
         $this->actingAs($user)
-            ->postJson("/api/users/$user->id:activate", [
+            ->postJson('/api/user:activate', [
                 'referral_code' => $referrer->referral_code,
             ])
             ->assertSuccessful()

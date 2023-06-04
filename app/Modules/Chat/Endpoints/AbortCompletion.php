@@ -4,9 +4,7 @@ namespace App\Modules\Chat\Endpoints;
 
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
-use App\Modules\Chat\Requests\CreateConversationRequest;
 use App\Modules\Common\Endpoints\Endpoint;
-use App\Modules\User\User;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -28,7 +26,7 @@ class AbortCompletion extends Endpoint
 
         $message = $conversation->messages()->where('role', MessageRole::ASSISTANT)->first();
 
-        if (!$message) {
+        if (! $message) {
             abort(404, '没有找到对应的消息');
         }
 

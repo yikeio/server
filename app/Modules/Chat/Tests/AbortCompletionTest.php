@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
 use App\Modules\Chat\Message;
@@ -24,12 +23,11 @@ class AbortCompletionTest extends TestCase
             ])
             ->assertNotFound();
 
-
         Message::factory()->create([
             'conversation_id' => $conversation->id,
             'creator_id' => $user->id,
             'role' => MessageRole::USER,
-            'content' => '1234567890'
+            'content' => '1234567890',
         ]);
 
         // 最后一条不是助手的消息
@@ -43,7 +41,7 @@ class AbortCompletionTest extends TestCase
             'conversation_id' => $conversation->id,
             'creator_id' => $user->id,
             'role' => MessageRole::ASSISTANT,
-            'content' => '1234567890'
+            'content' => '1234567890',
         ]);
         // 正常
         $this->actingAs($user)

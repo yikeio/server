@@ -4,15 +4,12 @@ namespace App\Modules\User\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\User\Enums\SettingKey;
-use App\Modules\User\User;
 use Illuminate\Http\Request;
 
 class UpdateUserSetting extends Endpoint
 {
-    public function __invoke(Request $request, User $user, string $key)
+    public function __invoke(Request $request, string $key)
     {
-        $this->authorize('update', $user);
-
         $key = SettingKey::tryFrom($key);
 
         if (empty($key)) {
@@ -26,7 +23,7 @@ class UpdateUserSetting extends Endpoint
             ],
         ]);
 
-        return $user->settings()->updateOrCreate([
+        return $request->user()->settings()->updateOrCreate([
             'key' => $key,
         ], [
             'value' => $request->input('value'),

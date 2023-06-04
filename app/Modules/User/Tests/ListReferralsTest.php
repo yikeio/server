@@ -6,7 +6,7 @@ use App\Modules\User\Actions\RefreshUserReferrer;
 use App\Modules\User\User;
 use Tests\TestCase;
 
-class ListUserReferralsTest extends TestCase
+class ListReferralsTest extends TestCase
 {
     public function test_list_user_referrals()
     {
