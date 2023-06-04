@@ -2,20 +2,13 @@
 
 namespace App\Modules\User\Exceptions;
 
+use App\Modules\Common\RenderWithContext;
 use Exception;
-use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class InvalidStateException extends Exception
 {
-    protected $context = [];
-
-    public function __construct($message = 'Invalid state', $code = 0, Throwable $previous = null, array $context = [])
-    {
-        parent::__construct($message, $code, $previous);
-
-        $this->context = $context;
-    }
+    use RenderWithContext;
 
     public static function banned(string $message = '您的账号已被禁用'): static
     {
@@ -30,13 +23,5 @@ class InvalidStateException extends Exception
     public static function invalid(string $message = '您的账号状态异常'): static
     {
         return new static($message, 403, null, ['state' => 'invalid']);
-    }
-
-    public function render(): JsonResponse
-    {
-        return response()->json([
-            'message' => $this->message,
-            'context' => $this->context,
-        ], $this->code);
     }
 }
