@@ -12,7 +12,7 @@ class UpdateUserSettingTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->putJson("/api/users/{$user->id}/settings/chat_contexts_count", [
+            ->putJson('/api/settings/chat_contexts_count', [
                 'value' => 10,
             ])
             ->assertSuccessful();

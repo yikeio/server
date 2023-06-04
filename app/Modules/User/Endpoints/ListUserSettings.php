@@ -4,17 +4,14 @@ namespace App\Modules\User\Endpoints;
 
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\User\Enums\SettingKey;
-use App\Modules\User\User;
 use App\Modules\User\UserSetting;
 use Illuminate\Http\Request;
 
 class ListUserSettings extends Endpoint
 {
-    public function __invoke(Request $request, User $user)
+    public function __invoke(Request $request)
     {
-        $this->authorize('get', $user);
-
-        $settings = $user->settings()->get(['value', 'key']);
+        $settings = $request->user()->settings()->get(['value', 'key']);
 
         $outputs = [];
 

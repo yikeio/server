@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\User\Tests;
+namespace App\Modules\Payment\Tests;
 
 use App\Modules\Payment\Payment;
 use App\Modules\User\User;
 use Tests\TestCase;
 
-class ListUserPaymentsTest extends TestCase
+class ListPaymentsTest extends TestCase
 {
     public function test_list_user_payments()
     {

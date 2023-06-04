@@ -95,6 +95,7 @@ class CreateCompletion extends Endpoint
         $completion->role = MessageRole::ASSISTANT;
         $completion->conversation_id = $conversation->id;
         $completion->quota_id = $quota->id;
+        $completion->save();
 
         return response()->stream(function () use ($client, $stream, $messages, $completion, $tokenizer, $conversation) {
             $contents = [];
@@ -118,11 +119,16 @@ class CreateCompletion extends Endpoint
 
                 $contents[] = $choice->delta->content;
 
+                $completion->content = implode('', array_filter($contents));
+                $usage = $tokenizer->predictUsage($messages, $completion->content);
+                $completion->tokens_count = $usage['tokens_count'] ?? 0;
+                $completion->save();
+
                 // 流式返回数据
                 echo $choice->delta->content;
 
                 if ($client instanceof FakeClient) {
-                    usleep(random_int(1000, 80000));
+                    usleep(random_int(1000, 9000));
                 }
 
                 if (ob_get_level() > 0) {
@@ -131,18 +137,13 @@ class CreateCompletion extends Endpoint
                 flush();
             }
 
-            $content = implode('', array_filter($contents));
-
             if (empty($response)) {
                 $raws = [];
             } else {
                 $raws = $response->toArray();
             }
 
-            $usage = $tokenizer->predictUsage($messages, $content);
-
-            $completion->tokens_count = $usage['tokens_count'] ?? 0;
-            $completion->content = $content;
+            $usage = $tokenizer->predictUsage($messages, $completion->content);
             $completion->raw = [
                 ...$raws,
                 'choices' => $choices,
@@ -154,6 +155,7 @@ class CreateCompletion extends Endpoint
                 SummarizeConversation::dispatch($conversation);
             }
         }, 200, [
+            'X-Message-Id' => $completion->id,
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
         ]);

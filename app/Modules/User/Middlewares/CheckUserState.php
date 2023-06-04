@@ -2,6 +2,7 @@
 
 namespace App\Modules\User\Middlewares;
 
+use App\Modules\User\Exceptions\InvalidStateException;
 use App\Modules\User\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -10,10 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 class CheckUserState
 {
     protected array $except = [
-        '/api/users/*:activate',
+        '/api/user:activate',
         '/api/user',
     ];
 
+    /**
+     * @throws \App\Modules\User\Exceptions\InvalidStateException
+     */
     public function handle(Request $request, Closure $next): Response
     {
         if ($this->inExceptArray($request)) {
@@ -28,14 +32,14 @@ class CheckUserState
         }
 
         if ($user->state?->banned()) {
-            abort(403, '您的账号已被禁用');
+            throw InvalidStateException::banned();
         }
 
         if ($user->state?->unactivated()) {
-            abort(403, '您的账号未激活');
+            throw InvalidStateException::unactivated();
         }
 
-        abort(403, '您的账号状态异常');
+        throw InvalidStateException::invalid();
     }
 
     protected function inExceptArray($request): bool

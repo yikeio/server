@@ -23,7 +23,7 @@ class FakeClient
         /** @var Generator $generator */
         $generator = $this->app->make(Generator::class);
 
-        $text = $generator->paragraphs(random_int(1, 4), true);
+        $text = $generator->paragraphs(random_int(1, 5), true);
 
         $words = str_split($text, 1);
 
