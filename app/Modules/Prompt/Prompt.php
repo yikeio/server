@@ -8,6 +8,7 @@ use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\Tag\Tag;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -44,6 +45,7 @@ class Prompt extends Model
         'logo',
         'prompt_cn',
         'prompt_en',
+        'greeting',
         'settings',
         'sort_order',
     ];
@@ -66,6 +68,13 @@ class Prompt extends Model
     protected static function newFactory(): PromptFactory
     {
         return PromptFactory::new();
+    }
+
+    public function greeting(): Attribute
+    {
+        return new Attribute(get: function ($value) {
+            return $value ?? "嗨，你想聊点什么？";
+        });
     }
 
     public function getModelFilterClass(): string

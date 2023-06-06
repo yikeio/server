@@ -14,6 +14,7 @@ class UpdatePromptRequest extends FormRequest
             'logo' => 'string',
             'prompt_cn' => 'string|max:1200',
             'prompt_en' => 'string|max:1200',
+            'greeting' => 'string|max:1200',
             'tags' => 'array',
             'tags.*' => 'exists:tags,id',
         ];

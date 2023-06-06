@@ -22,6 +22,7 @@ class CreatePromptTest extends TestCase
             'logo' => 'logo here',
             'prompt_cn' => 'cn here',
             'prompt_en' => 'en here',
+            'greeting' => 'greeting here',
             'tags' => [$tag1->id, $tag2->id],
         ]);
 
@@ -32,6 +33,7 @@ class CreatePromptTest extends TestCase
             'logo' => 'logo here',
             'prompt_cn' => 'cn here',
             'prompt_en' => 'en here',
+            'greeting' => 'greeting here',
         ]);
         $this->assertDatabaseHas('taggables', [
             'taggable_type' => Prompt::class,

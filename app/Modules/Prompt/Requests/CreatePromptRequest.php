@@ -14,6 +14,7 @@ class CreatePromptRequest extends FormRequest
             'logo' => 'required|string',
             'prompt_cn' => 'required_without:prompt_en|string|max:1200',
             'prompt_en' => 'required_without:prompt_cn|string|max:1200',
+            'greeting' => 'required|string|max:1200',
             'tags' => 'array',
             'tags.*' => 'exists:tags,id',
         ];

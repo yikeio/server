@@ -15,7 +15,7 @@ class CreateConversationTest extends TestCase
 
         $prompt = Prompt::factory()->create();
 
-        $this->actingAs($user)
+        $conversation = $this->actingAs($user)
             ->postJson('/api/chat/conversations', [
                 'title' => 'title',
                 'prompt_id' => $prompt->id,
@@ -23,7 +23,12 @@ class CreateConversationTest extends TestCase
             ->assertSuccessful()
             ->assertJsonFragment([
                 'prompt_id' => $prompt->id,
-            ]);
+            ])->getOriginalContent();
+
+        $this->assertDatabaseHas('messages', [
+            'conversation_id' => $conversation->id,
+            'content' => $prompt->greeting,
+        ]);
     }
 
     public function test_create_conversation()
