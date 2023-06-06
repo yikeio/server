@@ -17,11 +17,13 @@ class CreateMessage extends Endpoint
         /** @var User $user */
         $user = $request->user();
 
-        return $conversation->messages()->create([
+        return tap($conversation->messages()->create([
             'creator_id' => $user->id,
             'role' => MessageRole::USER->value,
             'content' => $request->input('content'),
             'tokens_count' => 0,
-        ]);
+        ]), function() use ($conversation) {
+            $conversation->touch();
+        });
     }
 }
