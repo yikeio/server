@@ -4,7 +4,6 @@ namespace App\Modules\Quota\Exceptions;
 
 use App\Modules\Common\RenderWithContext;
 use Exception;
-use Throwable;
 
 class QuotaException extends Exception
 {

@@ -13,11 +13,11 @@ class ListUserPrompts
         $user = $request->user();
 
         return Prompt::query()
-            ->where(function($query) use ($user) {
+            ->where(function ($query) use ($user) {
                 // 用户创建的
                 $query->where('creator_id', $user->id)
                     // 或者用户用过的
-                    ->orWhereHas('conversations', function($query) use ($user) {
+                    ->orWhereHas('conversations', function ($query) use ($user) {
                         $query->where('creator_id', $user->id);
                     });
             })

@@ -16,7 +16,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Overtrue\LaravelLike\Traits\Likeable;
 
+/**
+ * @property \App\Modules\User\User $creator
+ */
 class Message extends Model implements TokenizableInterface
 {
     use HasSnowflakes;
@@ -26,6 +30,7 @@ class Message extends Model implements TokenizableInterface
     use Tokenizable;
     use BelongsToCreator;
     use BelongsToQuota;
+    use Likeable;
 
     protected $fillable = [
         'conversation_id',

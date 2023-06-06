@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Database\Eloquent\Collection<Tag> $tags
  * @property int                                           $tags_count
  * @property int                                           $creator_id
+ *
  * @method static Builder|Prompt filter(array $input = [], $filter = null)
  */
 class Prompt extends Model
@@ -73,7 +74,7 @@ class Prompt extends Model
     public function greeting(): Attribute
     {
         return new Attribute(get: function ($value) {
-            return $value ?? "嗨，你想聊点什么？";
+            return $value ?? '嗨，你想聊点什么？';
         });
     }
 

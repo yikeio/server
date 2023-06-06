@@ -13,9 +13,13 @@ class ListConversationMessages extends Endpoint
     {
         $this->authorize('get', $conversation);
 
-        return $conversation->messages()
+        $messages = $conversation->messages()
             ->orderBy('id')
             ->filter($request->query())
             ->paginate(CheckSize::run($request->query('per_page', 15)));
+
+        $request->user()->attachLikeStatus($messages);
+
+        return $messages;
     }
 }

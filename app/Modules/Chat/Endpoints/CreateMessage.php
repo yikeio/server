@@ -22,7 +22,7 @@ class CreateMessage extends Endpoint
             'role' => MessageRole::USER->value,
             'content' => $request->input('content'),
             'tokens_count' => 0,
-        ]), function() use ($conversation) {
+        ]), function () use ($conversation) {
             $conversation->touch();
         });
     }

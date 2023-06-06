@@ -23,6 +23,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
+use Overtrue\LaravelLike\Traits\Liker;
 
 /**
  * @property UserState $state
@@ -37,6 +38,7 @@ class User extends Authenticatable
     use Filterable;
     use HasFactory;
     use SoftDeletes;
+    use Liker;
 
     protected $fillable = [
         'root_referrer_id',

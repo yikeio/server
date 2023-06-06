@@ -4,7 +4,6 @@ namespace App\Modules\User\Exceptions;
 
 use App\Modules\Common\RenderWithContext;
 use Exception;
-use Throwable;
 
 class InvalidStateException extends Exception
 {

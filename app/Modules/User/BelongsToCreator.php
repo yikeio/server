@@ -4,6 +4,10 @@ namespace App\Modules\User;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $creator_id
+ * @property \App\Modules\User\User $creator
+ */
 trait BelongsToCreator
 {
     public function creator(): BelongsTo

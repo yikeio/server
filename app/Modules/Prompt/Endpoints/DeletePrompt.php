@@ -3,7 +3,6 @@
 namespace App\Modules\Prompt\Endpoints;
 
 use App\Modules\Prompt\Prompt;
-use App\Modules\Prompt\Requests\CreatePromptRequest;
 use Illuminate\Http\Request;
 
 class DeletePrompt
