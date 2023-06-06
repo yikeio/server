@@ -2,6 +2,7 @@
 
 namespace App\Modules\Chat\Endpoints;
 
+use App\Modules\Chat\Actions\RefreshConversation;
 use App\Modules\Chat\Conversation;
 use App\Modules\Common\Endpoints\Endpoint;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ class TruncateConversation extends Endpoint
         $this->authorize('update', $conversation);
 
         $conversation->messages->each->delete();
+
+        RefreshConversation::run($conversation);
 
         return response()->noContent();
     }
