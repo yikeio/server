@@ -9,6 +9,6 @@ class GetUser extends Endpoint
 {
     public function __invoke(Request $request)
     {
-        return $request->user()->makeVisible(['email', 'phone_number']);
+        return $request->user()->makeVisible(['email', 'phone_number', 'paid_total']);
     }
 }
