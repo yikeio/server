@@ -6,6 +6,7 @@ use App\Modules\Common\Actions\Action;
 use App\Modules\Payment\Enums\PaymentState;
 use App\Modules\Payment\Payment;
 use App\Modules\Payment\Processors\Processor;
+use App\Modules\Reward\Actions\CreateRewardFromPayment;
 use App\Modules\User\Actions\RefreshUserPaidTotal;
 
 class MarkPaymentAsPaid extends Action
@@ -21,6 +22,11 @@ class MarkPaymentAsPaid extends Action
         $payment->save();
 
         RefreshUserPaidTotal::run($payment->creator);
+
+        // 奖励推荐人
+        if ($payment->creator->referrer) {
+            CreateRewardFromPayment::run($payment);
+        }
 
         if (! is_array($payment->processors)) {
             return;

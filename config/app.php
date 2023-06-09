@@ -213,6 +213,7 @@ return [
         \App\Modules\Prompt\PromptServiceProvider::class,
         \App\Modules\Tag\TagServiceProvider::class,
         \App\Modules\Admin\AdminServiceProvider::class,
+        \App\Modules\Reward\RewardServiceProvider::class,
         \App\Modules\Service\Socialite\SocialiteServiceProvider::class,
 
         /**

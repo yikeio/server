@@ -8,6 +8,7 @@ use App\Modules\Payment\Payment;
 use App\Modules\Prompt\Prompt;
 use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\Quota\Quota;
+use App\Modules\Reward\Reward;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
@@ -26,9 +27,33 @@ use Laravel\Passport\HasApiTokens;
 use Overtrue\LaravelLike\Traits\Liker;
 
 /**
- * @property UserState $state
- * @property int       $id
- * @property string    $referral_code
+ * @property int                              $id
+ * @property string                           $referral_code
+ * @property int                              $root_referrer_id
+ * @property int                              $referrer_id
+ * @property int                              $level
+ * @property string                           $referrer_path
+ * @property int                              $referrals_count
+ * @property string                           $name
+ * @property string                           $phone_number
+ * @property bool                          $is_admin
+ * @property UserState                        $state
+ * @property \Carbon\Carbon                   $first_active_at
+ * @property \Carbon\Carbon                   $last_active_at
+ * @property int                              $paid_total
+ * @property string                           $avatar
+ * @property \App\Modules\User\User           $referrer
+ * @property \App\Modules\User\User           $rootReferrer
+ * @property \App\Modules\User\User[]         $referrals
+ * @property \App\Modules\Reward\Reward[]     $rewards
+ * @property \App\Modules\Quota\Quota[]       $quotas
+ * @property \App\Modules\Payment\Payment[]   $payments
+ * @property \App\Modules\Chat\Conversation[] $conversations
+ * @property \App\Modules\Chat\Message[]      $messages
+ * @property \App\Modules\Prompt\Prompt[]     $prompts
+ * @property \Carbon\Carbon                   $created_at
+ * @property \Carbon\Carbon                   $updated_at
+ * @property \Carbon\Carbon                   $deleted_at
  */
 class User extends Authenticatable
 {
@@ -108,6 +133,11 @@ class User extends Authenticatable
     public function conversations(): HasMany
     {
         return $this->hasMany(Conversation::class, 'creator_id', 'id');
+    }
+
+    public function rewards(): HasMany
+    {
+        return $this->hasMany(Reward::class, 'user_id', 'id');
     }
 
     public function messages(): HasMany

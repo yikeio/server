@@ -9,10 +9,21 @@ class GetUserTest extends TestCase
 {
     public function test_get_user()
     {
-        $user = User::factory()->create();
+        $referrer = User::factory()->create();
+        $user = User::factory()->create([
+            'referrer_id' => $referrer->id,
+        ]);
 
         $this->actingAs($user)
             ->getJson('/api/user')
+            ->assertJsonStructure([
+                'id',
+                'name',
+                'email',
+                'phone_number',
+                'paid_total',
+                'referrer',
+            ])
             ->assertSuccessful();
     }
 }

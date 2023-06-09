@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 
 class PaymentFactory extends Factory
 {
+    protected $model = Payment::class;
+
     public function definition(): array
     {
         return [
@@ -23,6 +25,13 @@ class PaymentFactory extends Factory
             'created_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
+    }
+
+    public function ofUser(User $user)
+    {
+        return $this->state([
+            'creator_id' => $user->id,
+        ]);
     }
 
     public function pending()
@@ -44,10 +53,5 @@ class PaymentFactory extends Factory
         return $this->state([
             'state' => PaymentState::PAID,
         ]);
-    }
-
-    public function modelName()
-    {
-        return Payment::class;
     }
 }
