@@ -14,7 +14,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property \Illuminate\Support\Collection<\App\Modules\Chat\Message> $messages
+ * @property string                                                              $id
+ * @property string                                                              $title
+ * @property string                                                              $prompt_id
+ * @property int                                                                 $messages_count
+ * @property int                                                                 $tokens_count
+ * @property \Carbon\Carbon                                                      $first_active_at
+ * @property \Carbon\Carbon                                                      $last_active_at
+ * @property string                                                              $deleted_at
+ * @property string                                                              $created_at
+ * @property string                                                              $updated_at
+ * @property string                                                              $creator_id
+ * @property Prompt                                                              $prompt
+ * @property \Illuminate\Database\Eloquent\Collection<\App\Modules\Chat\Message> $messages
  */
 class Conversation extends Model
 {

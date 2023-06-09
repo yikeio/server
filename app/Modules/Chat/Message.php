@@ -19,7 +19,20 @@ use Illuminate\Support\Str;
 use Overtrue\LaravelLike\Traits\Likeable;
 
 /**
- * @property \App\Modules\User\User $creator
+ * @property string                                    $id
+ * @property string                                    $creator_id
+ * @property string                                    $conversation_id
+ * @property string                                    $quota_id
+ * @property int                                       $tokens_count
+ * @property string                                    $content
+ * @property array                                     $raw
+ * @property \App\Modules\Chat\Enums\MessageRole|mixed $role
+ * @property \App\Modules\Chat\Conversation            $conversation
+ * @property \App\Modules\User\User                    $creator
+ * @property \App\Modules\Quota\Quota                  $quota
+ * @property \Carbon\Carbon                            $deleted_at
+ * @property \Carbon\Carbon                            $created_at
+ * @property \Carbon\Carbon                            $updated_at
  */
 class Message extends Model implements TokenizableInterface
 {

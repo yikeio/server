@@ -2,7 +2,6 @@
 
 namespace App\Modules\Chat;
 
-use App\Modules\Chat\Endpoints\AbortCompletion;
 use App\Modules\Chat\Endpoints\CreateCompletion;
 use App\Modules\Chat\Endpoints\CreateConversation;
 use App\Modules\Chat\Endpoints\CreateMessage;

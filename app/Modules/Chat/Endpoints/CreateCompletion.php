@@ -18,11 +18,15 @@ use Illuminate\Support\Facades\Log;
 use OpenAI\Client;
 use OpenAI\Responses\Chat\CreateStreamedResponse;
 use OpenAI\Responses\Chat\CreateStreamedResponseChoice;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
 class CreateCompletion extends Endpoint
 {
-    public function __invoke(Request $request, Conversation $conversation)
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function __invoke(Request $request, Conversation $conversation): StreamedResponse
     {
         $this->authorize('update', $conversation);
 
@@ -45,7 +49,7 @@ class CreateCompletion extends Endpoint
         $contextsCount = $user->getSetting(SettingKey::CHAT_CONTEXTS_COUNT);
         $messagesCount = $conversation->messages()->count();
 
-        $messages = $conversation->messages()
+        $contextMessages = $conversation->messages()
             ->offset($messagesCount - $contextsCount)
             ->take($contextsCount)
             ->get(['role', 'content'])
@@ -56,15 +60,15 @@ class CreateCompletion extends Endpoint
             $prompt = $conversation->prompt->prompt_en ?: $conversation->prompt->prompt_cn;
 
             if ($prompt) {
-                array_unshift($messages, [
+                array_unshift($contextMessages, [
                     'role' => MessageRole::SYSTEM->value,
                     'content' => $prompt,
                 ]);
             }
         }
 
-        if (! empty($messages)) {
-            if ($tokenizer->predict($messages) >= config('openai.chat.max_tokens', 4096)) {
+        if (! empty($contextMessages)) {
+            if ($tokenizer->predict($contextMessages) >= config('openai.chat.max_tokens', 4096)) {
                 abort(422, '附带历史消息长度超过限制，请降低附带历史消息数量或者新建聊天窗口');
             }
         }
@@ -73,7 +77,7 @@ class CreateCompletion extends Endpoint
             $body = [
                 ...config('openai.chat'),
                 'user' => EncryptString::run($user->id),
-                'messages' => $messages,
+                'messages' => $contextMessages,
             ];
 
             Log::channel('service')->info('[CHAT] - 调用 OpenAI 入参', $body);
@@ -83,24 +87,36 @@ class CreateCompletion extends Endpoint
             Log::error('[CHAT] - 调用 OpenAI 失败', [
                 'conversation_id' => $conversation->id,
                 'user_id' => $user->id,
-                'messages' => $messages,
+                'messages' => $contextMessages,
                 'exception' => $e,
             ]);
 
             abort(500, '服务器开小差了，请稍后再试');
         }
 
-        $completion = new Message();
-        $completion->creator_id = $user->id;
-        $completion->role = MessageRole::ASSISTANT;
-        $completion->conversation_id = $conversation->id;
-        $completion->quota_id = $quota->id;
-        $completion->save();
+        $message = new Message();
+        $message->creator_id = $user->id;
+        $message->role = MessageRole::ASSISTANT;
+        $message->conversation_id = $conversation->id;
+        $message->quota_id = $quota->id;
+        $message->save();
 
-        return response()->stream(function () use ($client, $stream, $messages, $completion, $tokenizer, $conversation) {
-            $contents = [];
+        $contents = collect();
+        $choices = collect();
 
-            $choices = [];
+        $saveMessage = function () use ($message, $choices, $contents, $contextMessages, $tokenizer) {
+            $message->content = $contents->filter()->implode('');
+            $usage = $tokenizer->predictUsage($contextMessages, $message->content);
+            $message->tokens_count = $usage['tokens_count'] ?? 0;
+            $message->raw = [
+                'choices' => $choices,
+                'usage' => $usage,
+            ];
+            $message->save();
+        };
+
+        return response()->stream(function () use ($saveMessage, $contents, $choices, $client, $stream, $conversation) {
+            ignore_user_abort(true);
 
             /** @var CreateStreamedResponse $response */
             foreach ($stream as $response) {
@@ -111,20 +127,18 @@ class CreateCompletion extends Endpoint
                     continue;
                 }
 
-                $choices[] = $choice->toArray();
+                if (connection_aborted()) {
+                    return $saveMessage();
+                }
+
+                $choices->push($choice->toArray());
 
                 if (empty($choice->delta->content)) {
                     continue;
                 }
 
-                $contents[] = $choice->delta->content;
+                $contents->push($choice->delta->content);
 
-                $completion->content = implode('', array_filter($contents));
-                $usage = $tokenizer->predictUsage($messages, $completion->content);
-                $completion->tokens_count = $usage['tokens_count'] ?? 0;
-                $completion->save();
-
-                // 流式返回数据
                 echo $choice->delta->content;
 
                 if ($client instanceof FakeClient) {
@@ -137,25 +151,13 @@ class CreateCompletion extends Endpoint
                 flush();
             }
 
-            if (empty($response)) {
-                $raws = [];
-            } else {
-                $raws = $response->toArray();
-            }
-
-            $usage = $tokenizer->predictUsage($messages, $completion->content);
-            $completion->raw = [
-                ...$raws,
-                'choices' => $choices,
-                'usage' => $usage,
-            ];
-            $completion->save();
+            $saveMessage();
 
             if ($conversation->title === '新的聊天') {
                 SummarizeConversation::dispatch($conversation);
             }
         }, 200, [
-            'X-Message-Id' => $completion->id,
+            'X-Message-Id' => $message->id,
             'X-Accel-Buffering' => 'no',
             'Cache-Control' => 'no-cache',
         ]);
