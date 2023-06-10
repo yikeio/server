@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prompts', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('id')->primary()->startingValue(1);
             $table->unsignedBigInteger('creator_id')->default(0);
             $table->string('name');
             $table->string('description')->nullable();
