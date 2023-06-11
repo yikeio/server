@@ -5,6 +5,8 @@ namespace App\Modules\Auth\Endpoints;
 use App\Modules\Auth\Requests\CreateTokenViaCodeRequest;
 use App\Modules\Common\Endpoints\Endpoint;
 use App\Modules\Service\State\StateManager;
+use App\Modules\User\Enums\UserState;
+use App\Modules\User\Events\UserActivated;
 use App\Modules\User\Profile;
 use App\Modules\User\User;
 use Illuminate\Support\Str;
@@ -35,6 +37,7 @@ class CreateTokenViaCode extends Endpoint
         }
 
         // 按 open_id 和 email 查找用户
+        /** @var Profile $profile */
         $profile = Profile::query()
             ->where('platform', $driver)
             ->where(function ($query) use ($socialiteUser) {
@@ -65,9 +68,14 @@ class CreateTokenViaCode extends Endpoint
 
         if (! $user->id) {
             $user->referral_code = Str::lower(Str::random(6));
+            $user->state = UserState::ACTIVATED;
         }
 
         $user->save();
+
+        if ($user->wasRecentlyCreated) {
+            event(new UserActivated($user));
+        }
 
         if (empty($profile->user)) {
             $profile->user_id = $user->id;
