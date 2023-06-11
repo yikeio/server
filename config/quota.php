@@ -3,6 +3,14 @@
 use App\Modules\Payment\Processors\GrantQuotaProcessor;
 
 return [
+    'defaults' => [
+        // 赠送新用户的免费配额
+        'chat' => [
+            'tokens_count' => 1000,
+            'days' => 1,
+        ],
+    ],
+
     'pricings' => [
         'weekly' => [
             'title' => '试用',
@@ -70,13 +78,6 @@ return [
                     ],
                 ],
             ],
-        ],
-    ],
-
-    'defaults' => [
-        'chat' => [
-            'tokens_count' => 1000,
-            'days' => 1,
         ],
     ],
 ];
