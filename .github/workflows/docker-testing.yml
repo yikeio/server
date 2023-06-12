@@ -1,0 +1,55 @@
+name: Docker Testing Deploy
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+
+      - name: Composer Install
+        run: composer install --ignore-platform-reqs --optimize-autoloader --no-interaction --no-scripts
+
+      - name: Copy Config
+        run: cat > .env ${{ secrets.TESTING_LARAVEL_ENV }}
+
+      - name: Docker Login
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ccr.ccs.tencentyun.com
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          ecr: auto
+          logout: true
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: true
+          tags: ccr.ccs.tencentyun.com/yike/server:${{ github.sha }}
+
+  deploy:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy with Docker Compose
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.TESTING_HOST }}
+          username: ${{ secrets.TESTING_USERNAME }}
+          key: ${{ secrets.TESTING_SSH_KEY }}
+          port: ${{ secrets.TESTING_PORT }}
+          script: |
+            cd /root/yike
+            cat docker_registry_password.txt | docker login ccr.ccs.tencentyun.com --username=${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
+            DOCKER_SERVER_IMAGE_TAG=${{ github.sha }} docker compose up -d server redis tokenizer
