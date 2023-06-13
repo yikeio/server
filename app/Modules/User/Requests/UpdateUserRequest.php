@@ -11,6 +11,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'string|max:45',
             'avatar' => 'string|max:255',
+            'referral_code' => 'string|min:5|max:10',
         ];
     }
 }

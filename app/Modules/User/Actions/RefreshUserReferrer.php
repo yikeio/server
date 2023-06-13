@@ -9,6 +9,10 @@ class RefreshUserReferrer extends Action
 {
     public function handle(User $user, User $referrer): User
     {
+        if ($user->is($referrer) || $user->referrer_id) {
+            return $user;
+        }
+
         $user->referrer_id = $referrer->id;
         $user->root_referrer_id = $referrer->root_referrer_id ?: $referrer->id;
 

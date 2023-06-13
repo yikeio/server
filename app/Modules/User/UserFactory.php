@@ -40,6 +40,15 @@ class UserFactory extends Factory
         });
     }
 
+    public function activated(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'state' => UserState::ACTIVATED,
+            ];
+        });
+    }
+
     public function modelName()
     {
         return User::class;
