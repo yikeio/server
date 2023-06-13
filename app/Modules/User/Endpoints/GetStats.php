@@ -17,7 +17,7 @@ class GetStats extends Endpoint
     {
         $user = $request->user();
 
-        return Cache::remember('stats', 5, function () use ($user) {
+        return Cache::remember('user_stats:'.$user->id, 5, function () use ($user) {
             return [
                 // 总邀请人数
                 'invitations' => User::query()->where('referrer_id', $user->id)->count(),
