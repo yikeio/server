@@ -12,6 +12,7 @@ class ListLeaderboards extends Endpoint
     public function __invoke(Request $request): Collection|array
     {
         return User::query()
+            ->where('is_admin', false)
             ->where('referrals_count', '>', 0)
             ->orderByDesc('referrals_count')
             ->take(100)
