@@ -74,7 +74,7 @@ class Prompt extends Model
     public function greeting(): Attribute
     {
         return new Attribute(get: function ($value) {
-            return $value ?: '嗨，你想聊点什么？';
+            return $value ?: '嗨，欢迎来到一刻，你想聊点什么？';
         });
     }
 
