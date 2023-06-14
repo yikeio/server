@@ -153,7 +153,7 @@ class CreateCompletion extends Endpoint
 
             $saveMessage();
 
-            if ($conversation->title === '新的聊天') {
+            if ($conversation->messages()->where('role', MessageRole::USER)->count() == 1) {
                 SummarizeConversation::dispatch($conversation);
             }
         }, 200, [
