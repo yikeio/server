@@ -9,6 +9,6 @@ class ListReferrals extends Endpoint
 {
     public function __invoke(Request $request)
     {
-        return $request->user()->referrals()->get();
+        return $request->user()->referrals()->latest()->get();
     }
 }
