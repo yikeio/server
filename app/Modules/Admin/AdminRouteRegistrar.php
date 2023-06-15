@@ -21,6 +21,9 @@ class AdminRouteRegistrar
             Route::get('users', Endpoints\ListUsers::class);
             Route::get('payments', Endpoints\ListPayments::class);
             Route::get('gift-cards', Endpoints\ListGiftCards::class);
+            Route::post('gift-cards', Endpoints\CreateGiftCard::class);
+            Route::patch('gift-cards/{giftCard}', Endpoints\UpdateGiftCard::class);
+            Route::delete('gift-cards/{giftCard}', Endpoints\DeleteGiftCard::class);
             Route::get('conversations', Endpoints\ListConversations::class);
             Route::get('messages', Endpoints\ListMessages::class);
             Route::get('tags', Endpoints\ListTags::class);

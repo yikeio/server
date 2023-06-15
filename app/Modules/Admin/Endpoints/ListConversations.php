@@ -9,6 +9,6 @@ class ListConversations
 {
     public function __invoke(Request $request)
     {
-        return Conversation::with('creator')->latest('created_at')->filter($request->query())->paginate(15);
+        return Conversation::with(['creator', 'prompt'])->latest('created_at')->filter($request->query())->paginate(15);
     }
 }

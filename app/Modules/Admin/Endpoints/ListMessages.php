@@ -9,6 +9,6 @@ class ListMessages
 {
     public function __invoke(Request $request)
     {
-        return Message::with(['creator'])->filter($request->query())->latest('created_at')->paginate(15);
+        return Message::with(['creator', 'conversation.prompt'])->filter($request->query())->latest('created_at')->paginate(15);
     }
 }

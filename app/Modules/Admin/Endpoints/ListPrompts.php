@@ -9,6 +9,6 @@ class ListPrompts
 {
     public function __invoke(Request $request)
     {
-        return Prompt::with('tags')->latest('created_at')->filter($request->query())->paginate(15);
+        return Prompt::with('tags')->withCount('conversations')->latest('created_at')->filter($request->query())->paginate(15);
     }
 }
