@@ -81,7 +81,7 @@ class Message extends Model implements TokenizableInterface
 
     public function conversation(): BelongsTo
     {
-        return $this->belongsTo(Conversation::class, 'conversation_id', 'id');
+        return $this->belongsTo(Conversation::class, 'conversation_id', 'id')->withTrashed();
     }
 
     protected static function newFactory(): MessageFactory
