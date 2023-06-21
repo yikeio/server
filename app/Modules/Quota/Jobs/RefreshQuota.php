@@ -2,6 +2,7 @@
 
 namespace App\Modules\Quota\Jobs;
 
+use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\Quota\Quota;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,7 +31,11 @@ class RefreshQuota implements ShouldQueue
 
         $this->quota->used_tokens_count = $usedTokensCount;
         $availableTokensCount = $this->quota->tokens_count - $usedTokensCount;
-        // TODO 变更状态
+
+        if ($availableTokensCount <= 0) {
+            $this->quota->state = QuotaState::USED;
+        }
+
         $this->quota->save();
     }
 }

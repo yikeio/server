@@ -7,6 +7,7 @@ use App\Modules\Chat\Enums\MessageRole;
 use App\Modules\Chat\Jobs\SummarizeConversation;
 use App\Modules\Chat\Message;
 use App\Modules\Common\Endpoints\Endpoint;
+use App\Modules\Quota\Actions\CreateQuotaUsage;
 use App\Modules\Security\Actions\EncryptString;
 use App\Modules\Service\OpenAI\FakeClient;
 use App\Modules\Service\OpenAI\Tokenizer;
@@ -115,7 +116,7 @@ class CreateCompletion extends Endpoint
             $message->save();
         };
 
-        return response()->stream(function () use ($saveMessage, $contents, $choices, $client, $stream, $conversation) {
+        return response()->stream(function () use ($message, $saveMessage, $contents, $choices, $client, $stream, $conversation) {
             ignore_user_abort(true);
 
             /** @var CreateStreamedResponse $response */
@@ -156,6 +157,8 @@ class CreateCompletion extends Endpoint
             if ($conversation->messages()->where('role', MessageRole::USER)->count() == 1) {
                 SummarizeConversation::dispatch($conversation);
             }
+
+            CreateQuotaUsage::run($message);
         }, 200, [
             'X-Message-Id' => $message->id,
             'X-Accel-Buffering' => 'no',

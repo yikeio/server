@@ -14,7 +14,7 @@
         "laravel/framework": "^10.0",
         "laravel/passport": "^11.8",
         "laravel/tinker": "^2.8",
-        "openai-php/client": "^0.4.1",
+        "openai-php/client": "^0.6.1",
         "overtrue/easy-sms": "^2.4",
         "overtrue/laravel-like": "^5.1",
         "overtrue/socialite": "^4.8",
