@@ -51,6 +51,10 @@ class Prompt extends Model
         'sort_order',
     ];
 
+    protected $withCount = [
+        'conversations',
+    ];
+
     protected $casts = [
         'id' => 'string',
         'settings' => 'array',
