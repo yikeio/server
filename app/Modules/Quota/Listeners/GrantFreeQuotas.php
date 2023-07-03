@@ -15,7 +15,7 @@ class GrantFreeQuotas
 
         GrantUserQuota::run($user, [
             'tokens_count' => $default['tokens_count'] ?? 1000,
-            'days' => $default['days'] ?? 1,
+            'days' => $default['days'] ?? 30,
         ]);
     }
 }

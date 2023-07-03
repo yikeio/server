@@ -6,8 +6,8 @@ return [
     'defaults' => [
         // 赠送新用户的免费配额
         'chat' => [
-            'tokens_count' => 10000,
-            'days' => 1,
+            'tokens_count' => 100000,
+            'days' => 30,
         ],
     ],
 
