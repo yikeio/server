@@ -4,8 +4,10 @@ namespace App\Modules\Chat\Jobs;
 
 use App\Modules\Chat\Conversation;
 use App\Modules\Chat\Enums\MessageRole;
+use App\Modules\Chat\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -31,6 +33,7 @@ class SummarizeConversation implements ShouldQueue
      */
     public function handle(): void
     {
+        /** @var Collection<Message> $messages */
         $messages = $this->conversation
             ->messages()
             ->where('role', MessageRole::USER)
@@ -60,11 +63,13 @@ class SummarizeConversation implements ShouldQueue
             return;
         }
 
-        if (str_contains($choice->message->content, 'failed')) {
-            return;
+        $title = $choice->message->content ?? '';
+
+        if (str_contains($title, 'failed')) {
+            $title = $messages->first()->content;
         }
 
-        $this->conversation->title = Str::limit($choice->message->content, 30);
+        $this->conversation->title = Str::limit($title, 30);
         $this->conversation->timestamps = false;
         $this->conversation->saveQuietly();
     }
