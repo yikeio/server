@@ -56,6 +56,10 @@ class Reward extends Model
 
     protected $with = ['fromUser'];
 
+    protected $attributes = [
+        'state' => RewardState::UNWITHDRAWN,
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->withTrashed();

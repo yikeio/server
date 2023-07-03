@@ -16,7 +16,7 @@ class PromptFilter extends ModelFilter
         return ['id', 'created_at', 'updated_at', 'sort_order'];
     }
 
-    public function tag($ids): RewardFilter
+    public function tag($ids): PromptFilter
     {
         return $this->related('tags', function ($query) use ($ids) {
             return $query->whereIn('tag_id', (array) $ids);
