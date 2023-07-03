@@ -4,6 +4,7 @@ namespace App\Modules\Prompt;
 
 use App\Modules\Chat\Conversation;
 use App\Modules\Prompt\Filters\PromptFilter;
+use App\Modules\Prompt\Filters\RewardFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\Tag\Tag;
 use EloquentFilter\Filterable;

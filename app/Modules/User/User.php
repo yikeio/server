@@ -8,8 +8,11 @@ use App\Modules\Payment\Payment;
 use App\Modules\Prompt\Prompt;
 use App\Modules\Quota\Enums\QuotaState;
 use App\Modules\Quota\Quota;
+use App\Modules\Reward\Enums\RewardState;
 use App\Modules\Reward\Reward;
 use App\Modules\Service\Snowflake\HasSnowflakes;
+use App\Modules\User\Actions\GetUserRewardsTotal;
+use App\Modules\User\Actions\GetUserUnwithdrawnRewardsTotal;
 use App\Modules\User\Enums\SettingKey;
 use App\Modules\User\Enums\UserState;
 use App\Modules\User\Events\UserCreated;
@@ -22,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 use Overtrue\LaravelLike\Traits\Liker;
@@ -173,6 +177,16 @@ class User extends Authenticatable
     public function getHasPaidAttribute(): bool
     {
         return $this->paid_total > 0;
+    }
+
+    public function getRewardsTotalAttribute()
+    {
+        return GetUserRewardsTotal::run($this);
+    }
+
+    public function getUnwithdrawnRewardsTotalAttribute()
+    {
+        return GetUserUnwithdrawnRewardsTotal::run($this);
     }
 
     public function getReferralCodeAttribute(string $referralCode): string

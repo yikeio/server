@@ -2,9 +2,12 @@
 
 namespace App\Modules\Reward;
 
+use App\Modules\Payment\Payment;
 use App\Modules\Reward\Enums\RewardState;
+use App\Modules\Reward\Filters\RewardFilter;
 use App\Modules\Service\Snowflake\HasSnowflakes;
 use App\Modules\User\User;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +33,7 @@ class Reward extends Model
     use SoftDeletes;
     use HasFactory;
     use HasSnowflakes;
+    use Filterable;
 
     protected $fillable = [
         'user_id',
@@ -62,8 +66,19 @@ class Reward extends Model
         return $this->belongsTo(User::class, 'from_user_id')->withTrashed();
     }
 
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class)->withTrashed();
+    }
+
     protected static function newFactory(): RewardFactory
     {
         return RewardFactory::new();
+    }
+
+
+    public function getModelFilterClass(): string
+    {
+        return RewardFilter::class;
     }
 }

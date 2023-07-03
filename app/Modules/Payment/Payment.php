@@ -9,6 +9,7 @@ use App\Modules\User\BelongsToCreator;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property PaymentState $state
@@ -22,6 +23,7 @@ class Payment extends Model
     use HasFactory;
     use Filterable;
     use BelongsToCreator;
+    use SoftDeletes;
 
     protected $fillable = [
         'creator_id',

@@ -17,6 +17,7 @@ class AdminRouteRegistrar
             Route::get('user', Endpoints\GetUser::class);
             Route::get('stats', Endpoints\GetStats::class);
             Route::get('prompts', Endpoints\ListPrompts::class);
+            Route::get('rewards', Endpoints\ListRewards::class);
             Route::post('prompts', Endpoints\CreatePrompt::class);
             Route::get('users', Endpoints\ListUsers::class);
             Route::get('payments', Endpoints\ListPayments::class);
