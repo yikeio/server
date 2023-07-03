@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use OpenAI\Client;
 use OpenAI\Responses\Chat\CreateResponseChoice;
 
@@ -32,18 +33,20 @@ class SummarizeConversation implements ShouldQueue
     {
         $messages = $this->conversation
             ->messages()
+            ->where('role', MessageRole::USER)
             ->take(2)
             ->pluck('content');
 
         /** @var Client $client */
         $client = app(Client::class);
 
+        $messages->prepend("请根据内容总结一个标题（30 字以内），如果无法提供，请返回 6 个字符：'failed'。内容如下：");
         $body = [
             ...config('openai.chat'),
             'messages' => [
                 [
                     'role' => MessageRole::USER->value,
-                    'content' => '请根据下列内容总结一个标题，如果无法提供，请返回 failed：'.$messages->implode("\n"),
+                    'content' => $messages->implode("\n"),
                 ],
             ],
         ];
@@ -57,11 +60,11 @@ class SummarizeConversation implements ShouldQueue
             return;
         }
 
-        if ($choice->message->content === 'failed') {
+        if (str_contains($choice->message->content, 'failed')) {
             return;
         }
 
-        $this->conversation->title = $choice->message->content;
+        $this->conversation->title = Str::limit($choice->message->content, 30);
         $this->conversation->timestamps = false;
         $this->conversation->saveQuietly();
     }

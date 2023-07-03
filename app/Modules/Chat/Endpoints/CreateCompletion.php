@@ -154,7 +154,7 @@ class CreateCompletion extends Endpoint
 
             $saveMessage();
 
-            if ($conversation->messages()->where('role', MessageRole::USER)->count() == 1) {
+            if ($conversation->messages()->where('role', MessageRole::USER)->count() <= 2) {
                 SummarizeConversation::dispatch($conversation);
             }
 
