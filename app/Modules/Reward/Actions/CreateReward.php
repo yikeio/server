@@ -16,6 +16,10 @@ class CreateReward extends Action
 
         $amount = $payment->amount * $rate / 100;
 
+        if ($amount <= 0) {
+            return null;
+        }
+
         /** @var \App\Modules\Reward\Reward $reward */
         $reward = $user->rewards()->firstOrCreate([
             'from_user_id' => $fromUser->id,
