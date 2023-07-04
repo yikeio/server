@@ -14,7 +14,7 @@ class CreateReward extends Action
         // 最大 50% 分成
         $rate = max(0, min(50, $rate));
 
-        $amount = $payment->amount * $rate / 100;
+        $amount = round($payment->amount * $rate / 100, 2);
 
         if ($amount <= 0) {
             return null;

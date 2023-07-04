@@ -46,7 +46,7 @@ class Reward extends Model
 
     protected $casts = [
         'state' => RewardState::class,
-        'amount' => 'int',
+        'amount' => 'float',
         'rate' => 'int',
         'withdrawn_at' => 'timestamp',
         'payment_id' => 'int',
