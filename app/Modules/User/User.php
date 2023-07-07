@@ -40,7 +40,7 @@ use Overtrue\LaravelLike\Traits\Liker;
  * @property int                              $referrals_count
  * @property string                           $name
  * @property string                           $phone_number
- * @property bool                          $is_admin
+ * @property bool                             $is_admin
  * @property UserState                        $state
  * @property \Carbon\Carbon                   $first_active_at
  * @property \Carbon\Carbon                   $last_active_at

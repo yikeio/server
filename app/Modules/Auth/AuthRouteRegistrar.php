@@ -2,9 +2,13 @@
 
 namespace App\Modules\Auth;
 
+use App\Modules\Auth\Endpoints\CreatePersonalToken;
 use App\Modules\Auth\Endpoints\CreateTokenViaCode;
 use App\Modules\Auth\Endpoints\CreateTokenViaSms;
+use App\Modules\Auth\Endpoints\ListTokens;
+use App\Modules\Auth\Endpoints\PurgeTokens;
 use App\Modules\Auth\Endpoints\Redirect;
+use App\Modules\Auth\Endpoints\RevokeToken;
 use Illuminate\Support\Facades\Route;
 
 class AuthRouteRegistrar
@@ -18,6 +22,13 @@ class AuthRouteRegistrar
             Route::post('/auth/tokens:via-sms', CreateTokenViaSms::class)->middleware('throttle:5,1');
             Route::post('/auth/tokens:via-code', CreateTokenViaCode::class)->middleware('throttle:60,1');
             Route::get('/auth/redirect', Redirect::class)->middleware('throttle:120,1');
+        });
+
+        Route::group(['middleware' => ['api', 'auth'], 'prefix' => 'api'], function() {
+            Route::post('/auth/tokens', CreatePersonalToken::class)->middleware('throttle:2,1');
+            Route::get('/auth/tokens', ListTokens::class)->middleware('throttle:5,1');
+            Route::delete('/auth/tokens', PurgeTokens::class)->middleware('throttle:1,1');
+            Route::delete('/auth/tokens/{token}', RevokeToken::class)->middleware('throttle:10,1');
         });
 
         Route::group([
