@@ -19,13 +19,13 @@ class CreatePersonalToken
             'name' => 'required|string|max:255',
         ]);
 
-        if ($request->user()->tokens()->where('revoked', false)->count() >= 5) {
+        if ($request->user()->tokens()->where('revoked', false)->where('name', 'like', '[API]%')->count() >= 5) {
             abort(403, '您最多只能创建 5 个 token');
         }
 
         Passport::personalAccessTokensExpireIn(now()->addYears(5));
 
-        $token = $request->user()->createToken($request->get('name'));
+        $token = $request->user()->createToken('[API]'.$request->get('name'));
 
         return [
             'value' => $token->accessToken,

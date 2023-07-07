@@ -12,6 +12,7 @@ class ListTokens
     public function __invoke(Request $request)
     {
         return $request->user()->tokens()
+            ->where('name', 'like', '[API]%')
             ->where('revoked', false)
             ->orderByDesc('created_at')
             ->get();

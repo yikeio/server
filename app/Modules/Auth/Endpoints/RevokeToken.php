@@ -5,7 +5,6 @@ namespace App\Modules\Auth\Endpoints;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Passport\Token;
-use Laravel\Passport\TokenRepository;
 
 class RevokeToken
 {
