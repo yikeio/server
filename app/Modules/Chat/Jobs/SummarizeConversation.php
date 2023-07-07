@@ -65,7 +65,7 @@ class SummarizeConversation implements ShouldQueue
 
         $title = $choice->message->content ?? '';
 
-        if (str_contains($title, 'failed')) {
+        if (str_contains(strtolower($title), 'failed')) {
             $title = $messages->first()->content;
         }
 
