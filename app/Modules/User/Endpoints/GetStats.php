@@ -20,18 +20,18 @@ class GetStats extends Endpoint
         return Cache::remember('user_stats:'.$user->id, 5, function () use ($user) {
             return [
                 // 总邀请人数
-                'invitations' => User::query()->where('referrer_id', $user->id)->count(),
+                'invitations' => User::withTrashed()->where('referrer_id', $user->id)->count(),
 
                 // 消息
                 'messages' => [
-                    'total' => Message::query()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->count(),
-                    'today_total' => Message::query()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->whereDate('created_at', today())->count(),
+                    'total' => Message::withTrashed()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->count(),
+                    'today_total' => Message::withTrashed()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->whereDate('created_at', today())->count(),
                     // 截止上个月的总数
-                    'last_today_total' => Message::query()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->where('created_at', '<=', today()->subMonth())->count(),
+                    'last_today_total' => Message::withTrashed()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->where('created_at', '<=', today()->subMonth())->count(),
                     // 近一个月的用户数
-                    'recent_30days_total' => Message::query()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->count(),
+                    'recent_30days_total' => Message::withTrashed()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->count(),
                     // 30 天每日新增数
-                    'recent_daily_count' => $this->padInDays(Message::query()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($messages) {
+                    'recent_daily_count' => $this->padInDays(Message::withTrashed()->where('role', MessageRole::USER)->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($messages) {
                         return $messages->created_at->format('Y-m-d');
                     })->map(function ($messages) {
                         return ['messages_count' => $messages->count(), 'tokens_count' => $messages->sum('tokens_count')];
@@ -41,14 +41,14 @@ class GetStats extends Endpoint
                 ],
                 // 会话
                 'conversations' => [
-                    'total' => Conversation::query()->whereBelongsTo($user, 'creator')->count(),
-                    'today_total' => Conversation::query()->whereBelongsTo($user, 'creator')->whereDate('created_at', today())->count(),
+                    'total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->count(),
+                    'today_total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->whereDate('created_at', today())->count(),
                     // 截止上个月的总数
-                    'last_today_total' => Conversation::query()->whereBelongsTo($user, 'creator')->where('created_at', '<=', today()->subMonth())->count(),
+                    'last_today_total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->where('created_at', '<=', today()->subMonth())->count(),
                     // 近一个月的总数
-                    'recent_30days_total' => Conversation::query()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->count(),
+                    'recent_30days_total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->count(),
                     // 30 天每日新增数
-                    'recent_daily_count' => $this->padInDays(Conversation::query()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($conversations) {
+                    'recent_daily_count' => $this->padInDays(Conversation::withTrashed()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($conversations) {
                         return $conversations->created_at->format('Y-m-d');
                     })->map(function ($conversations) {
                         return $conversations->count();
@@ -56,14 +56,14 @@ class GetStats extends Endpoint
                 ],
                 // 会话使用的 token
                 'tokens' => [
-                    'total' => Conversation::query()->whereBelongsTo($user, 'creator')->sum('tokens_count'),
-                    'today_total' => Conversation::query()->whereBelongsTo($user, 'creator')->whereDate('created_at', today())->sum('tokens_count'),
+                    'total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->sum('tokens_count'),
+                    'today_total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->whereDate('created_at', today())->sum('tokens_count'),
                     // 截止上个月的总数
-                    'last_today_total' => Conversation::query()->whereBelongsTo($user, 'creator')->where('created_at', '<=', today()->subMonth())->sum('tokens_count'),
-                    // 近一个月的用户数
-                    'recent_30days_total' => Conversation::query()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->sum('tokens_count'),
+                    'last_today_total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->where('created_at', '<=', today()->subMonth())->sum('tokens_count'),
+                    // 近一个月的token数
+                    'recent_30days_total' => Conversation::withTrashed()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->sum('tokens_count'),
                     // 30 天每日新增数
-                    'recent_daily_count' => $this->padInDays(Conversation::query()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($conversations) {
+                    'recent_daily_count' => $this->padInDays(Conversation::withTrashed()->whereBelongsTo($user, 'creator')->where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($conversations) {
                         return $conversations->created_at->format('Y-m-d');
                     })->map(function ($conversations) {
                         return $conversations->sum('tokens_count');
