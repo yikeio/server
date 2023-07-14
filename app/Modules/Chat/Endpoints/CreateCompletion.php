@@ -51,6 +51,8 @@ class CreateCompletion extends Endpoint
         $messagesCount = $conversation->messages()->count();
 
         $contextMessages = $conversation->messages()
+            ->where('content', '!=', '')
+            ->whereNotNull('content')
             ->offset($messagesCount - $contextsCount)
             ->take($contextsCount)
             ->get(['role', 'content'])
