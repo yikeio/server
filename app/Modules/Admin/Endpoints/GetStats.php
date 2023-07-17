@@ -62,11 +62,12 @@ class GetStats
                     'this_month_total' => Payment::where('state', 'paid')->where('created_at', '>=', today()->subMonth())->sum('amount'),
 
                     // 30 天每日新增付费金额
-                    'recent_daily_amount' => $this->padInDays(Payment::where('state', 'paid')->where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($payment) {
-                        return $payment->created_at->format('Y-m-d');
-                    })->map(function ($payments) {
-                        return $payments->sum('amount');
-                    })),
+                    'recent_daily_amount' => $this->padInDays(Payment::query()
+                        ->selectRaw('sum(amount) as total, date(created_at) as date')
+                        ->where('state', 'paid')
+                        ->where('created_at', '>=', today()->subMonth())
+                        ->groupBy('date')
+                        ->pluck('total', 'date')),
                 ],
 
                 'conversations' => [
@@ -76,11 +77,11 @@ class GetStats
                     'this_month_total' => Conversation::where('created_at', '>=', today()->subMonth())->count(),
 
                     // 30 天每日新增会话数
-                    'recent_daily_count' => $this->padInDays(Conversation::where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($conversation) {
-                        return $conversation->created_at->format('Y-m-d');
-                    })->map(function ($conversations) {
-                        return $conversations->count();
-                    })),
+                    'recent_daily_count' => $this->padInDays(Conversation::query()
+                        ->selectRaw('count(1) as total, date(created_at) as date')
+                        ->where('created_at', '>=', today()->subMonth())
+                        ->groupBy('date')
+                        ->pluck('total', 'date')),
                 ],
 
                 'messages' => [
@@ -90,11 +91,11 @@ class GetStats
                     'this_month_total' => Message::where('created_at', '>=', today()->subMonth())->count(),
 
                     // 30 天每日新增消息数
-                    'recent_daily_count' => $this->padInDays(Message::where('created_at', '>=', today()->subMonth())->get()->groupBy(function ($messages) {
-                        return $messages->created_at->format('Y-m-d');
-                    })->map(function ($conversations) {
-                        return $conversations->count();
-                    })),
+                    'recent_daily_count' => $this->padInDays(Message::query()
+                        ->selectRaw('count(1) as total, date(created_at) as date')
+                        ->where('created_at', '>=', today()->subMonth())
+                        ->groupBy('date')
+                        ->pluck('total', 'date')),
                 ],
             ];
         });
