@@ -73,7 +73,9 @@ class Message extends Model implements TokenizableInterface
         parent::boot();
 
         static::created(function (Message $message) {
-            RefreshConversation::run($message->conversation_id);
+            if (! empty($message->conversation)) {
+                RefreshConversation::run($message->conversation);
+            }
         });
     }
 
