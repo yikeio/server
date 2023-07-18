@@ -33,7 +33,7 @@ class QuotaUsage extends Model
         parent::boot();
 
         static::created(function (QuotaUsage $usage) {
-            RefreshQuota::dispatch($usage->quota);
+            RefreshQuota::dispatchSync($usage->quota);
         });
     }
 
