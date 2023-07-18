@@ -1,6 +1,7 @@
 name: Docker Production Deploy
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
 
