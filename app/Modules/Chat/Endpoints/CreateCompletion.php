@@ -131,7 +131,7 @@ class CreateCompletion extends Endpoint
                 }
 
                 if (connection_aborted()) {
-                    return $saveMessage();
+                    break;
                 }
 
                 $choices->push($choice->toArray());
