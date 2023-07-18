@@ -7,8 +7,16 @@ use App\Modules\Common\Actions\Action;
 
 class RefreshConversation extends Action
 {
-    public function handle(Conversation $conversation)
+    public function handle(Conversation|int|null $conversation)
     {
+        if (is_int($conversation)) {
+            $conversation = Conversation::query()->find($conversation);
+        }
+
+        if (empty($conversation)) {
+            return;
+        }
+
         if (empty($conversation->first_active_at)) {
             $conversation->first_active_at = now();
         }
