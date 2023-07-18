@@ -35,7 +35,7 @@ class ChatRouteRegistrar
             ], function () {
                 Route::post('/conversations', CreateConversation::class)->middleware('throttle:30,1');
                 Route::post('/conversations/{conversation}/messages', CreateMessage::class)->middleware('throttle:120,1');
-                Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:60,1');
+                Route::post('/conversations/{conversation}/completions', CreateCompletion::class)->middleware('throttle:10,1');
             });
         });
     }
