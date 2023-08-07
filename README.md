@@ -29,7 +29,7 @@
     composer install
     ```
 
-1. 配置
+2. 配置
 
     拷贝创建 `.env` 文件：
 
@@ -44,8 +44,23 @@
     - `OPENAI_*` - OpenAI 配置
     - `PAYJS_*` - 微信支付配置（如没有接入，请自行二开实现其他支付渠道）
     - `SMS_*` - 短信验证码配置
-
-// todo @ranpro 补充
+    - `QUOTA_*` - 定价信息
+    - `GITHUB_*` - GitHub OAuth 配置
+    - `GOOGLE_` - Google OAuth 配置
+   
+## 容器化
+- 构建基础镜像
+```bash
+docker build -t yikeio/server-core:latest -f docker/Dockerfile .
+```
+- 构建应用镜像
+```bash
+docker build -t yikeio/server:latest -f Dockerfile .
+```
+- 启动服务
+```bash
+docker compose up server
+```
 
 ## 贡献
 
