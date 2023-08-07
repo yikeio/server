@@ -18,7 +18,7 @@ services:
     restart: always
 
   server:
-    image: "ccr.ccs.tencentyun.com/yike/server:${DOCKER_SERVER_IMAGE_TAG}"
+    image: "yikeio/server:latest"
     container_name: yike-server
     environment:
       - AUTO_MIGRATION="yes"
@@ -32,17 +32,17 @@ services:
       - tokenizer
 
   tokenizer:
-    image: ccr.ccs.tencentyun.com/yike/tokenizer:1.0.0
+    image: yikeio/tokenizer:latest
     container_name: yike-tokenizer
 
   proxy:
-    image: ccr.ccs.tencentyun.com/yike/proxy:1.0.1
+    image: yikeio/proxy:latest
     container_name: yike-proxy
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
     environment:
-      - SERVER_NAME=hk-proxy.pengyyy.cn
-      - ALLOW_IPS=43.139.110.102
+      - SERVER_NAME=yike.io
+      - ALLOW_IPS=127.0.0.1
     ports:
       - "80:80"
       - "443:443"
