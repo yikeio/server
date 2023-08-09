@@ -17,13 +17,16 @@ class PromptSeeder extends Seeder
             ->json();
 
         foreach ($prompts as $prompt) {
+            $promptZh = $prompt['zh'];
+
             Prompt::updateOrCreate([
-                'name' => $prompt['title'],
+                'name' => $promptZh['title'],
             ], [
-                'description' => $prompt['remark'],
-                'prompt_cn' => $prompt['desc_cn'],
-                'prompt_en' => $prompt['desc_en'],
-                'sort_order' => $prompt['weight'] ?? 0,
+                'description' => $promptZh['remark'],
+                'prompt_cn' => $promptZh['description'],
+                'prompt_en' => $promptZh['prompt'],
+                'sort_order' => $promptZh['weight'] ?? 0,
+                'greeting' => '嗨，欢迎来到一刻，你想聊点什么？',
             ]);
         }
     }
